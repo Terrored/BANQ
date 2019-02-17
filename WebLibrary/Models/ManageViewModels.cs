@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Owin.Security;
+using Model.Identity;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
 
 namespace WebLibrary.Models
 {
     public class IndexViewModel
     {
         public bool HasPassword { get; set; }
-        public IList<UserLoginInfo> Logins { get; set; }
+        public IList<ApplicationUserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
@@ -16,8 +16,8 @@ namespace WebLibrary.Models
 
     public class ManageLoginsViewModel
     {
-        public IList<UserLoginInfo> CurrentLogins { get; set; }
-        public IList<AuthenticationDescription> OtherLogins { get; set; }
+        public IList<ApplicationUserLoginInfo> CurrentLogins { get; set; }
+        public IList<ApplicationAuthenticationDescription> OtherLogins { get; set; }
     }
 
     public class FactorViewModel
@@ -57,6 +57,7 @@ namespace WebLibrary.Models
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+
 
     public class AddPhoneNumberViewModel
     {

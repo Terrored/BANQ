@@ -72,14 +72,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UserService.cs" />
-    <Compile Include="Infrastructure\NinjectResolver.cs" />
+    <Compile Include="IService.cs" />
+    <Compile Include="Service.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
-      <Project>{0c755012-a8f4-498d-99f0-05731625a7f8}</Project>
+      <Project>{0C755012-A8F4-498D-99F0-05731625A7F8}</Project>
       <Name>DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{56BA7D33-EE65-434D-84AE-F4B3459929C7}</Project>
+      <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
