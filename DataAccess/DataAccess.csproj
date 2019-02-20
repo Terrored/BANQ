@@ -89,6 +89,11 @@
     <Compile Include="Identity\SmsService.cs" />
     <Compile Include="IEntitiesContext.cs" />
     <Compile Include="IUnitOfWork.cs" />
+    <Compile Include="Migrations\201902201929497_InitialMigration.cs" />
+    <Compile Include="Migrations\201902201929497_InitialMigration.Designer.cs">
+      <DependentUpon>201902201929497_InitialMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OrderBy.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="IRepository.cs" />
@@ -104,6 +109,11 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201902201929497_InitialMigration.resx">
+      <DependentUpon>201902201929497_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

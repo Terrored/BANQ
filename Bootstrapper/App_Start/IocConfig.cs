@@ -15,7 +15,7 @@ namespace Bootstrapper
         public static void RegisterDependencies()
         {
             var builder = new ContainerBuilder();
-            const string nameOrConnectionString = "name=AppContext";
+            const string nameOrConnectionString = "name=BANQConnectionString";
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
             builder.RegisterModule<AutofacWebTypesModule>();
             builder.RegisterGeneric(typeof(EntityRepository<>)).As(typeof(IRepository<>)).InstancePerHttpRequest();
@@ -24,7 +24,7 @@ namespace Bootstrapper
             builder.Register<IEntitiesContext>(b =>
             {
 
-                var context = new ApplicationDbContext(nameOrConnectionString);
+                var context = new ApplicationDbContext();
                 return context;
             }).InstancePerHttpRequest();
 

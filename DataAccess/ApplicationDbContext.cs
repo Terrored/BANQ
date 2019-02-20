@@ -1,12 +1,12 @@
-﻿using System.Data;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Model;
+using Model.Identity;
+using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Model;
-using Model.Identity;
 
 namespace DataAccess
 {
@@ -15,12 +15,12 @@ namespace DataAccess
         private ObjectContext _objectContext;
         private DbTransaction _transaction;
         private static readonly object Lock = new object();
-       //private static bool _databaseInitialized;
+        //private static bool _databaseInitialized;
 
-        public ApplicationDbContext(string nameOrConnectionString)
-            : base(nameOrConnectionString)
+        public ApplicationDbContext()
+            : base("name=BANQConnectionString")
         {
-            
+
             //if (_databaseInitialized)
             //{
             //    return;

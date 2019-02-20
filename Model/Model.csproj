@@ -36,7 +36,6 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BankAccount.cs" />
     <Compile Include="BaseEntity.cs" />
     <Compile Include="Identity\ApplicationAuthenticationDescription.cs" />
     <Compile Include="Identity\ApplicationExternalLoginInfo.cs" />
