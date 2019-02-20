@@ -93,6 +93,14 @@
     <Compile Include="Migrations\201902201929497_InitialMigration.Designer.cs">
       <DependentUpon>201902201929497_InitialMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902202033165_TestMigration.cs" />
+    <Compile Include="Migrations\201902202033165_TestMigration.Designer.cs">
+      <DependentUpon>201902202033165_TestMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902202044063_TestMigration1.cs" />
+    <Compile Include="Migrations\201902202044063_TestMigration1.Designer.cs">
+      <DependentUpon>201902202044063_TestMigration1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OrderBy.cs" />
     <Compile Include="Repository.cs" />
@@ -113,6 +121,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201902201929497_InitialMigration.resx">
       <DependentUpon>201902201929497_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902202033165_TestMigration.resx">
+      <DependentUpon>201902202033165_TestMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902202044063_TestMigration1.resx">
+      <DependentUpon>201902202044063_TestMigration1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
