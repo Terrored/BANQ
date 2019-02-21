@@ -27,13 +27,14 @@
         </div>
         @Html.Partial("_LoginPartial")
     </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+<div class="container body-content">
+    @RenderBody()
+    <hr />
+        
+</div>
+<footer class="footer">
+    <p class="navbar-toggler">&copy; @DateTime.Now.Year - BANQ</p>
+</footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

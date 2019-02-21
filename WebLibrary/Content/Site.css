@@ -38,6 +38,24 @@ textarea {
 }
 
 .colortest {
-    color:lightcyan
+    color: #212529;
+
+}
+
+.row {
+    opacity: 0.9;
+}
+.testing {
+    background-color: #e9ecef;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #828687;
+    opacity: 0.9;
 }
 
