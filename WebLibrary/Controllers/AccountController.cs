@@ -21,10 +21,9 @@ namespace WebLibrary.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login()
         {
             ViewBag.LoginProviders = _userManager.GetExternalAuthenticationTypes();
-            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -33,7 +32,7 @@ namespace WebLibrary.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl) //delete returnUrl
         {
             ViewBag.LoginProviders = _userManager.GetExternalAuthenticationTypes();
             if (!ModelState.IsValid)
@@ -47,7 +46,7 @@ namespace WebLibrary.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "UserInfo");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresTwoFactorAuthentication:
