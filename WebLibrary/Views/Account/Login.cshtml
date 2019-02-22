@@ -1,17 +1,16 @@
 ﻿@using WebLibrary.Models
 @model LoginViewModel
-@{
-    ViewBag.Title = "Log in";
-}
 
 <div class="row justify-content-center">
     <div class="col-4">
-        <div class="jumbotron py-5 mt-5 visibility2">
+        <div class="jumbotron py-5 mt-5">
             <section id="loginForm">
                 @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { role = "form" }))
                 {
                     @Html.AntiForgeryToken()
-                    <h4>Provide Your credentials</h4>
+                    <div class="text-center">
+                        <h4>Provide Your credentials</h4>
+                    </div>
                     <hr />
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control my-3", type = "email", placeholder = "E-mail" })
@@ -27,10 +26,10 @@
                     </div>
 
                     <hr />
-                    <h4>Don't have an account?</h4>
-                    <p>
+                    <div class="text-center">
+                        <h4>Don't have an account?</h4>
                         @Html.ActionLink("Register as a new user", "Register")
-                    </p>
+                    </div>
                     @* Enable this once you have account confirmation enabled for password reset functionality
                         <p>
                             @Html.ActionLink("Forgot your password?", "ForgotPassword")
