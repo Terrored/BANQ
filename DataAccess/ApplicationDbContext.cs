@@ -1,15 +1,13 @@
 ﻿using DataAccess.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System.Data.Common;
 using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
 
 namespace DataAccess
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationIdentityUser, ApplicationIdentityRole, int, ApplicationIdentityUserLogin, ApplicationIdentityUserRole, ApplicationIdentityUserClaim>
     {
-        private ObjectContext _objectContext;
-        private DbTransaction _transaction;
+        //private ObjectContext _objectContext;
+        //private DbTransaction _transaction;
         private static readonly object Lock = new object();
         //private static bool _databaseInitialized;
 
