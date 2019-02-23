@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using WebLibrary.IdentityExtensions;
 
 namespace WebLibrary.Controllers
 {
@@ -8,7 +7,6 @@ namespace WebLibrary.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.x = User.Identity.GetUserId();
             return View();
         }
     }
