@@ -48,6 +48,7 @@
     <Compile Include="Identity\ApplicationUserRole.cs" />
     <Compile Include="Identity\AppUser.cs" />
     <Compile Include="Identity\SignInStatus.cs" />
+    <Compile Include="Models\BaseBankAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

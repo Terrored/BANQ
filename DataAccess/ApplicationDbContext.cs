@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using DataAccess.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Model;
-using Model.Identity;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity;

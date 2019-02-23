@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using DataAccess.Identity;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
- using   Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Model.Identity;
 using System.Collections.Generic;

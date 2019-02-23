@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.DataProtection;
 using Model.Identity;
 using Owin;
 using System;
+using DataAccess.Identity;
 
 namespace Bootstrapper
 {
