@@ -49,6 +49,7 @@
     <Compile Include="Identity\AppUser.cs" />
     <Compile Include="Identity\SignInStatus.cs" />
     <Compile Include="Models\BaseBankAccount.cs" />
+    <Compile Include="Models\BaseMoneyTransfer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

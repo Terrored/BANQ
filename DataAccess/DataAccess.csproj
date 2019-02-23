@@ -77,7 +77,6 @@
   <ItemGroup>
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="EfConfig.cs" />
-    <Compile Include="EntityRepository.cs" />
     <Compile Include="Extensions\IdentityExtensions.cs" />
     <Compile Include="Identity\ApplicationRoleManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />
@@ -87,18 +86,21 @@
     <Compile Include="Identity\IdentityFactory.cs" />
     <Compile Include="Identity\IdentityModels.cs" />
     <Compile Include="Identity\SmsService.cs" />
-    <Compile Include="IEntitiesContext.cs" />
-    <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Migrations\201902201929497_InitialMigration.cs" />
     <Compile Include="Migrations\201902201929497_InitialMigration.Designer.cs">
       <DependentUpon>201902201929497_InitialMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902231313451_AddedBankAccount.cs" />
+    <Compile Include="Migrations\201902231313451_AddedBankAccount.Designer.cs">
+      <DependentUpon>201902231313451_AddedBankAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902231341154_AddedMoneyTransfers.cs" />
+    <Compile Include="Migrations\201902231341154_AddedMoneyTransfers.Designer.cs">
+      <DependentUpon>201902231341154_AddedMoneyTransfers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OrderBy.cs" />
-    <Compile Include="Repository.cs" />
-    <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">
@@ -113,6 +115,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201902201929497_InitialMigration.resx">
       <DependentUpon>201902201929497_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902231313451_AddedBankAccount.resx">
+      <DependentUpon>201902231313451_AddedBankAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902231341154_AddedMoneyTransfers.resx">
+      <DependentUpon>201902231341154_AddedMoneyTransfers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

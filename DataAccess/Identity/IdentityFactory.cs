@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Model.Identity;
+using System;
+using System.Data.Entity;
 
 namespace DataAccess.Identity
 {
     public class IdentityFactory
     {
-        public static UserManager<ApplicationIdentityUser, int> CreateUserManager(System.Data.Entity.DbContext context)
+        public static UserManager<ApplicationIdentityUser, int> CreateUserManager(DbContext context)
         {
             var manager = new UserManager<ApplicationIdentityUser, int>(new UserStore<ApplicationIdentityUser, ApplicationIdentityRole, int, ApplicationIdentityUserLogin, ApplicationIdentityUserRole, ApplicationIdentityUserClaim>(context));
             // Configure validation logic for usernames
@@ -50,7 +45,7 @@ namespace DataAccess.Identity
             return manager;
         }
 
-        public static RoleManager<ApplicationIdentityRole, int> CreateRoleManager(System.Data.Entity.DbContext context)
+        public static RoleManager<ApplicationIdentityRole, int> CreateRoleManager(DbContext context)
         {
             return new RoleManager<ApplicationIdentityRole, int>(new RoleStore<ApplicationIdentityRole, int, ApplicationIdentityUserRole>(context));
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using Model.Models;
+using System.Collections.Generic;
 
 namespace DataAccess.Identity
 {
@@ -8,6 +9,7 @@ namespace DataAccess.Identity
         IdentityUser<int, ApplicationIdentityUserLogin, ApplicationIdentityUserRole, ApplicationIdentityUserClaim>
     {
         public virtual BankAccount BankAccount { get; set; }
+        public ICollection<MoneyTransfer> MoneyTransfers { get; set; }
     }
 
 
@@ -38,5 +40,11 @@ namespace DataAccess.Identity
     public class BankAccount : BaseBankAccount
     {
         public virtual ApplicationIdentityUser ApplicationIdentityUser { get; set; }
+    }
+
+    public class MoneyTransfer : BaseMoneyTransfer
+    {
+        public ApplicationIdentityUser From { get; set; }
+        public ApplicationIdentityUser To { get; set; }
     }
 }
