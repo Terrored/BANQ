@@ -23,7 +23,7 @@ namespace BusinessLogic
             BankAccountDto dto;
             if (bankAccount == null)
             {
-                bankAccount = new BankAccount() { ApplicationIdentityUserId = userId, Cash = 100, CreatedOn = DateTime.Now };
+                bankAccount = new BankAccount() { ApplicationIdentityUserId = userId, Cash = 100, CreatedOn = DateTime.Now, Id = userId };
                 _bankAccountRepository.Create(bankAccount);
                 dto = BankAccountDto.ToDto(bankAccount, "Account created successfully");
             }
@@ -33,5 +33,7 @@ namespace BusinessLogic
             }
             return dto;
         }
+
+
     }
 }

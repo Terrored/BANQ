@@ -27,12 +27,21 @@ textarea {
 }
 
 .visibility {
-    opacity: 0.5;
+    opacity: 0.7;
 }
 
 .visibility2 {
+    opacity: 0.8;
+}
+
+.visibility3 {
     opacity: 0.9;
 }
+
+.visibility4 {
+    opacity:0.95;
+}
+
 .jumbo {
     margin-top: 100px !important;
 }
