@@ -14,6 +14,7 @@
 
 
                         @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", placeholder = "E-mail" })
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control my-3", placeholder = "First Name" })
                         @Html.PasswordFor(m => m.Password, new { @class = "form-control my-3", placeholder = "Password" })
                         @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control my-3", placeholder = "Confirm password" })
 
