@@ -1,11 +1,11 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using BusinessLogic;
+using BusinessLogic.Interfaces;
 using DataAccess;
 using Model.RepositoryInterfaces;
 using System.Data.Entity;
 using System.Web.Mvc;
-using BusinessLogic.Interfaces;
 using WebLibrary;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Bootstrapper.IocConfig), "RegisterDependencies")]

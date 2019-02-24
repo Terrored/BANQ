@@ -13,7 +13,7 @@ namespace WebLibrary.Controllers
             _bankAccountService = bankAccountService;
         }
 
-        [HttpPost]
+        //[HttpPost]
         public ActionResult Create()
         {
             var id = HttpContext.User.Identity.GetUserId().Value;

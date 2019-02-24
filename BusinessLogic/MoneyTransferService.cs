@@ -6,7 +6,7 @@ using System;
 
 namespace BusinessLogic
 {
-    public class MoneyTransferService
+    public class MoneyTransferService : IMoneyTransferService
     {
         private readonly IApplicationUserManager _applicationUserManager;
         private readonly IEntityRepository<MoneyTransfer> _moneyTransferRepository;
@@ -27,7 +27,7 @@ namespace BusinessLogic
             MoneyTransferDto dto = new MoneyTransferDto();
             if (successTransferFrom)
             {
-                dto.Message = "Error occurs when trying to transfer money from customer";
+
                 var successTransferTo = _bankAccountService.GiveCash(amount, toId);
 
                 if (successTransferTo)
@@ -49,6 +49,10 @@ namespace BusinessLogic
                 {
                     dto.Message = "Error occurs when trying to transfer money to customer";
                 }
+            }
+            else
+            {
+                dto.Message = "Error occurs when trying to transfer money from customer";
             }
 
             return dto;
