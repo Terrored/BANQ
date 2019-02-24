@@ -7,10 +7,7 @@ namespace WebLibrary.Controllers
     {
         public ActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "UserInfo");
-            else
-                return View();
+            return View();
         }
     }
 }
