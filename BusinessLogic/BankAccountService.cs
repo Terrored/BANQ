@@ -34,6 +34,33 @@ namespace BusinessLogic
             return dto;
         }
 
+        public bool TakeCash(decimal amount, int userId)
+        {
+            var bankAccount = _bankAccountRepository.GetSingle(userId);
+            bool success = false;
+            if (bankAccount != null && amount < bankAccount.Cash)
+            {
+                bankAccount.Cash = bankAccount.Cash - amount;
+                _bankAccountRepository.Update(bankAccount);
+                success = true;
+            }
+            return success;
+        }
+
+        public bool GiveCash(decimal amount, int userId)
+        {
+            var bankAccount = _bankAccountRepository.GetSingle(userId);
+            bool success = false;
+            if (bankAccount != null)
+            {
+                bankAccount.Cash = bankAccount.Cash + amount;
+                _bankAccountRepository.Update(bankAccount);
+                success = true;
+            }
+
+            return success;
+        }
+
 
     }
 }
