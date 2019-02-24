@@ -6,6 +6,8 @@ namespace DataAccess
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationIdentityUser, ApplicationIdentityRole, int, ApplicationIdentityUserLogin, ApplicationIdentityUserRole, ApplicationIdentityUserClaim>
     {
+        DbSet<BankAccount> BankAccounts { get; set; }
+
         //private ObjectContext _objectContext;
         //private DbTransaction _transaction;
         private static readonly object Lock = new object();
@@ -14,7 +16,6 @@ namespace DataAccess
         public ApplicationDbContext()
             : base("name=BANQConnectionString")
         {
-
             //if (_databaseInitialized)
             //{
             //    return;

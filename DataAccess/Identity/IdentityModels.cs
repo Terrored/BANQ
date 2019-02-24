@@ -39,7 +39,8 @@ namespace DataAccess.Identity
 
     public class BankAccount : BaseBankAccount
     {
-        public virtual ApplicationIdentityUser ApplicationIdentityUser { get; set; }
+        public ApplicationIdentityUser ApplicationIdentityUser { get; set; }
+        public int ApplicationIdentityUserId { get; set; }
     }
 
     public class MoneyTransfer : BaseMoneyTransfer

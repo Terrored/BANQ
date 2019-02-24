@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Owin;
+﻿using Owin;
 
 namespace Bootstrapper
 {
@@ -7,7 +6,6 @@ namespace Bootstrapper
     {
         public void Configuration(IAppBuilder app)
         {
-            Mapper.Initialize(cfg => cfg.AddProfile<MappingProfile>());
             ConfigureAuth(app);
         }
     }
