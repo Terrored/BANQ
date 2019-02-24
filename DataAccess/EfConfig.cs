@@ -20,11 +20,13 @@ namespace DataAccess
             modelBuilder.Entity<MoneyTransfer>()
                 .HasRequired(mt => mt.From)
                 .WithMany(u => u.MoneyTransfers)
+                .HasForeignKey(u => u.FromId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<MoneyTransfer>()
                 .HasRequired(mt => mt.To)
                 .WithMany(u => u.MoneyTransfers)
+                .HasForeignKey(u => u.ToId)
                 .WillCascadeOnDelete(false);
 
             #region Identity

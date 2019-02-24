@@ -4,7 +4,7 @@ namespace Model.Models
 {
     public class BaseMoneyTransfer : BaseEntity
     {
-        public DateTime DateTime { get; set; }
+        public DateTime CreatedOn { get; set; }
         public decimal CashAmount { get; set; }
     }
 }
