@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.8.0.0\lib\net461\AutoMapper.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -82,9 +79,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationDbContext.cs" />
-    <Compile Include="DTOs\BaseDto.cs" />
-    <Compile Include="DTOs\UserDto.cs" />
     <Compile Include="EfConfig.cs" />
+    <Compile Include="EFRepository.cs" />
     <Compile Include="Extensions\IdentityExtensions.cs" />
     <Compile Include="Identity\ApplicationRoleManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />
@@ -94,7 +90,6 @@
     <Compile Include="Identity\IdentityFactory.cs" />
     <Compile Include="Identity\IdentityModels.cs" />
     <Compile Include="Identity\SmsService.cs" />
-    <Compile Include="IEntityRepository.cs" />
     <Compile Include="Migrations\201902201929497_InitialMigration.cs" />
     <Compile Include="Migrations\201902201929497_InitialMigration.Designer.cs">
       <DependentUpon>201902201929497_InitialMigration.cs</DependentUpon>
@@ -106,6 +101,10 @@
     <Compile Include="Migrations\201902231341154_AddedMoneyTransfers.cs" />
     <Compile Include="Migrations\201902231341154_AddedMoneyTransfers.Designer.cs">
       <DependentUpon>201902231341154_AddedMoneyTransfers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902241328015_AddedNavigationPropertiesToBankAccount.cs" />
+    <Compile Include="Migrations\201902241328015_AddedNavigationPropertiesToBankAccount.Designer.cs">
+      <DependentUpon>201902241328015_AddedNavigationPropertiesToBankAccount.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OrderBy.cs" />
@@ -130,6 +129,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902231341154_AddedMoneyTransfers.resx">
       <DependentUpon>201902231341154_AddedMoneyTransfers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902241328015_AddedNavigationPropertiesToBankAccount.resx">
+      <DependentUpon>201902241328015_AddedNavigationPropertiesToBankAccount.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

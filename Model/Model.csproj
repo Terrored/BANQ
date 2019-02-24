@@ -51,6 +51,7 @@
     <Compile Include="Models\BaseBankAccount.cs" />
     <Compile Include="Models\BaseMoneyTransfer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryInterfaces\IEntityRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

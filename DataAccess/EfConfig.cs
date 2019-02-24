@@ -8,16 +8,26 @@ namespace DataAccess
     {
         public static void ConfigureEf(DbModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<ApplicationIdentityUser>()
                 .HasOptional(e => e.BankAccount)
                 .WithRequired(b => b.ApplicationIdentityUser);
 
-            modelBuilder.Entity<ApplicationIdentityUser>().Ignore(u => u.MoneyTransfers);
+            modelBuilder.Entity<BankAccount>().HasKey(ba => ba.ApplicationIdentityUserId);
 
-            modelBuilder.Entity<MoneyTransfer>().HasRequired(mt => mt.From).WithMany(u => u.MoneyTransfers).WillCascadeOnDelete(false);
-            modelBuilder.Entity<MoneyTransfer>().HasRequired(mt => mt.To).WithMany(u => u.MoneyTransfers).WillCascadeOnDelete(false);
+            modelBuilder.Entity<ApplicationIdentityUser>()
+                .Ignore(u => u.MoneyTransfers);
 
+            modelBuilder.Entity<MoneyTransfer>()
+                .HasRequired(mt => mt.From)
+                .WithMany(u => u.MoneyTransfers)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<MoneyTransfer>()
+                .HasRequired(mt => mt.To)
+                .WithMany(u => u.MoneyTransfers)
+                .WillCascadeOnDelete(false);
+
+            #region Identity
             modelBuilder.Entity<ApplicationIdentityUser>()
                 .Property(e => e.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
@@ -27,7 +37,7 @@ namespace DataAccess
             modelBuilder.Entity<ApplicationIdentityUserClaim>()
                 .Property(e => e.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-
+            #endregion
 
         }
     }

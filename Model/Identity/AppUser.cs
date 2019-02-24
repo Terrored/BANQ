@@ -26,6 +26,6 @@ namespace Model.Identity
         public virtual string SecurityStamp { get; set; }
         public virtual bool TwoFactorEnabled { get; set; }
         public virtual string UserName { get; set; }
-       
+
     }
 }

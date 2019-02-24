@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using BusinessLogic;
 using DataAccess;
+using Model.RepositoryInterfaces;
 using System.Data.Entity;
 using System.Web.Mvc;
 
@@ -18,6 +20,8 @@ namespace Bootstrapper
             const string nameOrConnectionString = "name=BANQConnectionString";
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
             builder.RegisterModule<AutofacWebTypesModule>();
+            builder.RegisterGeneric(typeof(EFRepository<>)).As(typeof(IEntityRepository<>));
+            builder.RegisterType<BankAccountService>().As<IBankAccountService>();
             builder.Register<DbContext>(b =>
             {
 
