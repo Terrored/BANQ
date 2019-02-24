@@ -46,6 +46,8 @@ namespace DataAccess.Identity
     public class MoneyTransfer : BaseMoneyTransfer
     {
         public ApplicationIdentityUser From { get; set; }
+        public int FromId { get; set; }
         public ApplicationIdentityUser To { get; set; }
+        public int ToId { get; set; }
     }
 }

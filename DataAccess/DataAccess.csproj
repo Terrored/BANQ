@@ -106,6 +106,10 @@
     <Compile Include="Migrations\201902241328015_AddedNavigationPropertiesToBankAccount.Designer.cs">
       <DependentUpon>201902241328015_AddedNavigationPropertiesToBankAccount.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902241850267_AddingNavigationPropertiesToMoneyTransfer.cs" />
+    <Compile Include="Migrations\201902241850267_AddingNavigationPropertiesToMoneyTransfer.Designer.cs">
+      <DependentUpon>201902241850267_AddingNavigationPropertiesToMoneyTransfer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OrderBy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,6 +136,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902241328015_AddedNavigationPropertiesToBankAccount.resx">
       <DependentUpon>201902241328015_AddedNavigationPropertiesToBankAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902241850267_AddingNavigationPropertiesToMoneyTransfer.resx">
+      <DependentUpon>201902241850267_AddingNavigationPropertiesToMoneyTransfer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
