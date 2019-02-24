@@ -36,8 +36,8 @@ namespace BusinessLogic
                     {
                         CashAmount = amount,
                         CreatedOn = DateTime.Now,
-                        From = fromId,
-                        To = toId,
+                        FromId = fromId,
+                        ToId = toId,
                     };
 
                     _moneyTransferRepository.Create(moneyTransfer);

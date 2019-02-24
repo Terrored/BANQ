@@ -1,4 +1,4 @@
-﻿using BusinessLogic;
+﻿using BusinessLogic.Interfaces;
 using System.Web.Mvc;
 using WebLibrary.IdentityExtensions;
 
