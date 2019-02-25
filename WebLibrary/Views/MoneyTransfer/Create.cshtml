@@ -1,4 +1,4 @@
-﻿@model WebLibrary.Models.ViewModels.MoneyTransferViewModel
+﻿
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -26,9 +26,6 @@
         </div>
         <p class="btn btn-primary position-relative" onclick="submit()">Make a transfer!</p>
         
-            
-        
-
 
     </div>
 </div>
@@ -41,18 +38,20 @@
 <script>
     function submit() {
         var dataForm = {
-            CashAmount: $('#cashAmount').val(),
-            ToId: $('#accountNumber').val()
+            cashAmount: $('#cashAmount').val(),
+            toId: $('#accountNumber').val()
         };
         $.ajax({
             type: "POST",
             url: "/MoneyTransfer/Transfer",
-            data: dataForm,
-            success: function(data) {
-                console.log(data);
-                Swal.fire('Great!', 'Transfer has been successful', 'success');
+            data: dataForm
+        }).done(function (data) {
+            if (data.message == 'Transfer has been successful') {
+                Swal.fire('Great!', data.message, 'success');
+            } else {
+                Swal.fire('Oops!', data.message, 'error');
             }
-
+            
         });
     }
 

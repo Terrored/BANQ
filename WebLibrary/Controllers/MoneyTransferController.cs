@@ -1,8 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
-using System.Net;
 using System.Web.Mvc;
 using WebLibrary.IdentityExtensions;
-using WebLibrary.Models.ViewModels;
 
 namespace WebLibrary.Controllers
 {
@@ -22,11 +20,13 @@ namespace WebLibrary.Controllers
         }
 
         [HttpPost]
-        public ActionResult Transfer(MoneyTransferViewModel viewModel)
+        public ActionResult Transfer(decimal cashAmount, int toId)
         {
-            viewModel.FromId = User.Identity.GetUserId();
-            _moneyTransferService.Transfer(viewModel.CashAmount, viewModel.FromId.Value, viewModel.ToId);
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+            var fromId = User.Identity.GetUserId();
+
+            var dto = _moneyTransferService.Transfer(cashAmount, fromId.Value, toId);
+
+            return Json(new { message = dto.Message });
         }
 
         public ActionResult Create()
