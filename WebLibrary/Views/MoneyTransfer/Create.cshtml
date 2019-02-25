@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create new transfer</h2>
+<div class="row justify-content-center">
+    <div class="col-md-4 jumbotron">
+        <form>
+        
+            <label for="cashAmount">Cash amount</label>
+             <div class="input-group mb-3">
+
+                
+
+            <input type="text" class="form-control" id="cashAmount" />
+            <div class="input-group-append">
+                <span class="input-group-text">$</span>
+            </div>
+
+        </div>
+        
+            <label for="accountNumber">Account number</label>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="accountNumber" />
+        </div>
+        <p class="btn btn-primary" onclick="submit()">Make a transfer!</p>
+        </form> 
+
+    </div>
+</div>
+
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script>
+    function submit() {
+        var dataForm = {
+            cashAmount: $('#cashAmount').val(),
+            toId: $('#accountNumber').val()
+        };
+        $.ajax({
+            type: "POST",
+            url: "/MoneyTransfer/Transfer",
+            data: dataForm
+        }).done(function (data) {
+            if (data.message == 'Transfer has been successful') {
+                Swal.fire('Great!', data.message, 'success');
+            } else {
+                Swal.fire('Oops!', data.message, 'error');
+            }
+            
+        });
+    }
+
+</script>
+

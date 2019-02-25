@@ -13,12 +13,26 @@ namespace WebLibrary.Controllers
             _moneyTransferService = moneyTransferService;
             _bankAccountService = bankAccountService;
         }
-        // GET: MoneyTransfer
-        public ActionResult Transfer(decimal amount, int toId)
+
+        public ActionResult Index()
         {
-            var userId = User.Identity.GetUserId();
-            _moneyTransferService.Transfer(amount, userId.Value, toId);
-            return RedirectToAction("Index", "UserInfo");
+            return View();
         }
+
+        [HttpPost]
+        public ActionResult Transfer(decimal cashAmount, int toId)
+        {
+            var fromId = User.Identity.GetUserId();
+
+            var dto = _moneyTransferService.Transfer(cashAmount, fromId.Value, toId);
+
+            return Json(new { message = dto.Message });
+        }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
     }
 }

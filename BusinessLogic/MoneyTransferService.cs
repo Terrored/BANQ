@@ -23,37 +23,46 @@ namespace BusinessLogic
 
         public MoneyTransferDto Transfer(decimal amount, int fromId, int toId)
         {
-            var successTransferFrom = _bankAccountService.TakeCash(amount, fromId);
             MoneyTransferDto dto = new MoneyTransferDto();
-            if (successTransferFrom)
+            if (fromId != toId)
             {
-
-                var successTransferTo = _bankAccountService.GiveCash(amount, toId);
-
-                if (successTransferTo)
+                var successTransferFrom = _bankAccountService.TakeCash(amount, fromId);
+                if (successTransferFrom)
                 {
-                    var moneyTransfer = new MoneyTransfer()
+
+                    var successTransferTo = _bankAccountService.GiveCash(amount, toId);
+
+                    if (successTransferTo)
                     {
-                        CashAmount = amount,
-                        CreatedOn = DateTime.Now,
-                        FromId = fromId,
-                        ToId = toId,
-                    };
+                        var moneyTransfer = new MoneyTransfer()
+                        {
+                            CashAmount = amount,
+                            CreatedOn = DateTime.Now,
+                            FromId = fromId,
+                            ToId = toId,
+                        };
 
-                    _moneyTransferRepository.Create(moneyTransfer);
-                    dto = MoneyTransferDto.ToDto(moneyTransfer);
-                    dto.Message = "Transfer has been successful";
+                        _moneyTransferRepository.Create(moneyTransfer);
+                        dto = MoneyTransferDto.ToDto(moneyTransfer);
+                        dto.Message = "Transfer has been successful";
 
+                    }
+                    else
+                    {
+                        dto.Message = "Error occurs when trying to transfer money to customer";
+                    }
                 }
                 else
                 {
-                    dto.Message = "Error occurs when trying to transfer money to customer";
+                    dto.Message = "Error occurs when trying to transfer money from customer";
                 }
+
             }
             else
             {
-                dto.Message = "Error occurs when trying to transfer money from customer";
+                dto.Message = "You cannot transfer money to yourself!";
             }
+
 
             return dto;
 
