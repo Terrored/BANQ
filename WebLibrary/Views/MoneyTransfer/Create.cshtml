@@ -7,25 +7,26 @@
 <h2>Create new transfer</h2>
 <div class="row justify-content-center">
     <div class="col-md-4 jumbotron">
-
+        <form>
         
             <label for="cashAmount">Cash amount</label>
-            <div class="input-group mb-3">
+             <div class="input-group mb-3">
 
-                <div class="input-group-prepend">
-                    <span class="input-group-text">$</span>
-                </div>
+                
 
-                <input type="text" class="form-control" id="cashAmount" />
-
+            <input type="text" class="form-control" id="cashAmount" />
+            <div class="input-group-append">
+                <span class="input-group-text">$</span>
             </div>
+
+        </div>
         
             <label for="accountNumber">Account number</label>
         <div class="input-group mb-3">
             <input type="text" class="form-control" id="accountNumber" />
         </div>
-        <p class="btn btn-primary position-relative" onclick="submit()">Make a transfer!</p>
-        
+        <p class="btn btn-primary" onclick="submit()">Make a transfer!</p>
+        </form> 
 
     </div>
 </div>
