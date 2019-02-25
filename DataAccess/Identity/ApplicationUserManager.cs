@@ -265,7 +265,8 @@ namespace DataAccess.Identity
 
         public virtual async Task<AppUser> FindByNameAsync(string userName)
         {
-            var user = await _userManager.FindByNameAsync(userName).ConfigureAwait(false);
+            var user = await _userManager.FindByEmailAsync(userName).ConfigureAwait(false);
+
             return user.ToAppUser();
         }
 
