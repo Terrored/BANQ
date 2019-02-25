@@ -1,0 +1,60 @@
+﻿@model WebLibrary.Models.ViewModels.MoneyTransferViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create new transfer</h2>
+<div class="row justify-content-center">
+    <div class="col-md-4 jumbotron">
+
+        
+            <label for="cashAmount">Cash amount</label>
+            <div class="input-group mb-3">
+
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+
+                <input type="text" class="form-control" id="cashAmount" />
+
+            </div>
+        
+            <label for="accountNumber">Account number</label>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="accountNumber" />
+        </div>
+        <p class="btn btn-primary position-relative" onclick="submit()">Make a transfer!</p>
+        
+            
+        
+
+
+    </div>
+</div>
+
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script>
+    function submit() {
+        var dataForm = {
+            CashAmount: $('#cashAmount').val(),
+            ToId: $('#accountNumber').val()
+        };
+        $.ajax({
+            type: "POST",
+            url: "/MoneyTransfer/Transfer",
+            data: dataForm,
+            success: function(data) {
+                console.log(data);
+                Swal.fire('Great!', 'Transfer has been successful', 'success');
+            }
+
+        });
+    }
+
+</script>
+
