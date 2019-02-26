@@ -4,30 +4,35 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create new transfer</h2>
+
 <div class="row justify-content-center">
-    <div class="col-md-4 jumbotron">
-        <form>
-        
-            <label for="cashAmount">Cash amount</label>
-             <div class="input-group mb-3">
 
-                
+    <div class="col-md-4">
+        <div class="jumbotron py-5">
 
-            <input type="text" class="form-control" id="cashAmount" />
-            <div class="input-group-append">
-                <span class="input-group-text">$</span>
-            </div>
+            <form class="ml-1">
+                <h3 class="display-4 mb-5" align="center">Transfer</h3>
+                <label for="cashAmount">Cash amount</label>
+                <div class="input-group mb-3">
+
+
+
+                    <input type="text" class="form-control" id="cashAmount" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">$</span>
+                    </div>
+
+                </div>
+
+                <label for="accountNumber">Account number</label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="accountNumber" />
+                </div>
+
+                <p onclick="submit()" class="btn btn-primary btn-block">Make a transfer!</p>
+            </form>
 
         </div>
-        
-            <label for="accountNumber">Account number</label>
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" id="accountNumber" />
-        </div>
-        <p class="btn btn-primary" onclick="submit()">Make a transfer!</p>
-        </form> 
-
     </div>
 </div>
 
@@ -52,7 +57,7 @@
             } else {
                 Swal.fire('Oops!', data.message, 'error');
             }
-            
+
         });
     }
 

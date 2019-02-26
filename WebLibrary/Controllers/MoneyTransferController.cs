@@ -16,7 +16,10 @@ namespace WebLibrary.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var userId = HttpContext.User.Identity.GetUserId();
+            var transfers = _moneyTransferService.GetLastSentFiveTransfers(userId.Value);
+
+            return View(transfers);
         }
 
         [HttpPost]

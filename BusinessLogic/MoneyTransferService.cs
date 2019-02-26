@@ -3,6 +3,8 @@ using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.RepositoryInterfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BusinessLogic
 {
@@ -66,6 +68,20 @@ namespace BusinessLogic
 
             return dto;
 
+        }
+
+        public List<MoneyTransferDto> GetLastSentFiveTransfers(int userId)
+        {
+            var transfers = _moneyTransferRepository.GetAll().Where(t => t.FromId == userId).OrderByDescending(t => t.CreatedOn).Take(5).ToList();
+
+            List<MoneyTransferDto> dtos = new List<MoneyTransferDto>();
+
+            foreach (var moneyTransfer in transfers)
+            {
+                dtos.Add(MoneyTransferDto.ToDto(moneyTransfer));
+            }
+
+            return dtos;
         }
 
     }
