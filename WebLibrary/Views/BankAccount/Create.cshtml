@@ -1,16 +1,16 @@
-﻿@model BusinessLogic.DTOs.BankAccountDto
-
-@{
-    ViewBag.Title = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@model WebLibrary.Models.BankAccountViewModel
+@using (Html.BeginForm("Create", "BankAccount"))
+{
+    <div class="row justify-content-center">
+        <div class="jumbotron py-5 mt-5 visibility3">
+            <h3 class="text-center">Set up a bank account</h3>
+            <hr />
+            <div class="form-group">
+                @Html.DropDownListFor(m => m.BankAccountDto.BankAccountTypeId,
+               new SelectList(Model.BankAccountTypes, "Id", "Name"),
+               "Choose account type", new { @class = "form-control" })
+            </div>
+            <input type="submit" class="btn btn-primary btn-block" value="Create" />
+        </div>
+    </div>
 }
-
-<h2>Create</h2>
-
-<p>
-    @Model.Message
-</p>
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

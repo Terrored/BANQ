@@ -18,13 +18,15 @@ namespace BusinessLogic
             _applicationUserManager = applicationUserManager;
         }
 
-        public BankAccountDto CreateBankAccount(int userId)
+
+        //Change into blank creation of Account and add another method to check for account duplicates
+        public BankAccountDto CreateBankAccount(BankAccountDto bankAccountDto)
         {
-            var bankAccount = _bankAccountRepository.GetAll().FirstOrDefault(ba => ba.ApplicationIdentityUserId == userId);
+            var bankAccount = _bankAccountRepository.GetAll().FirstOrDefault(ba => ba.ApplicationIdentityUserId == bankAccountDto.ApplicationUserId);
             BankAccountDto dto;
             if (bankAccount == null)
             {
-                bankAccount = new BankAccount() { ApplicationIdentityUserId = userId, Cash = 100, CreatedOn = DateTime.Now, Id = userId };
+                bankAccount = new BankAccount() { ApplicationIdentityUserId = bankAccountDto.ApplicationUserId, Cash = 100, CreatedOn = DateTime.Now, Id = bankAccountDto.ApplicationUserId, BankAccountTypeId = bankAccountDto.BankAccountTypeId };
                 _bankAccountRepository.Create(bankAccount);
                 dto = BankAccountDto.ToDto(bankAccount, "Account created successfully");
             }

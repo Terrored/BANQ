@@ -12,7 +12,11 @@ namespace DataAccess
                 .HasOptional(e => e.BankAccount)
                 .WithRequired(b => b.ApplicationIdentityUser);
 
+            modelBuilder.Entity<BankAccountType>().Property(t => t.Name).IsRequired();
+
             modelBuilder.Entity<BankAccount>().HasKey(ba => ba.ApplicationIdentityUserId);
+
+            modelBuilder.Entity<BankAccount>().HasRequired(ba => ba.BankAccountType);
 
             modelBuilder.Entity<ApplicationIdentityUser>()
                 .Ignore(u => u.MoneyTransfers);

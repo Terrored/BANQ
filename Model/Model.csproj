@@ -48,8 +48,11 @@
     <Compile Include="Identity\ApplicationUserRole.cs" />
     <Compile Include="Identity\AppUser.cs" />
     <Compile Include="Identity\SignInStatus.cs" />
+    <Compile Include="Models\BaseBankAccountType.cs" />
+    <Compile Include="Models\Enums\BankAccountTypeEnum.cs" />
     <Compile Include="Models\BaseBankAccount.cs" />
     <Compile Include="Models\BaseMoneyTransfer.cs" />
+    <Compile Include="Models\Enums\EnumBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryInterfaces\IEntityRepository.cs" />
   </ItemGroup>

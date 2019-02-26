@@ -10,6 +10,7 @@ namespace BusinessLogic.DTOs
         public DateTime CreatedOn { get; set; }
         public int ApplicationUserId { get; set; }
         public string Message { get; set; }
+        public int BankAccountTypeId { get; set; }
 
         public static BankAccountDto ToDto(BankAccount bankAccount, string message = null)
         {
