@@ -1,9 +1,38 @@
-﻿
+﻿@model List<BusinessLogic.DTOs.MoneyTransferDto>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
-@Html.ActionLink("Create Transfer!","Create","MoneyTransfer",null,new{@class="btn btn-danger"})
+
+@*@Html.ActionLink("Create Transfer!","Create","MoneyTransfer",null,new{@class="btn btn-danger"})*@
+
+
+<div class="row justify-content-center mt-5 visibility4">
+    <div class="col-md-7 jumbotron">
+        <div class="container">
+            <h2 class="display-4 mb-5">Manage your transfers!</h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            </p>
+        </div>
+    </div>
+
+
+    @Html.Partial("_PartialTransfer")
+
+
+</div>
+
+<div class="row justify-content-center mt-5 visibility4">
+    <div class="col jumbotron">
+        @foreach (var transfer in Model)
+        {
+            <p>Sent @transfer.CashAmount zł to : @transfer.Id when: @transfer.CreatedOn</p>
+        }
+    </div>
+    
+</div>
 
