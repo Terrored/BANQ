@@ -73,10 +73,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BankAccountTypeService.cs" />
     <Compile Include="DTOs\BankAccountTypeDto.cs" />
     <Compile Include="DTOs\BankAccountDto.cs" />
     <Compile Include="DTOs\MoneyTransferDto.cs" />
     <Compile Include="Interfaces\IBankAccountService.cs" />
+    <Compile Include="Interfaces\IBankAccountTypeService.cs" />
     <Compile Include="Interfaces\IMoneyTransferService.cs" />
     <Compile Include="MoneyTransferService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

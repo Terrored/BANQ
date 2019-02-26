@@ -23,6 +23,7 @@ namespace Bootstrapper
             builder.RegisterGeneric(typeof(EFRepository<>)).As(typeof(IEntityRepository<>));
             builder.RegisterType<BankAccountService>().As<IBankAccountService>();
             builder.RegisterType<MoneyTransferService>().As<IMoneyTransferService>();
+            builder.RegisterType<BankAccountTypeService>().As<IBankAccountTypeService>();
             builder.Register<DbContext>(b =>
             {
 

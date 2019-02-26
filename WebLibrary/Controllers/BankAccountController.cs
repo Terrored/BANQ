@@ -1,6 +1,8 @@
-﻿using BusinessLogic.Interfaces;
+﻿using BusinessLogic.DTOs;
+using BusinessLogic.Interfaces;
 using System.Web.Mvc;
 using WebLibrary.IdentityExtensions;
+using WebLibrary.Models;
 
 namespace WebLibrary.Controllers
 {
@@ -8,17 +10,36 @@ namespace WebLibrary.Controllers
     public class BankAccountController : Controller
     {
         private readonly IBankAccountService _bankAccountService;
-        public BankAccountController(IBankAccountService bankAccountService)
+        private readonly IBankAccountTypeService _bankAccountTypeService;
+
+        public BankAccountController(IBankAccountService bankAccountService, IBankAccountTypeService bankAccountTypeService)
         {
             _bankAccountService = bankAccountService;
+            _bankAccountTypeService = bankAccountTypeService;
         }
 
-        //[HttpPost]
+
+        //TODO Add logic to restrict user from creating multiple accounts
         public ActionResult Create()
         {
-            var id = HttpContext.User.Identity.GetUserId().Value;
-            var bankAccountDto = _bankAccountService.CreateBankAccount(id);
-            return View(bankAccountDto);
+            var bankAccountTypes = _bankAccountTypeService.GetBankAccountTypes();
+            return View(new BankAccountViewModel() { BankAccountTypes = bankAccountTypes, BankAccountDto = new BankAccountDto() });
+        }
+
+        [HttpPost]
+        public ActionResult Create(BankAccountViewModel bankAccountViewModel)
+        {
+            if (!ModelState.IsValid)
+                return View(bankAccountViewModel);
+
+            var bankAccountDto = new BankAccountDto()
+            {
+                ApplicationUserId = User.Identity.GetUserId().Value,
+                BankAccountTypeId = bankAccountViewModel.BankAccountDto.BankAccountTypeId,
+            };
+            _bankAccountService.CreateBankAccount(bankAccountDto);
+
+            return RedirectToAction("Index", "UserInfo");
         }
     }
 }
