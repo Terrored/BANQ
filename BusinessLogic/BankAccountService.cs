@@ -18,7 +18,7 @@ namespace BusinessLogic
             _applicationUserManager = applicationUserManager;
         }
 
-        public BankAccountDto CreateBankAccount(int userId)
+        public BankAccountDto CreateBankAccount(int userId, BankAccountTypeDto bankAccountTypeDto)
         {
             var bankAccount = _bankAccountRepository.GetAll().FirstOrDefault(ba => ba.ApplicationIdentityUserId == userId);
             BankAccountDto dto;
