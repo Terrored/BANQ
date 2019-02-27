@@ -9,10 +9,11 @@ namespace BusinessLogic.DTOs
         public decimal Cash { get; set; }
         public DateTime CreatedOn { get; set; }
         public int ApplicationUserId { get; set; }
-        public string Message { get; set; }
         public int BankAccountTypeId { get; set; }
+        public string BankAccountType { get; set; }
 
-        public static BankAccountDto ToDto(BankAccount bankAccount, string message = null)
+
+        public static BankAccountDto ToDto(BankAccount bankAccount)
         {
             return new BankAccountDto()
             {
@@ -20,7 +21,7 @@ namespace BusinessLogic.DTOs
                 Cash = bankAccount.Cash,
                 CreatedOn = bankAccount.CreatedOn,
                 Id = bankAccount.Id,
-                Message = message
+                BankAccountType = bankAccount.BankAccountType.Name
             };
         }
     }

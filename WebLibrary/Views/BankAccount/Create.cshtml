@@ -1,6 +1,7 @@
 ﻿@model WebLibrary.Models.BankAccountViewModel
 @using (Html.BeginForm("Create", "BankAccount"))
 {
+    @Html.AntiForgeryToken();
     <div class="row justify-content-center">
         <div class="jumbotron py-5 mt-5 visibility3">
             <h3 class="text-center">Set up a bank account</h3>

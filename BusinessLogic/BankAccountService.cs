@@ -18,23 +18,38 @@ namespace BusinessLogic
             _applicationUserManager = applicationUserManager;
         }
 
-
-        //Change into blank creation of Account and add another method to check for account duplicates
-        public BankAccountDto CreateBankAccount(BankAccountDto bankAccountDto)
+        public bool UserAlreadyHasAccount(int userId)
         {
-            var bankAccount = _bankAccountRepository.GetAll().FirstOrDefault(ba => ba.ApplicationIdentityUserId == bankAccountDto.ApplicationUserId);
-            BankAccountDto dto;
+            var bankAccount = _bankAccountRepository.GetAll().FirstOrDefault(ba => ba.ApplicationIdentityUserId == userId);
+            return bankAccount != null ? true : false;
+        }
+
+        public void CreateBankAccount(BankAccountDto bankAccountDto)
+        {
+            var bankAccount = new BankAccount()
+            {
+                ApplicationIdentityUserId = bankAccountDto.ApplicationUserId,
+                Cash = 100,
+                CreatedOn = DateTime.Now,
+                Id = bankAccountDto.ApplicationUserId,
+                BankAccountTypeId = bankAccountDto.BankAccountTypeId
+            };
+
+            _bankAccountRepository.Create(bankAccount);
+        }
+
+        public BankAccountDto GetBankAccountDetails(int userId)
+        {
+            var bankAccount = _bankAccountRepository.GetAll().FirstOrDefault(ba => ba.ApplicationIdentityUserId == userId);
+
             if (bankAccount == null)
             {
-                bankAccount = new BankAccount() { ApplicationIdentityUserId = bankAccountDto.ApplicationUserId, Cash = 100, CreatedOn = DateTime.Now, Id = bankAccountDto.ApplicationUserId, BankAccountTypeId = bankAccountDto.BankAccountTypeId };
-                _bankAccountRepository.Create(bankAccount);
-                dto = BankAccountDto.ToDto(bankAccount, "Account created successfully");
+                return null;
             }
             else
             {
-                dto = BankAccountDto.ToDto(bankAccount, "Action failed");
+                return BankAccountDto.ToDto(bankAccount);
             }
-            return dto;
         }
 
         public bool TakeCash(decimal amount, int userId)
@@ -63,7 +78,6 @@ namespace BusinessLogic
 
             return success;
         }
-
 
     }
 }

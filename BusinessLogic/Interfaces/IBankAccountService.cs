@@ -4,8 +4,12 @@ namespace BusinessLogic.Interfaces
 {
     public interface IBankAccountService
     {
-        BankAccountDto CreateBankAccount(BankAccountDto bankAccountDto);
+        void CreateBankAccount(BankAccountDto bankAccountDto);
+        bool UserAlreadyHasAccount(int userId);
         bool TakeCash(decimal amount, int userId);
         bool GiveCash(decimal amount, int userId);
+
+        //consider changing in the future
+        BankAccountDto GetBankAccountDetails(int userId);
     }
 }

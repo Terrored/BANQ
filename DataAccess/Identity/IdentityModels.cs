@@ -39,7 +39,7 @@ namespace DataAccess.Identity
 
     public class BankAccount : BaseBankAccount
     {
-        public BankAccountType BankAccountType { get; set; }
+        public virtual BankAccountType BankAccountType { get; set; }
         public int BankAccountTypeId { get; set; }
         public ApplicationIdentityUser ApplicationIdentityUser { get; set; }
         public int ApplicationIdentityUserId { get; set; }

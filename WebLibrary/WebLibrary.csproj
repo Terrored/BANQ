@@ -139,6 +139,7 @@
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\BankAccountViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\UserInfoViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
