@@ -18,13 +18,21 @@ namespace WebLibrary.Controllers
         public ActionResult Index()
         {
             var currentUserId = User.Identity.GetUserId().Value;
+            var bankAccount = _bankAccountService.GetBankAccountDetails(currentUserId);
 
-            var userInfo = new UserInfoViewModel()
+            if (bankAccount == null)
             {
-                BankAccount = _bankAccountService.GetBankAccountDetails(currentUserId),
-                UserName = User.Identity.Name
-            };
-            return View(userInfo);
+                return RedirectToAction("Create", "BankAccount");
+            }
+            else
+            {
+                var userInfo = new UserInfoViewModel()
+                {
+                    BankAccount = bankAccount,
+                    UserName = User.Identity.Name
+                };
+                return View(userInfo);
+            }
         }
     }
 }
