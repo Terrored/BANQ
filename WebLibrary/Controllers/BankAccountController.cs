@@ -18,23 +18,32 @@ namespace WebLibrary.Controllers
             _bankAccountTypeService = bankAccountTypeService;
         }
 
-
-        //TODO Add logic to restrict user from creating multiple accounts
         public ActionResult Create()
         {
-            var bankAccountTypes = _bankAccountTypeService.GetBankAccountTypes();
-            return View(new BankAccountViewModel() { BankAccountTypes = bankAccountTypes, BankAccountDto = new BankAccountDto() });
+            if (_bankAccountService.UserAlreadyHasAccount(User.Identity.GetUserId().Value))
+                return RedirectToAction("Index", "UserInfo");
+            else
+            {
+                var bankAccountTypes = _bankAccountTypeService.GetBankAccountTypes();
+                return View(new BankAccountViewModel() { BankAccountTypes = bankAccountTypes, BankAccountDto = new BankAccountDto() });
+            }
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(BankAccountViewModel bankAccountViewModel)
         {
+            var currentUserId = User.Identity.GetUserId().Value;
+
+            if (_bankAccountService.UserAlreadyHasAccount(currentUserId))
+                return RedirectToAction("Index", "UserInfo");
+
             if (!ModelState.IsValid)
                 return View(bankAccountViewModel);
 
             var bankAccountDto = new BankAccountDto()
             {
-                ApplicationUserId = User.Identity.GetUserId().Value,
+                ApplicationUserId = currentUserId,
                 BankAccountTypeId = bankAccountViewModel.BankAccountDto.BankAccountTypeId,
             };
             _bankAccountService.CreateBankAccount(bankAccountDto);

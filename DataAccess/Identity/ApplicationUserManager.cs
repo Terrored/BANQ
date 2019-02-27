@@ -184,6 +184,10 @@ namespace DataAccess.Identity
         {
             var applicationUser = user.ToApplicationUser();
             var claimsIdentity = await _userManager.CreateIdentityAsync(applicationUser, authenticationType).ConfigureAwait(false);
+
+            //temp
+            claimsIdentity.AddClaim(new Claim("Sex", applicationUser.Sex));
+
             user.CopyApplicationIdentityUserProperties(applicationUser);
             return claimsIdentity;
         }

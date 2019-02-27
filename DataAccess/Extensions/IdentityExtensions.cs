@@ -50,6 +50,9 @@ namespace DataAccess.Extensions
             applicationIdentityUser.PhoneNumberConfirmed = appUser.PhoneNumberConfirmed;
             applicationIdentityUser.SecurityStamp = appUser.SecurityStamp;
             applicationIdentityUser.TwoFactorEnabled = appUser.TwoFactorEnabled;
+
+            applicationIdentityUser.Sex = appUser.Sex;
+
             foreach (var claim in appUser.Claims)
             {
                 applicationIdentityUser.Claims.Add(new ApplicationIdentityUserClaim
@@ -108,6 +111,9 @@ namespace DataAccess.Extensions
             appUser.PhoneNumberConfirmed = applicationIdentityUser.PhoneNumberConfirmed;
             appUser.SecurityStamp = applicationIdentityUser.SecurityStamp;
             appUser.TwoFactorEnabled = applicationIdentityUser.TwoFactorEnabled;
+
+            appUser.Sex = applicationIdentityUser.Sex;
+
             foreach (var claim in applicationIdentityUser.Claims)
             {
                 appUser.Claims.Add(new ApplicationUserClaim

@@ -65,3 +65,14 @@ textarea {
     opacity: 0.9;
 }
 
+.icon-man {
+    content: url("../Content/Images/male icon.png");
+    width:128px;
+    height:128px;
+}
+
+.icon-woman {
+    content: url("../Content/Images/female icon.png");
+    width: 128px;
+    height: 128px;
+}
