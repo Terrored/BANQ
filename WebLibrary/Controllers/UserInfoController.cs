@@ -19,6 +19,7 @@ namespace WebLibrary.Controllers
         {
             var currentUserId = User.Identity.GetUserId().Value;
             var bankAccount = _bankAccountService.GetBankAccountDetails(currentUserId);
+            var sex = User.Identity.GetUserSex();
 
             if (bankAccount == null)
             {
@@ -29,7 +30,8 @@ namespace WebLibrary.Controllers
                 var userInfo = new UserInfoViewModel()
                 {
                     BankAccount = bankAccount,
-                    UserName = User.Identity.Name
+                    UserName = User.Identity.Name,
+                    UserSex = sex
                 };
                 return View(userInfo);
             }

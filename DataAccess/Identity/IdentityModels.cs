@@ -8,6 +8,7 @@ namespace DataAccess.Identity
     public class ApplicationIdentityUser :
         IdentityUser<int, ApplicationIdentityUserLogin, ApplicationIdentityUserRole, ApplicationIdentityUserClaim>
     {
+        public string Sex { get; set; }
         public virtual BankAccount BankAccount { get; set; }
         public ICollection<MoneyTransfer> MoneyTransfers { get; set; }
     }

@@ -114,6 +114,14 @@
     <Compile Include="Migrations\201902261855077_AddedBankAccountType.Designer.cs">
       <DependentUpon>201902261855077_AddedBankAccountType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902271846416_AddedSexAsUserProperty.cs" />
+    <Compile Include="Migrations\201902271846416_AddedSexAsUserProperty.Designer.cs">
+      <DependentUpon>201902271846416_AddedSexAsUserProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902271901330_SetSexToRequiredProperty.cs" />
+    <Compile Include="Migrations\201902271901330_SetSexToRequiredProperty.Designer.cs">
+      <DependentUpon>201902271901330_SetSexToRequiredProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OrderBy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -146,6 +154,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902261855077_AddedBankAccountType.resx">
       <DependentUpon>201902261855077_AddedBankAccountType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902271846416_AddedSexAsUserProperty.resx">
+      <DependentUpon>201902271846416_AddedSexAsUserProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902271901330_SetSexToRequiredProperty.resx">
+      <DependentUpon>201902271901330_SetSexToRequiredProperty.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

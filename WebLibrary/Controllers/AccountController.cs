@@ -119,7 +119,7 @@ namespace WebLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new AppUser { UserName = model.UserName, Email = model.Email };
+                var user = new AppUser { UserName = model.UserName, Email = model.Email, Sex = model.Sex };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

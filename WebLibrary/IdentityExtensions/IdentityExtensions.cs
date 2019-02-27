@@ -35,5 +35,15 @@ namespace WebLibrary.IdentityExtensions
             var claimsIdentity = identity as ClaimsIdentity;
             return claimsIdentity == null ? null : claimsIdentity.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
         }
+
+        public static string GetUserSex(this IIdentity identity)
+        {
+            if (identity == null)
+            {
+                throw new ArgumentNullException("identity");
+            }
+            var claimsIdentity = identity as ClaimsIdentity;
+            return claimsIdentity == null ? null : claimsIdentity.FindFirstValue("Sex");
+        }
     }
 }

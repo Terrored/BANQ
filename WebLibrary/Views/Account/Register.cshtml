@@ -18,6 +18,11 @@
                         @Html.PasswordFor(m => m.Password, new { @class = "form-control my-3", placeholder = "Password" })
                         @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control my-3", placeholder = "Confirm password" })
 
+                        <div class="form-check mb-3 ml-1">
+                            @Html.RadioButtonFor(m => m.Sex, "Male", new { @class = "form-check-input" }) <span>Male</span>
+                            <br />
+                            @Html.RadioButtonFor(m => m.Sex, "Female", new { @class = "form-check-input" }) <span>Female</span>
+                        </div>
 
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary btn-block" value="Register" />
