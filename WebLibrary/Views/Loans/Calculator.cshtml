@@ -35,14 +35,12 @@
             <hr />
 
             <div class="alert alert-success text-center">
-                The amount of installment: 
-                <span class="font-weight-bold" id="installment"></span>
-            </div>
-            
-            <div class="alert alert-secondary text-center">
-                Minimal theoretical installment: 
-                <span class="font-weight-bold" id="minPossibleInstallment"></span>
-            </div>   
+                <span id="installmentCount" class="font-weight-bold"></span> 
+                total installments 
+                <span id="installmentAmount" class="font-weight-bold"></span> PLN each. <br />
+                <span id="totalMoney" class="font-weight-bold"></span> PLN in total.
+ 
+            </div>  
         </div>
     </div>
 </div>
@@ -93,24 +91,26 @@
                 $("#creditPeriodInfo").html(creditPeriod + getYearSpelling(creditPeriod));
             });
 
+            $("input").on("input", function () {
+                $(".alert").slideUp();
+            });
 
             $("#calculate").on("click", function () {
                 var percentageRate = parseFloat($("#percentageRate").val());
                 var creditAmount = parseInt($("#creditAmount").val(), 10);
-                var installmentAmount = $("#creditPeriod").val() * 12;
+                var installmentCount = $("#creditPeriod").val() * 12;
 
                 var q = ((percentageRate / 100) / 12) + 1;
 
-
-                var helper = Math.pow(q, installmentAmount);
+                var helper = Math.pow(q, installmentCount);
                 var installment = creditAmount * helper * (q - 1) / (helper - 1);
-                var minPossibleInstallment = creditAmount * (q - 1);
 
 
                 $(".alert").slideDown();
-                $("#installment").html(installment.toFixed(2).toString().replace(".", ","));
-                $("#minPossibleInstallment").html(minPossibleInstallment.toFixed(2).toString().replace(".", ","));
 
+                $("#installmentCount").html(installmentCount);
+                $("#installmentAmount").html(installment.toFixed(2).toString().replace(".", ","));
+                $("#totalMoney").html((installment * installmentCount).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 '));
             });
         });
     </script>
