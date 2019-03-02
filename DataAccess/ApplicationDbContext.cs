@@ -7,6 +7,7 @@ namespace DataAccess
     public class ApplicationDbContext : IdentityDbContext<ApplicationIdentityUser, ApplicationIdentityRole, int, ApplicationIdentityUserLogin, ApplicationIdentityUserRole, ApplicationIdentityUserClaim>
     {
         private static readonly object Lock = new object();
+        //public DbSet<MoneyTransfer> MoneyTransfers { get; set; }
 
         public ApplicationDbContext()
             : base("name=BANQConnectionString")

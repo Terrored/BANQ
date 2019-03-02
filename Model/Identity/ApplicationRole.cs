@@ -14,7 +14,7 @@ namespace Model.Identity
             get; set;
         }
 
-        public virtual ICollection<ApplicationUserRole> Users { get; private set; }
+        public ICollection<ApplicationUserRole> Users { get; private set; }
 
         public string Name { get; set; }
     }
