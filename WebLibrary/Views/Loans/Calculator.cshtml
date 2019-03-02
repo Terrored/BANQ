@@ -113,9 +113,10 @@
             });
 
             $("input").on("input", function () {
-                if ($(this).hasClass("is-invalid"))
+                if ($(this).hasClass("is-invalid")) {
                     if ($(this).val != "")
                         $(this).removeClass("is-invalid");
+                }
             });
 
             $("#calculate").on("click", function () {
