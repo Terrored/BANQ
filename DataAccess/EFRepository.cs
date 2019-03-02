@@ -1,7 +1,9 @@
 ﻿using Model;
 using Model.RepositoryInterfaces;
+using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace DataAccess
 {
@@ -39,9 +41,27 @@ namespace DataAccess
             return _entities;
         }
 
+        public IQueryable<TEntity> GetAll(params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            foreach (var property in includeProperties)
+            {
+                _entities.Include(property);
+            }
+            return _entities;
+        }
+
         public TEntity GetSingle(int id)
         {
-            return _entities.FirstOrDefault(e => e.Id == id);
+            return _entities.SingleOrDefault(e => e.Id == id);
+        }
+
+        public TEntity GetSingle(int id, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            foreach (var property in includeProperties)
+            {
+                _entities.Include(property);
+            }
+            return _entities.SingleOrDefault(e => e.Id == id);
         }
 
         public void Update(TEntity entity)

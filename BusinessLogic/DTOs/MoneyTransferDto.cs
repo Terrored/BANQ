@@ -9,8 +9,8 @@ namespace BusinessLogic.DTOs
         public decimal CashAmount { get; set; }
         public DateTime CreatedOn { get; set; }
 
-        public ApplicationIdentityUser From { get; set; }
-        public ApplicationIdentityUser To { get; set; }
+        public string From { get; set; }
+        public string To { get; set; }
 
         public string Message { get; set; }
 
@@ -21,10 +21,9 @@ namespace BusinessLogic.DTOs
             {
                 CashAmount = moneyTransfer.CashAmount,
                 CreatedOn = moneyTransfer.CreatedOn,
-                From = moneyTransfer.From,
-                To = moneyTransfer.To,
+                From = moneyTransfer.From.UserName,
+                To = moneyTransfer.To.UserName,
                 Id = moneyTransfer.Id
-
             };
         }
 
