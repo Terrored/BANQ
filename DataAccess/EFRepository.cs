@@ -24,6 +24,13 @@ namespace DataAccess
             _context.SaveChanges();
         }
 
+        public int CreateAndReturnId(TEntity entity)
+        {
+            _entities.Add(entity);
+            _context.SaveChanges();
+            return entity.Id;
+        }
+
         public void Delete(int id)
         {
             TEntity entityToDelete = _entities.FirstOrDefault(e => e.Id == id);
