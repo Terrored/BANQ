@@ -1,10 +1,13 @@
 ﻿html{
     background: url("../Content/Images/seattle.jpg") no-repeat center center fixed;
     background-size: cover;
+    min-height:100vh;
+    position:relative;
 }
 
 body {
     background-color:transparent;
+    margin-bottom:60px;
 }
 
 /* Set padding to keep content from hitting the edges */
