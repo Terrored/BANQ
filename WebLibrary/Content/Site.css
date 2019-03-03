@@ -1,9 +1,10 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-    background-image: url("../Content/Images/seattle.jpg");
-    background-repeat: no-repeat;
+﻿html{
+    background: url("../Content/Images/seattle.jpg") no-repeat center center fixed;
     background-size: cover;
+}
+
+body {
+    background-color:transparent;
 }
 
 /* Set padding to keep content from hitting the edges */
