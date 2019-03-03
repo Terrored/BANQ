@@ -12,9 +12,10 @@ namespace Model.RepositoryInterfaces
         IQueryable<TEntity> GetAll();
         IQueryable<TEntity> GetAll(params Expression<Func<TEntity, object>>[] includeProperties);
 
-        void Delete(int id);
-        void Update(TEntity entity);
         void Create(TEntity entity);
         int CreateAndReturnId(TEntity entity);
+
+        void Delete(int id);
+        void Update(TEntity entity);
     }
 }

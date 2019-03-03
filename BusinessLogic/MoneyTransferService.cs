@@ -45,10 +45,8 @@ namespace BusinessLogic
                         };
 
                         var id = _moneyTransferRepository.CreateAndReturnId(moneyTransfer);
-
-                        var transfer = _moneyTransferRepository.GetSingle(id, d => d.FromId);
-
-                        dto = MoneyTransferDto.ToDto(transfer);
+                        var createdMoneyTransfer = _moneyTransferRepository.GetSingle(id, t => t.From, t => t.To);
+                        dto = MoneyTransferDto.ToDto(createdMoneyTransfer);
                         dto.Message = "Transfer has been successful";
 
                     }
@@ -75,7 +73,7 @@ namespace BusinessLogic
 
         public List<MoneyTransferDto> GetLastSentFiveTransfers(int userId)
         {
-            var transfers = _moneyTransferRepository.GetAll(t => t.FromId, t => t.ToId);//.OrderByDescending(t => t.CreatedOn).Take(5).ToList();
+            var transfers = _moneyTransferRepository.GetAll(t => t.From, t => t.To).OrderByDescending(t => t.CreatedOn).Take(5).ToList();
 
             List<MoneyTransferDto> dtos = new List<MoneyTransferDto>();
 

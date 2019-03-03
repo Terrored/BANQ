@@ -40,7 +40,7 @@ namespace BusinessLogic
 
         public BankAccountDto GetBankAccountDetails(int userId)
         {
-            var bankAccount = _bankAccountRepository.GetAll(b => b.ApplicationIdentityUser).FirstOrDefault(ba => ba.ApplicationIdentityUserId == userId);
+            var bankAccount = _bankAccountRepository.GetAll(b=>b.BankAccountType).FirstOrDefault(ba => ba.ApplicationIdentityUserId == userId);
 
             if (bankAccount == null)
             {

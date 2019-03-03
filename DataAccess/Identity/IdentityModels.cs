@@ -40,7 +40,7 @@ namespace DataAccess.Identity
 
     public class BankAccount : BaseBankAccount
     {
-        public virtual BankAccountType BankAccountType { get; set; }
+        public BankAccountType BankAccountType { get; set; }
         public int BankAccountTypeId { get; set; }
         public ApplicationIdentityUser ApplicationIdentityUser { get; set; }
         public int ApplicationIdentityUserId { get; set; }
@@ -48,9 +48,9 @@ namespace DataAccess.Identity
 
     public class MoneyTransfer : BaseMoneyTransfer
     {
-        public virtual ApplicationIdentityUser From { get; set; }
+        public ApplicationIdentityUser From { get; set; }
         public int FromId { get; set; }
-        public virtual ApplicationIdentityUser To { get; set; }
+        public ApplicationIdentityUser To { get; set; }
         public int ToId { get; set; }
     }
 

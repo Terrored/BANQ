@@ -2,19 +2,19 @@
 {
     public class ApplicationMessage
     {
-        public virtual string Body
+        public string Body
         {
             get;
             set;
         }
 
-        public virtual string Destination
+        public string Destination
         {
             get;
             set;
         }
 
-        public virtual string Subject
+        public string Subject
         {
             get;
             set;

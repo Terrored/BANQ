@@ -50,11 +50,13 @@ namespace DataAccess
 
         public IQueryable<TEntity> GetAll(params Expression<Func<TEntity, object>>[] includeProperties)
         {
+            IQueryable<TEntity> result = _entities;
+
             foreach (var property in includeProperties)
             {
-                _entities.Include(property);
+                result = result.Include(property);
             }
-            return _entities;
+            return result;
         }
 
         public TEntity GetSingle(int id)
@@ -64,11 +66,12 @@ namespace DataAccess
 
         public TEntity GetSingle(int id, params Expression<Func<TEntity, object>>[] includeProperties)
         {
+            IQueryable<TEntity> result = _entities;
             foreach (var property in includeProperties)
             {
-                _entities.Include(property);
+                result = result.Include(property);
             }
-            return _entities.SingleOrDefault(e => e.Id == id);
+            return result.SingleOrDefault(e => e.Id == id);
         }
 
         public void Update(TEntity entity)
