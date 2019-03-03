@@ -8,8 +8,8 @@
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
-<body >
-    <nav class="navbar navbar-expand navbar-dark bg-dark visibility">
+<body>
+    <nav class="navbar navbar-expand navbar-dark bg-dark visibility sticky-top">
         @Html.ActionLink("BANQ", "Index", "Home", null, new { @class = "nav-link navbar-brand ml-5" })
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -19,14 +19,14 @@
         </div>
         @Html.Partial("_LoginPartial")
     </nav>
-<div class="container body-content">
-    @RenderBody()
-    <hr />
-        
-</div>
-<footer class="footer">
-    <p class="navbar-toggler">&copy; @DateTime.Now.Year - BANQ</p>
-</footer>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+
+    </div>
+    <footer class="footer">
+        <p class="navbar-toggler">&copy; @DateTime.Now.Year - BANQ</p>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
