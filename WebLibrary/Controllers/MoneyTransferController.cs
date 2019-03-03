@@ -16,10 +16,16 @@ namespace WebLibrary.Controllers
 
         public ActionResult Index()
         {
+            return View();
+        }
+        [HttpGet]
+        public JsonResult GetLastTransfers()
+        {
             var userId = HttpContext.User.Identity.GetUserId();
-            var transfers = _moneyTransferService.GetLastSentFiveTransfers(userId.Value);
+            var lastTransfers = _moneyTransferService.GetLastSentFiveTransfers(userId.Value);
+            var x = Json(lastTransfers, JsonRequestBehavior.AllowGet);
+            return x;
 
-            return View(transfers);
         }
 
         [HttpPost]
