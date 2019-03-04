@@ -5,7 +5,7 @@ namespace BusinessLogic.Interfaces
 {
     public interface IMoneyTransferService
     {
-        MoneyTransferDto Transfer(decimal amount, int fromId, int toId);
+        MoneyTransferDto Transfer(string name, decimal amount, int fromId, int toId);
         List<MoneyTransferDto> GetLastSentFiveTransfers(int userId);
     }
 }

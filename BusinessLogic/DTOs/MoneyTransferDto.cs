@@ -6,6 +6,7 @@ namespace BusinessLogic.DTOs
     public class MoneyTransferDto
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public decimal CashAmount { get; set; }
         public DateTime CreatedOn { get; set; }
 
@@ -23,7 +24,8 @@ namespace BusinessLogic.DTOs
                 CreatedOn = moneyTransfer.CreatedOn,
                 From = moneyTransfer.From.UserName,
                 To = moneyTransfer.To.UserName,
-                Id = moneyTransfer.Id
+                Id = moneyTransfer.Id,
+                Name = moneyTransfer.Name
             };
         }
 

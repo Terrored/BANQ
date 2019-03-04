@@ -30,11 +30,11 @@ namespace WebLibrary.Controllers
         }
 
         [HttpPost]
-        public ActionResult Transfer(decimal cashAmount, int toId)
+        public ActionResult Transfer(string name, decimal cashAmount, int toId)
         {
             var fromId = User.Identity.GetUserId();
 
-            var dto = _moneyTransferService.Transfer(cashAmount, fromId.Value, toId);
+            var dto = _moneyTransferService.Transfer(name, cashAmount, fromId.Value, toId);
 
             return Json(new { message = dto.Message });
         }

@@ -2,7 +2,11 @@
     <div class="jumbotron py-5">
 
         <form class="ml-1">
-            <h3 class="display-4 mb-5" align="center">Transfer</h3>
+            <h3 class="display-4 mb-3" align="center">Transfer</h3>
+            <label for="name">Name</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="name"/>
+            </div>
             <label for="cashAmount">Cash amount</label>
             <div class="input-group mb-3">
 
@@ -33,6 +37,7 @@
 <script>
     function submit() {
         var dataForm = {
+            name: $('#name').val(),
             cashAmount: $('#cashAmount').val(),
             toId: $('#accountNumber').val()
         };
