@@ -30,6 +30,7 @@
         <table id="lastTransfers" class="table table-striped table-bordered" style="width:100%">
             <thead>
             <tr>
+                <th>Name</th>
                 <th>Transfer Id</th>
                 <th>From</th>
                 <th>To</th>
@@ -54,10 +55,13 @@
             "info": false,
             "searching": false,
             "columns": [
+                {"data": "Name"},
                 { "data": "Id" },
                 { "data": "From" },
                 { "data": "To" },
-                { "data": "CashAmount" },
+                { "data": "CashAmount", "render": function(data, type, row, meta) {
+                    return data.toFixed(2).toLocaleString() + " PLN";
+                } },
                 { "data": "CreatedOn", "render": function(data, type, row, meta) {
                     console.log(data);
                     return data.substring(0,10);

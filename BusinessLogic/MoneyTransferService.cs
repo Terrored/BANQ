@@ -23,7 +23,7 @@ namespace BusinessLogic
             _bankAccountService = bankAccountService;
         }
 
-        public MoneyTransferDto Transfer(decimal amount, int fromId, int toId)
+        public MoneyTransferDto Transfer(string name, decimal amount, int fromId, int toId)
         {
             MoneyTransferDto dto = new MoneyTransferDto();
             if (fromId != toId)
@@ -42,6 +42,7 @@ namespace BusinessLogic
                             CreatedOn = DateTime.Now,
                             FromId = fromId,
                             ToId = toId,
+                            Name = name
                         };
 
                         var id = _moneyTransferRepository.CreateAndReturnId(moneyTransfer);

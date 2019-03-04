@@ -122,6 +122,10 @@
     <Compile Include="Migrations\201902271901330_SetSexToRequiredProperty.Designer.cs">
       <DependentUpon>201902271901330_SetSexToRequiredProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903041954300_AddingNamePropertyIntoMoneyTransfer.cs" />
+    <Compile Include="Migrations\201903041954300_AddingNamePropertyIntoMoneyTransfer.Designer.cs">
+      <DependentUpon>201903041954300_AddingNamePropertyIntoMoneyTransfer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OrderBy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -160,6 +164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902271901330_SetSexToRequiredProperty.resx">
       <DependentUpon>201902271901330_SetSexToRequiredProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903041954300_AddingNamePropertyIntoMoneyTransfer.resx">
+      <DependentUpon>201903041954300_AddingNamePropertyIntoMoneyTransfer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
