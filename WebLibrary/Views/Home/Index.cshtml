@@ -1,10 +1,10 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<link rel="stylesheet" type="text/css" href="~/Content/slick.css"/>
-<link rel="stylesheet" type="text/css" href="~/Content/slick-theme.css"/>
+<link rel="stylesheet" type="text/css" href="~/Content/slick.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/slick-theme.css" />
 
-<div class="jumbotron jumbotron-fluid jumbo visibility2">
+<div class="frosted-glass-container mx-1 mb-4 jumbo w-100">
     <div class="container">
         <h1 class="display-4">Fluid jumbotron</h1>
         <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
@@ -12,10 +12,21 @@
 </div>
 
 <div class="row mx-0 slick-slider d-none">
-    <div class="col jumbotron mx-1">Sample text</div>
-    <div class="col jumbotron mx-1">Sample text</div>
-    <div class="col jumbotron mx-1">Sample text</div>
-    <div class="col jumbotron mx-1">Sample text</div>
+    <div class="col jumbotron visibility3 mx-1">
+        Sample text 1
+    </div>
+
+    <div class="col jumbotron visibility3 mx-1">
+        Sample text 2
+    </div>
+
+    <div class="col jumbotron visibility3 mx-1">
+        Sample text 3
+    </div>
+
+    <div class="col jumbotron visibility3 mx-1">
+        Sample text 4
+    </div>
 </div>
 
 
@@ -32,7 +43,7 @@
                 slidesToScroll: 1,
                 autoplay: true,
                 autoplaySpeed: 5000,
-                dots: true,
+                dots: false,
                 pauseOnFocus: false,
                 pauseOnHover: false,
 
