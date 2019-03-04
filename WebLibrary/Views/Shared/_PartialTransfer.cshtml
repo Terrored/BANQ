@@ -46,7 +46,8 @@
             } else {
                 Swal.fire('Oops!', data.message, 'error');
             }
-
+            var table = $("#lastTransfers").DataTable();
+            table.ajax.reload();
         });
     }
 

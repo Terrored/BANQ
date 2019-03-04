@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Interfaces;
+using Newtonsoft.Json;
 using System.Web.Mvc;
 using WebLibrary.IdentityExtensions;
 
@@ -16,10 +17,16 @@ namespace WebLibrary.Controllers
 
         public ActionResult Index()
         {
+            return View();
+        }
+        [HttpGet]
+        public string GetLastTransfers()
+        {
             var userId = HttpContext.User.Identity.GetUserId();
-            var transfers = _moneyTransferService.GetLastSentFiveTransfers(userId.Value);
+            var lastTransfers = _moneyTransferService.GetLastSentFiveTransfers(userId.Value);
+            var x = JsonConvert.SerializeObject(lastTransfers, Formatting.Indented);
+            return x;
 
-            return View(transfers);
         }
 
         [HttpPost]
