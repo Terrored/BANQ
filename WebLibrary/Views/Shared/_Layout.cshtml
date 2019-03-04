@@ -31,12 +31,5 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-
-    <script>
-        $(document).ready(function () {
-            var parents = $(".frosted-glass-container").parentsUntil("body");
-            parents.css("background", "inherit");
-        });
-    </script>
 </body>
 </html>
