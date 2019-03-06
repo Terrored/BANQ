@@ -49,20 +49,20 @@
 <script>
     $(document).ready(function () {
         $('#lastTransfers').DataTable({
-            "ajax": { url: "/MoneyTransfer/GetLastTransfers", dataSrc: "" },
+            "ajax": { url: "/api/MoneyTransfer", dataSrc: "" },
             "paging":   false,
             "ordering": false,
             "info": false,
             "searching": false,
             "columns": [
-                {"data": "Name"},
-                { "data": "Id" },
-                { "data": "From" },
-                { "data": "To" },
-                { "data": "CashAmount", "render": function(data, type, row, meta) {
+                {"data": "name"},
+                { "data": "id" },
+                { "data": "from" },
+                { "data": "to" },
+                { "data": "cashAmount", "render": function(data, type, row, meta) {
                     return data.toFixed(2).toLocaleString() + " PLN";
                 } },
-                { "data": "CreatedOn", "render": function(data, type, row, meta) {
+                { "data": "createdOn", "render": function(data, type, row, meta) {
                     console.log(data);
                     return data.substring(0,10);
                 }}

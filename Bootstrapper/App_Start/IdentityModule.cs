@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using Autofac.Integration.Mvc;
 using DataAccess.Identity;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -12,9 +11,9 @@ namespace Bootstrapper
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType(typeof(ApplicationUserManager)).As(typeof(IApplicationUserManager)).InstancePerHttpRequest();
-            builder.RegisterType(typeof(ApplicationRoleManager)).As(typeof(IApplicationRoleManager)).InstancePerHttpRequest();
-            builder.RegisterType(typeof(ApplicationIdentityUser)).As(typeof(IUser<int>)).InstancePerHttpRequest();
+            builder.RegisterType(typeof(ApplicationUserManager)).As(typeof(IApplicationUserManager)).InstancePerRequest();
+            builder.RegisterType(typeof(ApplicationRoleManager)).As(typeof(IApplicationRoleManager)).InstancePerRequest();
+            builder.RegisterType(typeof(ApplicationIdentityUser)).As(typeof(IUser<int>)).InstancePerRequest();
             builder.Register(b =>
             {
                 var manager = IdentityFactory.CreateUserManager(b.Resolve<DbContext>());
@@ -25,9 +24,9 @@ namespace Bootstrapper
                             Startup.DataProtectionProvider.Create("ASP.NET Identity"));
                 }
                 return manager;
-            }).InstancePerHttpRequest();
-            builder.Register(b => IdentityFactory.CreateRoleManager(b.Resolve<DbContext>())).InstancePerHttpRequest();
-            builder.Register(b => HttpContext.Current.GetOwinContext().Authentication).InstancePerHttpRequest();
+            }).InstancePerRequest();
+            builder.Register(b => IdentityFactory.CreateRoleManager(b.Resolve<DbContext>())).InstancePerRequest();
+            builder.Register(b => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
         }
     }
 }
