@@ -6,10 +6,10 @@ using BusinessLogic.Interfaces;
 using DataAccess;
 using Model.RepositoryInterfaces;
 using System.Data.Entity;
-using System.Reflection;
 using System.Web.Http;
 using System.Web.Mvc;
 using WebLibrary;
+using WebLibrary.Controllers.Api;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Bootstrapper.IocConfig), "RegisterDependencies")]
 
@@ -20,9 +20,11 @@ namespace Bootstrapper
         public static void RegisterDependencies()
         {
             var builder = new ContainerBuilder();
+            var config = GlobalConfiguration.Configuration;
+
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
+            builder.RegisterApiControllers(typeof(MoneyTransferController).Assembly);
             builder.RegisterModule<AutofacWebTypesModule>();
-            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
 
             builder.RegisterGeneric(typeof(EFRepository<>)).As(typeof(IEntityRepository<>));
@@ -39,7 +41,7 @@ namespace Bootstrapper
             builder.RegisterModule(new IdentityModule());
 
             var container = builder.Build();
-            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+            config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }
     }
