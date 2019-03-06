@@ -74,7 +74,7 @@ namespace BusinessLogic
 
         public List<MoneyTransferDto> GetLastSentFiveTransfers(int userId)
         {
-            var transfers = _moneyTransferRepository.GetAll(t => t.From, t => t.To).OrderByDescending(t => t.CreatedOn).Take(5).ToList();
+            var transfers = _moneyTransferRepository.GetAll(t => t.From, t => t.To).Where(t => t.ToId == userId || t.FromId == userId).OrderByDescending(t => t.CreatedOn).Take(5).ToList();
 
             List<MoneyTransferDto> dtos = new List<MoneyTransferDto>();
 
