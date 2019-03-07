@@ -75,6 +75,11 @@ namespace WebLibrary.Models
         public string UserName { get; set; }
 
         [Required]
+        [StringLength(50)]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
         public string Sex { get; set; }
 
         [Required]

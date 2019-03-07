@@ -45,5 +45,15 @@ namespace WebLibrary.IdentityExtensions
             var claimsIdentity = identity as ClaimsIdentity;
             return claimsIdentity == null ? null : claimsIdentity.FindFirstValue("Sex");
         }
+
+        public static string GetUserLastName(this IIdentity identity)
+        {
+            if (identity == null)
+            {
+                throw new ArgumentNullException("identity");
+            }
+            var claimsIdentity = identity as ClaimsIdentity;
+            return claimsIdentity == null ? null : claimsIdentity.FindFirstValue("LastName");
+        }
     }
 }
