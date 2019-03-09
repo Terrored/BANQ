@@ -43,8 +43,10 @@
         };
         $.ajax({
             type: "POST",
-            url: "/MoneyTransfer/Transfer",
-            data: dataForm
+            url: "/api/MoneyTransfer/Transfer",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(dataForm),
+            dataType: "json"
         }).done(function (data) {
             if (data.message == 'Transfer has been successful') {
                 Swal.fire('Great!', data.message, 'success');

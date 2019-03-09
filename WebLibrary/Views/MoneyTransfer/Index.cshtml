@@ -49,7 +49,7 @@
 <script>
     $(document).ready(function () {
         $('#lastTransfers').DataTable({
-            "ajax": { url: "/api/MoneyTransfer", dataSrc: "" },
+            "ajax": { url: "/api/MoneyTransfer/GetLastFive", dataSrc: "" },
             "paging":   false,
             "ordering": false,
             "info": false,
