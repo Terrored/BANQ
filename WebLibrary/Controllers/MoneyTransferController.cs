@@ -36,7 +36,7 @@ namespace WebLibrary.Controllers
 
             var dto = _moneyTransferService.Transfer(name, cashAmount, fromId.Value, toId);
 
-            return Json(new { message = dto.Message });
+            return Json(new { message = "asdf" });
         }
 
         public ActionResult Create()

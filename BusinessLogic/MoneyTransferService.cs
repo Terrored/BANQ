@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DTOs;
+﻿using AutoMapper;
+using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.RepositoryInterfaces;
@@ -47,24 +48,24 @@ namespace BusinessLogic
 
                         var id = _moneyTransferRepository.CreateAndReturnId(moneyTransfer);
                         var createdMoneyTransfer = _moneyTransferRepository.GetSingle(id, t => t.From, t => t.To);
-                        dto = MoneyTransferDto.ToDto(createdMoneyTransfer);
-                        dto.Message = "Transfer has been successful";
+                        //dto = MoneyTransferDto.ToDto(createdMoneyTransfer);
+                        //dto.Message = "Transfer has been successful";
 
                     }
                     else
                     {
-                        dto.Message = "Error occurs when trying to transfer money to customer";
+                        //  dto.Message = "Error occurs when trying to transfer money to customer";
                     }
                 }
                 else
                 {
-                    dto.Message = "Error occurs when trying to transfer money from customer";
+                    //dto.Message = "Error occurs when trying to transfer money from customer";
                 }
 
             }
             else
             {
-                dto.Message = "You cannot transfer money to yourself!";
+                //dto.Message = "You cannot transfer money to yourself!";
             }
 
 
@@ -74,16 +75,13 @@ namespace BusinessLogic
 
         public List<MoneyTransferDto> GetLastSentFiveTransfers(int userId)
         {
-            var transfers = _moneyTransferRepository.GetAll(t => t.From, t => t.To).Where(t => t.ToId == userId || t.FromId == userId).OrderByDescending(t => t.CreatedOn).Take(5).ToList();
+            var transfers = _moneyTransferRepository.GetAll(t => t.From, t => t.To).
+                Where(t => t.ToId == userId || t.FromId == userId).
+                OrderByDescending(t => t.CreatedOn).
+                Take(5).
+                ToList();
 
-            List<MoneyTransferDto> dtos = new List<MoneyTransferDto>();
-
-            foreach (var moneyTransfer in transfers)
-            {
-                dtos.Add(MoneyTransferDto.ToDto(moneyTransfer));
-            }
-
-            return dtos;
+            return Mapper.Map<List<MoneyTransferDto>>(transfers);
         }
 
     }
