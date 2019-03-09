@@ -8,6 +8,11 @@
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
  <body>
 
     <nav class="navbar navbar-expand navbar-dark bg-dark visibility sticky-top">
@@ -29,9 +34,5 @@
         <p class="navbar-toggler">&copy; @DateTime.Now.Year - BANQ</p>
     </footer>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 </body>
 </html>
