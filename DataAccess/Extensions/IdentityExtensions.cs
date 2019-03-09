@@ -52,6 +52,7 @@ namespace DataAccess.Extensions
             applicationIdentityUser.TwoFactorEnabled = appUser.TwoFactorEnabled;
 
             applicationIdentityUser.Sex = appUser.Sex;
+            applicationIdentityUser.LastName = appUser.LastName;
 
             foreach (var claim in appUser.Claims)
             {
@@ -113,6 +114,7 @@ namespace DataAccess.Extensions
             appUser.TwoFactorEnabled = applicationIdentityUser.TwoFactorEnabled;
 
             appUser.Sex = applicationIdentityUser.Sex;
+            appUser.LastName = applicationIdentityUser.LastName;
 
             foreach (var claim in applicationIdentityUser.Claims)
             {

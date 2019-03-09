@@ -126,6 +126,10 @@
     <Compile Include="Migrations\201903041954300_AddingNamePropertyIntoMoneyTransfer.Designer.cs">
       <DependentUpon>201903041954300_AddingNamePropertyIntoMoneyTransfer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903072053014_AddedLastNameToAppUser.cs" />
+    <Compile Include="Migrations\201903072053014_AddedLastNameToAppUser.Designer.cs">
+      <DependentUpon>201903072053014_AddedLastNameToAppUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OrderBy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -167,6 +171,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903041954300_AddingNamePropertyIntoMoneyTransfer.resx">
       <DependentUpon>201903041954300_AddingNamePropertyIntoMoneyTransfer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903072053014_AddedLastNameToAppUser.resx">
+      <DependentUpon>201903072053014_AddedLastNameToAppUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

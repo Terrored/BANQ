@@ -4,6 +4,7 @@ using WebLibrary.IdentityExtensions;
 
 namespace WebLibrary.Controllers.Api
 {
+    [Authorize]
     public class MoneyTransferController : ApiController
     {
         private readonly IMoneyTransferService _moneyTransferService;

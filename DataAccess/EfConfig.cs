@@ -13,6 +13,7 @@ namespace DataAccess
                 .WithRequired(b => b.ApplicationIdentityUser);
 
             modelBuilder.Entity<ApplicationIdentityUser>().Property(u => u.Sex).IsRequired();
+            modelBuilder.Entity<ApplicationIdentityUser>().Property(u => u.LastName).IsRequired();
 
             modelBuilder.Entity<BankAccountType>().Property(t => t.Name).IsRequired();
 

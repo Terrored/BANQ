@@ -18,8 +18,10 @@ namespace WebLibrary.Controllers
         public ActionResult Index()
         {
             var currentUserId = User.Identity.GetUserId().Value;
-            var bankAccount = _bankAccountService.GetBankAccountDetails(currentUserId);
             var sex = User.Identity.GetUserSex();
+            var lastName = User.Identity.GetUserLastName();
+
+            var bankAccount = _bankAccountService.GetBankAccountDetails(currentUserId);
 
             if (bankAccount == null)
             {
@@ -30,7 +32,8 @@ namespace WebLibrary.Controllers
                 var userInfo = new UserInfoViewModel()
                 {
                     BankAccount = bankAccount,
-                    UserName = User.Identity.Name,
+                    UserFirstName = User.Identity.Name,
+                    UserLastName = lastName,
                     UserSex = sex
                 };
                 return View(userInfo);
