@@ -1,18 +1,26 @@
-﻿<div class="col-md-4 visibility4">
+﻿
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/bootstrap.bundle.min.js"></script>
+<script src="~/Scripts/jquery-validate.bootstrap-tooltip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+<div class="col-md-4 visibility4">
     <div class="jumbotron py-5">
 
-        <form class="ml-1">
+        <form id="transferForm" class="ml-1" method="post">
             <h3 class="display-4 mb-3" align="center">Transfer</h3>
+            
             <label for="name">Name</label>
             <div class="input-group mb-3">
-                <input type="text" class="form-control" id="name"/>
+                <input type="text"class="form-control" name="name" id="name" />
             </div>
             <label for="cashAmount">Cash amount</label>
             <div class="input-group mb-3">
 
 
 
-                <input type="text" class="form-control" id="cashAmount" />
+                <input type="text"  class="form-control" name="cashAmount" id="cashAmount" />
                 <div class="input-group-append">
                     <span class="input-group-text">$</span>
                 </div>
@@ -21,41 +29,71 @@
 
             <label for="accountNumber">Account number</label>
             <div class="input-group mb-3">
-                <input type="text" class="form-control" id="accountNumber" />
+                <input type="text" class="form-control" name="accountNumber" id="accountNumber"  />
             </div>
 
-            <p onclick="submit()" class="btn btn-primary btn-block">Make a transfer!</p>
+            <input type="submit" class="btn btn-primary btn-block" value="Make a transfer!" />
         </form>
 
     </div>
 </div>
 
 
-<script src="~/Scripts/jquery-3.3.1.min.js"></script>
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script>
-    function submit() {
-        var dataForm = {
-            name: $('#name').val(),
-            cashAmount: $('#cashAmount').val(),
-            toId: $('#accountNumber').val()
-        };
-        $.ajax({
-            type: "POST",
-            url: "/MoneyTransfer/Transfer",
-            data: dataForm
-        }).done(function (data) {
-            if (data.message == 'Transfer has been successful') {
-                Swal.fire('Great!', data.message, 'success');
-            } else {
-                Swal.fire('Oops!', data.message, 'error');
-            }
-            var table = $("#lastTransfers").DataTable();
-            table.ajax.reload();
-        });
-    }
 
+<script>
+    $(document).ready(function() {
+        $("#transferForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 4
+                },
+                cashAmount: {
+                    required: true,
+                    min: 0 + Number.MIN_VALUE
+
+                },
+                accountNumber: "required"
+            },
+            messages: {
+                name: "You have to provide at least 4 characters!",
+                cashAmount: "Provide valid amount!",
+                accountNumber: "Provide valid account number!"
+            },
+            tooltip_options: {
+ 
+                name: {placement:'right'},
+                cashAmount: {placement:'right'},
+                accountNumber: {placement:'right'},
+            },
+            submitHandler: function (form) {
+                var dataForm = {
+                    name: $('#name').val(),
+                    cashAmount: $('#cashAmount').val(),
+                    toId: $('#accountNumber').val()
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/api/MoneyTransfer/Transfer",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(dataForm),
+                    dataType: "json"
+                }).done(function (data) {
+                    if (data.message == 'Transfer has been successful') {
+                        Swal.fire('Great!', data.message, 'success');
+                    } else {
+                        Swal.fire('Oops!', data.message, 'error');
+                    }
+                    var table = $("#lastTransfers").DataTable();
+                    $("#transferForm")[0].reset();
+                    table.ajax.reload();
+
+                });
+            }
+        });
+
+    });
 </script>
 
 

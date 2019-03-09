@@ -1,4 +1,5 @@
-﻿@model List<BusinessLogic.DTOs.MoneyTransferDto>
+﻿@using WebLibrary.IdentityExtensions
+@model List<BusinessLogic.DTOs.MoneyTransferDto>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -49,7 +50,7 @@
 <script>
     $(document).ready(function () {
         $('#lastTransfers').DataTable({
-            "ajax": { url: "/api/MoneyTransfer", dataSrc: "" },
+            "ajax": { url: "/api/MoneyTransfer/GetLastFive", dataSrc: "" },
             "paging":   false,
             "ordering": false,
             "info": false,
@@ -66,7 +67,18 @@
                     console.log(data);
                     return data.substring(0,10);
                 }}
-            ]
+            ],
+            "rowCallback": function(row, data, index) {
+                var username = "@HttpContext.Current.User.Identity.GetUserName()";
+                console.log(data);
+                if (data.from === username) {
+                    $('td', row).css('color', '#ff3232');
+                    $('td', row).css('font-weight', '500');
+                } else {
+                    $('td', row).css('color', '#50C878');
+                    $('td', row).css('font-weight', '500');
+                }
+            }
         });
     });
 
