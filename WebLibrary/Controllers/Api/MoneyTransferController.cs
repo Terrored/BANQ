@@ -2,13 +2,11 @@
 using DataAccess.Identity;
 using Newtonsoft.Json.Linq;
 using System.Web.Http;
-using System.Web.Http.Cors;
 using WebLibrary.IdentityExtensions;
 
 namespace WebLibrary.Controllers.Api
 {
     [Authorize]
-    [EnableCors(origins: "http://localhost:49891", headers: "*", methods: "*")]
     public class MoneyTransferController : ApiController
     {
         private readonly IMoneyTransferService _moneyTransferService;
