@@ -86,7 +86,9 @@
                         Swal.fire('Oops!', data.message, 'error');
                     }
                     var table = $("#lastTransfers").DataTable();
+                    $("#transferForm")[0].reset();
                     table.ajax.reload();
+
                 });
             }
         });
