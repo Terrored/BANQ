@@ -24,53 +24,50 @@ namespace BusinessLogic
             _bankAccountService = bankAccountService;
         }
 
-        public MoneyTransferDto Transfer(string name, decimal amount, int fromId, int toId)
+        public ResultDto Transfer(MoneyTransferDto moneyTransferDto)
         {
-            MoneyTransferDto dto = new MoneyTransferDto();
-            if (fromId != toId)
+            ResultDto resultDto = new ResultDto() { Success = false };
+
+            if (moneyTransferDto.From.Id != moneyTransferDto.To.Id)
             {
-                var successTransferFrom = _bankAccountService.TakeCash(amount, fromId);
+                var successTransferFrom = _bankAccountService.TakeCash(moneyTransferDto.CashAmount, moneyTransferDto.From.Id);
                 if (successTransferFrom)
                 {
-
-                    var successTransferTo = _bankAccountService.GiveCash(amount, toId);
+                    var successTransferTo = _bankAccountService.GiveCash(moneyTransferDto.CashAmount, moneyTransferDto.To.Id);
 
                     if (successTransferTo)
                     {
                         var moneyTransfer = new MoneyTransfer()
                         {
-                            CashAmount = amount,
+                            CashAmount = moneyTransferDto.CashAmount,
                             CreatedOn = DateTime.Now,
-                            FromId = fromId,
-                            ToId = toId,
-                            Name = name
+                            FromId = moneyTransferDto.From.Id,
+                            ToId = moneyTransferDto.To.Id,
+                            Name = moneyTransferDto.Name
                         };
 
-                        var id = _moneyTransferRepository.CreateAndReturnId(moneyTransfer);
-                        var createdMoneyTransfer = _moneyTransferRepository.GetSingle(id, t => t.From, t => t.To);
-                        //dto = MoneyTransferDto.ToDto(createdMoneyTransfer);
-                        //dto.Message = "Transfer has been successful";
+                        _moneyTransferRepository.Create(moneyTransfer);
+
+                        resultDto.Success = true;
+                        resultDto.Message = "Tranfer has been successful";
 
                     }
                     else
                     {
-                        //  dto.Message = "Error occurs when trying to transfer money to customer";
+                        resultDto.Message = "Error occurs when trying to transfer money from customer. Make sure you've provided valid account number";
                     }
                 }
                 else
                 {
-                    //dto.Message = "Error occurs when trying to transfer money from customer";
+                    resultDto.Message = "Error occurs when trying to transfer money from customer. Make sure you have enough money.";
                 }
 
             }
             else
             {
-                //dto.Message = "You cannot transfer money to yourself!";
+                resultDto.Message = "You cannot transfer money to yourself!";
             }
-
-
-            return dto;
-
+            return resultDto;
         }
 
         public List<MoneyTransferDto> GetLastSentFiveTransfers(int userId)

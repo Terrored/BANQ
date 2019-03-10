@@ -10,17 +10,17 @@
 
         <form id="transferForm" class="ml-1" method="post">
             <h3 class="display-4 mb-3" align="center">Transfer</h3>
-            
+
             <label for="name">Name</label>
             <div class="input-group mb-3">
-                <input type="text"class="form-control" name="name" id="name" />
+                <input type="text" class="form-control" name="name" id="name" />
             </div>
             <label for="cashAmount">Cash amount</label>
             <div class="input-group mb-3">
 
 
 
-                <input type="text"  class="form-control" name="cashAmount" id="cashAmount" />
+                <input type="text" class="form-control" name="cashAmount" id="cashAmount" />
                 <div class="input-group-append">
                     <span class="input-group-text">$</span>
                 </div>
@@ -29,7 +29,7 @@
 
             <label for="accountNumber">Account number</label>
             <div class="input-group mb-3">
-                <input type="text" class="form-control" name="accountNumber" id="accountNumber"  />
+                <input type="text" class="form-control" name="accountNumber" id="accountNumber" />
             </div>
 
             <input type="submit" class="btn btn-primary btn-block" value="Make a transfer!" />
@@ -41,7 +41,7 @@
 
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("#transferForm").validate({
             rules: {
                 name: {
@@ -61,35 +61,37 @@
                 accountNumber: "Provide valid account number!"
             },
             tooltip_options: {
- 
-                name: {placement:'right'},
-                cashAmount: {placement:'right'},
-                accountNumber: {placement:'right'},
+
+                name: { placement: 'right' },
+                cashAmount: { placement: 'right' },
+                accountNumber: { placement: 'right' },
             },
             submitHandler: function (form) {
-                var dataForm = {
+                var dto = {
                     name: $('#name').val(),
                     cashAmount: $('#cashAmount').val(),
-                    toId: $('#accountNumber').val()
+                    to:
+                    {
+                        id: $('#accountNumber').val()
+                    },
+                    from: {}
                 };
-
                 $.ajax({
                     type: "POST",
                     url: "/api/MoneyTransfer/Transfer",
                     contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify(dataForm),
+                    data: JSON.stringify(dto),
                     dataType: "json"
                 }).done(function (data) {
-                    if (data.message == 'Transfer has been successful') {
-                        Swal.fire('Great!', data.message, 'success');
-                    } else {
-                        Swal.fire('Oops!', data.message, 'error');
-                    }
+                    Swal.fire('Great!', data, 'success');
+
                     var table = $("#lastTransfers").DataTable();
                     $("#transferForm")[0].reset();
                     table.ajax.reload();
 
-                });
+                    }).fail(function (data) {
+                        Swal.fire('Oops!', data.responseJSON.message, 'error');
+                    });
             }
         });
 

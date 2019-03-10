@@ -56,21 +56,19 @@
             "info": false,
             "searching": false,
             "columns": [
-                {"data": "name"},
+                { "data": "name" },
                 { "data": "id" },
-                { "data": "from" },
-                { "data": "to" },
+                { "data": "from.id"},
+                { "data": "to.id" },
                 { "data": "cashAmount", "render": function(data, type, row, meta) {
                     return data.toFixed(2).toLocaleString() + " PLN";
                 } },
                 { "data": "createdOn", "render": function(data, type, row, meta) {
-                    console.log(data);
                     return data.substring(0,10);
                 }}
             ],
             "rowCallback": function(row, data, index) {
                 var username = "@HttpContext.Current.User.Identity.GetUserName()";
-                console.log(data);
                 if (data.from === username) {
                     $('td', row).css('color', '#ff3232');
                     $('td', row).css('font-weight', '500');
