@@ -23,5 +23,10 @@ namespace WebLibrary.Controllers
             return View();
         }
 
+        public ActionResult Transfers()
+        {
+            return View();
+        }
+
     }
 }

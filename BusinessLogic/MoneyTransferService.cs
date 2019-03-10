@@ -81,5 +81,14 @@ namespace BusinessLogic
             return Mapper.Map<List<MoneyTransferDto>>(transfers);
         }
 
+        public List<MoneyTransferDto> GetAllTransfers(int userId)
+        {
+            var transfers = _moneyTransferRepository.GetAll(t => t.From, t => t.To)
+                .Where(t => t.ToId == userId || t.FromId == userId)
+                .OrderByDescending(t => t.CreatedOn)
+                .ToList();
+
+            return Mapper.Map<List<MoneyTransferDto>>(transfers);
+        }
     }
 }
