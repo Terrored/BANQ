@@ -1,30 +1,9 @@
 ﻿@using WebLibrary.IdentityExtensions
-@model List<BusinessLogic.DTOs.MoneyTransferDto>
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Transfers";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
-
-
-<div class="row justify-content-center mt-5 visibility4">
-    <div class="col-md-7 jumbotron">
-        <div class="container">
-            <h2 class="display-4 mb-5">Manage your transfers!</h2>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            </p>
-        </div>
-    </div>
-
-
-    @Html.Partial("_PartialTransfer")
-
-
-</div>
 
 <div class="row justify-content-center visibility4">
     <div class="col  pt-4 pb-1  jumbotron">
@@ -40,10 +19,10 @@
                 </tr>
             </thead>
         </table>
-       @Html.ActionLink("Show more!", "Transfers", "MoneyTransfer", null, new { @class = "btn btn-info btn-block" })
+        @Html.ActionLink("Show more!", "Transfers", "Transfer", null, new { @class = "btn btn-info btn-block" })
 
     </div>
-    
+
 </div>
 
 
@@ -76,7 +55,7 @@
                 }}
             ],
             "rowCallback": function(row, data, index) {
-                
+
                 if (data.from.id === usernameId) {
                     $('td', row).css('color', '#ff3232');
                     $('td', row).css('font-weight', '500');
@@ -89,3 +68,4 @@
     });
 
 </script>
+
