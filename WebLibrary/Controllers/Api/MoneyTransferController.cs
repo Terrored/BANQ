@@ -1,6 +1,6 @@
-﻿using BusinessLogic.Interfaces;
+﻿using BusinessLogic.DTOs;
+using BusinessLogic.Interfaces;
 using DataAccess.Identity;
-using Newtonsoft.Json.Linq;
 using System.Web.Http;
 using WebLibrary.IdentityExtensions;
 
@@ -27,18 +27,26 @@ namespace WebLibrary.Controllers.Api
         }
 
         [HttpPost]
-        public IHttpActionResult Transfer(JObject data)
+        public IHttpActionResult Transfer(MoneyTransferDto dto)
         {
-            var fromId = User.Identity.GetUserId();
+            if (dto == null)
+            {
+                return BadRequest();
+            }
 
-            dynamic transfer = data;
-            decimal cash = transfer.cashAmount;
-            string name = transfer.name;
-            int toId = transfer.toId;
+            dto.From.Id = User.Identity.GetUserId().Value;
 
-            var dto = _moneyTransferService.Transfer(name, cash, fromId.Value, toId);
+            var result = _moneyTransferService.Transfer(dto);
 
-            return Ok(new { message = dto.Message });
+
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+            else
+            {
+                return Ok(result.Message);
+            }
         }
     }
 }
