@@ -13,8 +13,10 @@ namespace WebLibrary
             settings.Formatting = Formatting.Indented;
 
             config.MapHttpAttributeRoutes();
+
             config.Routes.MapHttpRoute("API Default", "api/{controller}/{action}/{id}",
                 new { id = RouteParameter.Optional });
+
         }
     }
 }

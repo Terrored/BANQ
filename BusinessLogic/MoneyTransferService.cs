@@ -81,6 +81,23 @@ namespace BusinessLogic
             return Mapper.Map<List<MoneyTransferDto>>(transfers);
         }
 
+
+        public MoneyTransfersMetadataDto GetMetadata(int userId)
+        {
+            var userTransfers = _moneyTransferRepository.GetAll().Where(t => t.FromId == userId || t.ToId == userId).AsEnumerable();
+
+            var transfersSent = userTransfers.Where(t => t.FromId == userId);
+            var transfersReceived = userTransfers.Where(t => t.ToId == userId);
+
+            var metadata = new MoneyTransfersMetadataDto()
+            {
+                TransfersSent = transfersSent.Count(),
+                TransfersReceived = transfersReceived.Count(),
+                TotalMoneySent = transfersSent.Sum(t => t.CashAmount),
+                TotalMoneyReceived = transfersReceived.Sum(t => t.CashAmount)
+            };
+            return metadata;
+        }
         public List<MoneyTransferDto> GetAllTransfers(int userId)
         {
             var transfers = _moneyTransferRepository.GetAll(t => t.From, t => t.To)
@@ -89,6 +106,7 @@ namespace BusinessLogic
                 .ToList();
 
             return Mapper.Map<List<MoneyTransferDto>>(transfers);
+
         }
     }
 }
