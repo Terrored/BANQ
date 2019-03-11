@@ -74,6 +74,7 @@
     <Compile Include="DTOs\BankAccountTypeDto.cs" />
     <Compile Include="DTOs\BankAccountDto.cs" />
     <Compile Include="DTOs\MoneyTransferDto.cs" />
+    <Compile Include="DTOs\MoneyTransfersMetadataDto.cs" />
     <Compile Include="DTOs\ResultDto.cs" />
     <Compile Include="DTOs\UserDto.cs" />
     <Compile Include="Interfaces\IBankAccountService.cs" />

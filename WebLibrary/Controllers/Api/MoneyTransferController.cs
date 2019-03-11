@@ -48,5 +48,14 @@ namespace WebLibrary.Controllers.Api
                 return Ok(result.Message);
             }
         }
+
+        [HttpGet]
+        public IHttpActionResult Metadata()
+        {
+            var userId = User.Identity.GetUserId().Value;
+            var metadata = _moneyTransferService.GetMetadata(userId);
+
+            return Ok(metadata);
+        }
     }
 }
