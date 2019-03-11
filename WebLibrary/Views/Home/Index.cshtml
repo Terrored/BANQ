@@ -1,8 +1,8 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<link rel="stylesheet" type="text/css" href="~/Content/slick.css"/>
-<link rel="stylesheet" type="text/css" href="~/Content/slick-theme.css"/>
+<link rel="stylesheet" type="text/css" href="~/Content/slick.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/slick-theme.css" />
 
 <div class="jumbotron jumbotron-fluid jumbo visibility2">
     <div class="container">
@@ -11,11 +11,40 @@
     </div>
 </div>
 
-<div class="row mx-0 slick-slider d-none">
-    <div class="col jumbotron mx-1">Sample text</div>
-    <div class="col jumbotron mx-1">Sample text</div>
-    <div class="col jumbotron mx-1">Sample text</div>
-    <div class="col jumbotron mx-1">Sample text</div>
+<div class="row mx-0 slick-slider d-none flex-row">
+    <div class="col slide jumbotron mx-1 my-0 pb-2 pt-4">
+        <h3 class="text-center">Resources protection</h3>
+        <hr />
+        <img src="~/Content/Images/data-protection.jpg&size=1024.jpg" width="300" />
+        <hr />
+        <p class="text-center">We provide the highest level of security for your money and personal data.</p>
+    </div>
+
+    <div class="col slide jumbotron mx-1 my-0  pb-2 pt-4">
+        <h3 class="text-center">Customized loans</h3>
+        <hr />
+        <img src="~/Content/Images/pexels-photo-886465.jpeg" width="300" />
+        <hr />
+        <p class="text-center">We have a wide offer of loans to match needs of our clients.</p>
+    </div>
+
+
+    <<div class="col slide jumbotron mx-1 my-0  pb-2 pt-4">
+        <h3 class="text-center">Beneficial investments</h3>
+        <hr />
+        <img src="~/Content/Images/coins-in-soil-with-young-plants.jpg&size=1024.jpg" width="300" height="200" />
+        <hr />
+        <p class="text-center">Make the best possible savings with our investments.</p>
+    </div>
+
+
+    <<div class="col slide jumbotron mx-1 my-0  pb-2 pt-4">
+        <h3 class="text-center">Pay whenever you want</h3>
+        <hr />
+        <img src="~/Content/Images/e-money.jpg&size=1024.jpg" width="300" height="200" />
+        <hr />
+        <p class="text-center">Make payments anytime you want with our quick, easy to use transfer system.</p>
+    </div>
 </div>
 
 
@@ -33,10 +62,16 @@
                 autoplay: true,
                 autoplaySpeed: 5000,
                 dots: true,
-                pauseOnFocus: false,
+                pauseOnFocus: true,
                 pauseOnHover: false,
 
-            });
+            }).
+                on("setPosition", function (event, slick) {
+                    $(this).find('.slide').height('auto');
+                    var slickTrack = $(this).find('.slick-track');
+                    var slickTrackHeight = $(slickTrack).height();
+                    $(this).find('.slide').css('height', slickTrackHeight + 'px');
+                });
         });
     </script>
 }
