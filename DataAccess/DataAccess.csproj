@@ -130,6 +130,18 @@
     <Compile Include="Migrations\201903072053014_AddedLastNameToAppUser.Designer.cs">
       <DependentUpon>201903072053014_AddedLastNameToAppUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903161633214_AddedCredit.cs" />
+    <Compile Include="Migrations\201903161633214_AddedCredit.Designer.cs">
+      <DependentUpon>201903161633214_AddedCredit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903161732202_AdjustedCreditProperties.cs" />
+    <Compile Include="Migrations\201903161732202_AdjustedCreditProperties.Designer.cs">
+      <DependentUpon>201903161732202_AdjustedCreditProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903161824250_AddedCreditInstallments.cs" />
+    <Compile Include="Migrations\201903161824250_AddedCreditInstallments.Designer.cs">
+      <DependentUpon>201903161824250_AddedCreditInstallments.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OrderBy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -174,6 +186,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903072053014_AddedLastNameToAppUser.resx">
       <DependentUpon>201903072053014_AddedLastNameToAppUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903161633214_AddedCredit.resx">
+      <DependentUpon>201903161633214_AddedCredit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903161732202_AdjustedCreditProperties.resx">
+      <DependentUpon>201903161732202_AdjustedCreditProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903161824250_AddedCreditInstallments.resx">
+      <DependentUpon>201903161824250_AddedCreditInstallments.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

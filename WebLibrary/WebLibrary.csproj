@@ -136,6 +136,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\MoneyTransferController.cs" />
     <Compile Include="Controllers\BankAccountController.cs" />
+    <Compile Include="Controllers\CreditsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoansController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -278,6 +279,7 @@
     <Content Include="Views\MoneyTransfer\Create.cshtml" />
     <Content Include="Views\Shared\_PartialTransfer.cshtml" />
     <Content Include="Views\Loans\Calculator.cshtml" />
+    <Content Include="Views\Credits\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
