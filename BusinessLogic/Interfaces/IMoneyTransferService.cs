@@ -8,5 +8,7 @@ namespace BusinessLogic.Interfaces
         ResultDto Transfer(MoneyTransferDto moneyTransferDto);
         List<MoneyTransferDto> GetLastSentFiveTransfers(int userId);
         MoneyTransfersMetadataDto GetMetadata(int userId);
+        List<MoneyTransferDto> GetAllTransfers(int userId);
+
     }
 }

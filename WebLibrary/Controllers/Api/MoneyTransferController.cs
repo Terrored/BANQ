@@ -26,6 +26,14 @@ namespace WebLibrary.Controllers.Api
             return Ok(transfers);
         }
 
+        [HttpGet]
+        public IHttpActionResult GetAllTransfers()
+        {
+            var userId = User.Identity.GetUserId().Value;
+            var transfers = _moneyTransferService.GetAllTransfers(userId);
+            return Ok(transfers);
+        }
+
         [HttpPost]
         public IHttpActionResult Transfer(MoneyTransferDto dto)
         {
