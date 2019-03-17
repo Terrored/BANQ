@@ -32,6 +32,7 @@ namespace Bootstrapper
             builder.RegisterType<MoneyTransferService>().As<IMoneyTransferService>();
             builder.RegisterType<BankAccountTypeService>().As<IBankAccountTypeService>();
             builder.RegisterType<CreditService>().As<ICreditService>();
+            builder.RegisterType<LoanService>().As<ILoanService>();
             builder.Register<DbContext>(b =>
             {
 

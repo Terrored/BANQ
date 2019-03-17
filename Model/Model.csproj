@@ -51,6 +51,8 @@
     <Compile Include="Models\BaseBankAccountType.cs" />
     <Compile Include="Models\BaseCredit.cs" />
     <Compile Include="Models\BaseCreditInstallment.cs" />
+    <Compile Include="Models\BaseLoan.cs" />
+    <Compile Include="Models\BaseLoanInstallment.cs" />
     <Compile Include="Models\Enums\BankAccountTypeEnum.cs" />
     <Compile Include="Models\BaseBankAccount.cs" />
     <Compile Include="Models\BaseMoneyTransfer.cs" />
