@@ -9,7 +9,7 @@ namespace BusinessLogic.Interfaces
         bool TakeCash(decimal amount, int userId);
         bool GiveCash(decimal amount, int userId);
 
-        //consider changing in the future
+
         BankAccountDto GetBankAccountDetails(int userId);
     }
 }

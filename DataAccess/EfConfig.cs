@@ -36,6 +36,10 @@ namespace DataAccess
                 .HasForeignKey(u => u.ToId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Credit>().HasRequired(c => c.BankAccount).WithOptional(ba => ba.Credit);
+            modelBuilder.Entity<CreditInstallment>().HasRequired(ci => ci.Credit).WithMany(c => c.Installments).WillCascadeOnDelete(false);
+            modelBuilder.Entity<Credit>().Ignore(c => c.Installments);
+
             #region Identity
             modelBuilder.Entity<ApplicationIdentityUser>()
                 .Property(e => e.Id)

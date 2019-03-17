@@ -45,6 +45,9 @@ namespace DataAccess.Identity
         public int BankAccountTypeId { get; set; }
         public ApplicationIdentityUser ApplicationIdentityUser { get; set; }
         public int ApplicationIdentityUserId { get; set; }
+
+        public Credit Credit { get; set; }
+        public int CreditId { get; set; }
     }
 
     public class MoneyTransfer : BaseMoneyTransfer
@@ -57,5 +60,18 @@ namespace DataAccess.Identity
 
     public class BankAccountType : BaseBankAccountType
     {
+    }
+
+    public class Credit : BaseCredit
+    {
+        public BankAccount BankAccount { get; set; }
+        public int BankAccountId { get; set; }
+        public ICollection<CreditInstallment> Installments { get; set; }
+    }
+
+    public class CreditInstallment : BaseCreditInstallment
+    {
+        public Credit Credit { get; set; }
+        public int CreditId { get; set; }
     }
 }
