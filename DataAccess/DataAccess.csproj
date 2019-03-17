@@ -150,6 +150,14 @@
     <Compile Include="Migrations\201903171757447_InsertBankAccountTypes.Designer.cs">
       <DependentUpon>201903171757447_InsertBankAccountTypes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903171935371_Loan.cs" />
+    <Compile Include="Migrations\201903171935371_Loan.Designer.cs">
+      <DependentUpon>201903171935371_Loan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903171941076_LoanInstallments.cs" />
+    <Compile Include="Migrations\201903171941076_LoanInstallments.Designer.cs">
+      <DependentUpon>201903171941076_LoanInstallments.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OrderBy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -209,6 +217,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903171757447_InsertBankAccountTypes.resx">
       <DependentUpon>201903171757447_InsertBankAccountTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903171935371_Loan.resx">
+      <DependentUpon>201903171935371_Loan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903171941076_LoanInstallments.resx">
+      <DependentUpon>201903171941076_LoanInstallments.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

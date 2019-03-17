@@ -40,6 +40,10 @@ namespace DataAccess
             modelBuilder.Entity<CreditInstallment>().HasRequired(ci => ci.Credit).WithMany(c => c.Installments).WillCascadeOnDelete(false);
             modelBuilder.Entity<Credit>().Ignore(c => c.Installments);
 
+            modelBuilder.Entity<Loan>().HasRequired(l => l.BankAccount).WithOptional(ba => ba.Loan);
+            modelBuilder.Entity<LoanInstallment>().HasRequired(l => l.Loan).WithMany(l => l.Installments).WillCascadeOnDelete(false);
+            modelBuilder.Entity<Loan>().Ignore(l => l.Installments);
+
             #region Identity
             modelBuilder.Entity<ApplicationIdentityUser>()
                 .Property(e => e.Id)
