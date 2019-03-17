@@ -12,5 +12,7 @@ namespace Model.Models
         public DateTime DateTaken { get; set; }
         public DateTime? NextInstallmentDate { get; set; }
         public bool PaidInFull { get; set; }
+        public bool Confirmed { get; set; }
+        public DateTime? ConfirmationDate { get; set; }
     }
 }

@@ -1,7 +1,9 @@
-﻿using BusinessLogic.Interfaces;
+﻿using BusinessLogic.DTOs;
+using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.RepositoryInterfaces;
 using System;
+using System.Linq;
 
 namespace BusinessLogic
 {
@@ -18,17 +20,30 @@ namespace BusinessLogic
             _applicationUserManager = applicationUserManager;
         }
 
-        public void CreateCredit(int userId)
+        public void CreateCredit(CreditDto creditDto)
         {
-            var bankAccount = _bankAccountRepository.GetSingle(userId, ba => ba.ApplicationIdentityUser);
+            var bankAccount = _bankAccountRepository.GetSingle(creditDto.UserId, ba => ba.ApplicationIdentityUser);
             var credit = new Credit()
             {
                 BankAccount = bankAccount,
                 BankAccountId = bankAccount.Id,
-                DateTaken = DateTime.Now
+                DateTaken = DateTime.Now,
+                ConfirmationDate = null,
+                Confirmed = creditDto.Confirmed,
+                CreditAmount = creditDto.CreditAmount,
+                PercentageRate = creditDto.PercentageRate,
+                TotalInstallments = creditDto.InstallmentCount
             };
 
             _creditRepository.Create(credit);
+        }
+
+        public void ConfirmCredit(int userId)
+        {
+            var credit = _creditRepository.GetAll().SingleOrDefault(c => c.BankAccountId == userId);
+            credit.Confirmed = true;
+            credit.ConfirmationDate = DateTime.Now;
+            _creditRepository.Update(credit);
         }
     }
 }

@@ -142,6 +142,10 @@
     <Compile Include="Migrations\201903161824250_AddedCreditInstallments.Designer.cs">
       <DependentUpon>201903161824250_AddedCreditInstallments.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903171350190_AddedConfirmationToCredit.cs" />
+    <Compile Include="Migrations\201903171350190_AddedConfirmationToCredit.Designer.cs">
+      <DependentUpon>201903171350190_AddedConfirmationToCredit.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OrderBy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -195,6 +199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903161824250_AddedCreditInstallments.resx">
       <DependentUpon>201903161824250_AddedCreditInstallments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903171350190_AddedConfirmationToCredit.resx">
+      <DependentUpon>201903171350190_AddedConfirmationToCredit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

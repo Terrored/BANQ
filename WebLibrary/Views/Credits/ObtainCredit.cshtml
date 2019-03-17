@@ -1,4 +1,4 @@
-﻿
+﻿@model WebLibrary.Models.CreditViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -19,7 +19,15 @@
 
             <div class="col">
                 <h3 class="text-center">Obtain a credit</h3>
-                
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.TextBoxFor(m => m.CreditAmount, new { @class = "form-control"});
+                    @Html.TextBoxFor(m => m.InstallmentCount);
+                    @Html.TextBoxFor(m => m.PercentageRate);
+                    <button type="submit">Obtain</button>
+                }
+
             </div>
         </div>
         <hr />

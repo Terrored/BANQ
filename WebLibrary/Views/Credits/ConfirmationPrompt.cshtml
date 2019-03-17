@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "ConfirmationPrompt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<form method="post" action="@Url.Action("ConfirmCredit", "Credits")">
+    <button type="submit" value="Confirm"></button>
+</form>
+
+<a href="@Url.Action("Index", "UserInfo")">I'll do it later</a>
+

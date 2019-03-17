@@ -12,6 +12,7 @@ namespace Bootstrapper
         {
             CreateMap<ApplicationIdentityUser, UserDto>();
             CreateMap<MoneyTransfer, MoneyTransferDto>();
+            CreateMap<Credit, CreditDto>().ForMember(cdto => cdto.UserId, opt => opt.MapFrom(c => c.BankAccountId));
         }
 
         public static void Initialize()
