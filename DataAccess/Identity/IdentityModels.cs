@@ -49,8 +49,7 @@ namespace DataAccess.Identity
         public Credit Credit { get; set; }
         public int CreditId { get; set; }
 
-        public Loan Loan { get; set; }
-        public int LoanId { get; set; }
+        public ICollection<Loan> Loans { get; set; }
     }
 
     public class MoneyTransfer : BaseMoneyTransfer
