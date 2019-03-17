@@ -9,10 +9,12 @@ namespace WebLibrary.Controllers
     public class UserInfoController : Controller
     {
         private readonly IBankAccountService _bankAccountService;
+        private readonly ILoanService _loanService;
 
-        public UserInfoController(IBankAccountService bankAccountService)
+        public UserInfoController(IBankAccountService bankAccountService, ILoanService loanService)
         {
             _bankAccountService = bankAccountService;
+            _loanService = loanService;
         }
 
         public ActionResult Index()
@@ -38,6 +40,15 @@ namespace WebLibrary.Controllers
                 };
                 return View(userInfo);
             }
+        }
+
+        public ActionResult Loan()
+        {
+            var userId = HttpContext.User.Identity.GetUserId();
+            _loanService.TakeLoan(userId.Value);
+
+            return View("Index");
+
         }
     }
 }
