@@ -1,7 +1,10 @@
-﻿using BusinessLogic.Interfaces;
+﻿using BusinessLogic.DTOs;
+using BusinessLogic.Interfaces;
 using DataAccess.Identity;
+using Model.Models.Enums;
 using Model.RepositoryInterfaces;
 using System;
+using System.Linq;
 
 namespace BusinessLogic
 {
@@ -18,34 +21,54 @@ namespace BusinessLogic
             _loanInstallmentRepository = loanInstallmentRepository;
         }
 
-        public void TakeLoan(int userId)
+        public void TakeLoan(LoanDto loanDto)
         {
-            var bankAccount = _bankAccountRepository.GetSingle(userId, u => u.ApplicationIdentityUser);
-            var loan = new Loan
-            {
-                BankAccount = bankAccount,
-                BankAccountId = bankAccount.Id,
-                DateTaken = DateTime.Now,
-                TotalInstallments = 12,
-                InstallmentsLeft = 12,
-                LoanAmount = 2000M,
-                PercentageRate = 5M,
 
+            var bankAccount = _bankAccountRepository.GetSingle(loanDto.UserId, u => u.ApplicationIdentityUser, t => t.BankAccountType);
+            int activeLoans = _loanRepository.GetAll().Where(l => l.BankAccountId == bankAccount.Id).ToList().Count;
+
+            var isValid = CanTakeLoan(activeLoans, bankAccount);
+
+            if (isValid)
+            {
+                CreateLoan(loanDto);
+            }
+
+
+
+
+
+        }
+
+        private void CreateLoan(LoanDto loanDto)
+        {
+            var loan = new Loan()
+            {
+                //set
             };
 
-            var loanId = _loanRepository.CreateAndReturnId(loan);
+            _loanRepository.CreateAndReturnId(loan);
+        }
 
-            var installment = new LoanInstallment()
+        private bool CanTakeLoan(int numberOfActiveLoans, BankAccount bankAccount)
+        {
+            if (bankAccount.BankAccountType.Name ==
+                Enum.GetName(typeof(BankAccountTypeEnum), BankAccountTypeEnum.Corporate))
             {
-                LoanId = loanId,
-                InstallmentAmount = 10M,
-                PaidOn = DateTime.Now
-            };
+                return true;
+            }
+            else if (numberOfActiveLoans <= 2 && bankAccount.BankAccountType.Name ==
+                     Enum.GetName(typeof(BankAccountTypeEnum), BankAccountTypeEnum.Regular))
+            {
+                return true;
+            }
+            else if (numberOfActiveLoans <= 0 && bankAccount.BankAccountType.Name ==
+                     Enum.GetName(typeof(BankAccountTypeEnum), BankAccountTypeEnum.Student))
+            {
+                return true;
+            }
 
-            _loanInstallmentRepository.Create(installment);
-
-
-
+            return false;
         }
     }
 }

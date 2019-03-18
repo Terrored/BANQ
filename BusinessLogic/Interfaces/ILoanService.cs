@@ -1,7 +1,9 @@
-﻿namespace BusinessLogic.Interfaces
+﻿using BusinessLogic.DTOs;
+
+namespace BusinessLogic.Interfaces
 {
     public interface ILoanService
     {
-        void TakeLoan(int userId);
+        void TakeLoan(LoanDto loanDto);
     }
 }
