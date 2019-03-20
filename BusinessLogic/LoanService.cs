@@ -43,13 +43,41 @@ namespace BusinessLogic
 
         }
 
-        public void PayInstallment(LoanInstallmentDto installment)
+        public void PayInstallment(LoanInstallmentDto installmentDto)
         {
             //1.sprawdzenie czy można zapłacić ratę dla tego kredytu
             //2. Zabranie pieniędzy
             //3. Stworzenie rekordu rata
             //3.5 Sprawdzenie czy już pożyczka jest spłacona.
             //4. Aktualizacja pożyczki
+            //TODO:Nie ma w modelu wysokości raty
+
+            var installmentCash = 10M;
+
+            var loan = _loanRepository.GetSingle(installmentDto.LoanId, t => t.BankAccount);
+            if (loan.NextInstallmentDate >= DateTime.Now && !loan.Repayment && loan.InstallmentsLeft > 0)
+            {
+
+                //Stworz rekord z kwotą i datą
+                var installment = new LoanInstallment()
+                {
+                    InstallmentAmount = 10M,
+                    LoanId = loan.Id,
+                    PaidOn = DateTime.Now
+                };
+
+                //InstallmentLeft zmniejsz o 1
+                //odejmij kwotę od TODO:LoanAmountLeft 
+                //TODO: Adding one day to next installment date
+                _bankAccountService.TakeCash(installmentCash, loan.BankAccountId);
+                loan.InstallmentsLeft--;
+                _loanRepository.Update(loan);
+                _loanInstallmentRepository.Create(installment);
+
+
+
+
+            }
 
 
         }

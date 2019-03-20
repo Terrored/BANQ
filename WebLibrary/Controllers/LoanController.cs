@@ -40,5 +40,18 @@ namespace WebLibrary.Controllers
 
             return View("Index");
         }
+
+        public ActionResult PayInstallment()
+        {
+            var userId = HttpContext.User.Identity.GetUserId().Value;
+            //Hardcoded for developer testing
+            var installment = new LoanInstallmentDto()
+            {
+                LoanId = 3
+            };
+            _loanService.PayInstallment(installment);
+
+            return View("Index");
+        }
     }
 }
