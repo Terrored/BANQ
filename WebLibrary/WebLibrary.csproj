@@ -138,6 +138,7 @@
     <Compile Include="Controllers\BankAccountController.cs" />
     <Compile Include="Controllers\CreditsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoanController.cs" />
     <Compile Include="Controllers\LoansController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MoneyTransferController.cs" />
@@ -282,6 +283,7 @@
     <Content Include="Views\Loans\Calculator.cshtml" />
     <Content Include="Views\Credits\ObtainCredit.cshtml" />
     <Content Include="Views\Credits\ConfirmationPrompt.cshtml" />
+    <Content Include="Views\Loan\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
