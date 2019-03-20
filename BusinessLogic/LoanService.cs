@@ -89,11 +89,12 @@ namespace BusinessLogic
                 BankAccount = bankAccount,
                 BankAccountId = bankAccount.Id,
                 DateTaken = DateTime.Now,
-                InstallmentsLeft = loanDto.InstallmentsLeft,
+                InstallmentsLeft = loanDto.TotalInstallments,
                 LoanAmount = loanDto.LoanAmount,
                 NextInstallmentDate = loanDto.NextInstallmentDate,
                 PercentageRate = loanDto.PercentageRate,
                 Repayment = loanDto.Repayment,
+                TotalInstallments = loanDto.TotalInstallments,
                 Installments = new List<LoanInstallment>()
 
             };
