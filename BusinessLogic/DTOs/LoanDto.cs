@@ -7,6 +7,8 @@ namespace BusinessLogic.DTOs
         public int Id { get; set; }
         public int UserId { get; set; }
         public decimal LoanAmount { get; set; }
+        public decimal LoanAmountLeft { get; set; }
+        public decimal InstallmentAmount { get; set; }
         public decimal PercentageRate { get; set; }
         public int TotalInstallments { get; set; }
         public int InstallmentsLeft { get; set; }

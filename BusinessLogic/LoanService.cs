@@ -43,7 +43,7 @@ namespace BusinessLogic
 
         }
 
-        public void PayInstallment(LoanInstallmentDto installmentDto)
+        public ResultDto PayInstallment(LoanInstallmentDto installmentDto)
         {
             //1.sprawdzenie czy można zapłacić ratę dla tego kredytu
             //2. Zabranie pieniędzy
@@ -51,7 +51,7 @@ namespace BusinessLogic
             //3.5 Sprawdzenie czy już pożyczka jest spłacona.
             //4. Aktualizacja pożyczki
             //TODO:Nie ma w modelu wysokości raty
-
+            var result = new ResultDto();
 
 
             var loan = _loanRepository.GetSingle(installmentDto.LoanId, t => t.BankAccount);
@@ -66,19 +66,33 @@ namespace BusinessLogic
                     PaidOn = DateTime.Now
                 };
 
-                //InstallmentLeft zmniejsz o 1
-                //odejmij kwotę od TODO:LoanAmountLeft 
-                //TODO: Adding one day to next installment date
-                _bankAccountService.TakeCash(installment.InstallmentAmount, loan.BankAccountId);
-                loan.InstallmentsLeft--;
-                loan.LoanAmountLeft = loan.LoanAmountLeft - installment.InstallmentAmount;
-                _loanRepository.Update(loan);
-                _loanInstallmentRepository.Create(installment);
+
+                var isValid = _bankAccountService.TakeCash(installment.InstallmentAmount, loan.BankAccountId);
+                if (isValid)
+                {
+                    loan.InstallmentsLeft--;
+                    loan.LoanAmountLeft = loan.LoanAmountLeft - installment.InstallmentAmount;
+                    loan.NextInstallmentDate = DateTime.Now.AddDays(1);
+                    _loanRepository.Update(loan);
+                    _loanInstallmentRepository.Create(installment);
+                }
+                else
+                {
+
+                }
+
 
 
 
 
             }
+            else
+            {
+                result.Success = false;
+                result.Message = "You cannot pay the installment for this loan. Check date of your next installment or contact support.";
+            }
+
+            return result;
 
 
         }
