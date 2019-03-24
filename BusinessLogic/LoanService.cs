@@ -52,7 +52,7 @@ namespace BusinessLogic
             //4. Aktualizacja pożyczki
             //TODO:Nie ma w modelu wysokości raty
 
-            var installmentCash = 10M;
+
 
             var loan = _loanRepository.GetSingle(installmentDto.LoanId, t => t.BankAccount);
             if (loan.NextInstallmentDate >= DateTime.Now && !loan.Repayment && loan.InstallmentsLeft > 0)
@@ -61,7 +61,7 @@ namespace BusinessLogic
                 //Stworz rekord z kwotą i datą
                 var installment = new LoanInstallment()
                 {
-                    InstallmentAmount = 10M,
+                    InstallmentAmount = loan.InstallmentAmount,
                     LoanId = loan.Id,
                     PaidOn = DateTime.Now
                 };
@@ -69,8 +69,9 @@ namespace BusinessLogic
                 //InstallmentLeft zmniejsz o 1
                 //odejmij kwotę od TODO:LoanAmountLeft 
                 //TODO: Adding one day to next installment date
-                _bankAccountService.TakeCash(installmentCash, loan.BankAccountId);
+                _bankAccountService.TakeCash(installment.InstallmentAmount, loan.BankAccountId);
                 loan.InstallmentsLeft--;
+                loan.LoanAmountLeft = loan.LoanAmountLeft - installment.InstallmentAmount;
                 _loanRepository.Update(loan);
                 _loanInstallmentRepository.Create(installment);
 
@@ -89,6 +90,7 @@ namespace BusinessLogic
                 BankAccount = bankAccount,
                 BankAccountId = bankAccount.Id,
                 DateTaken = DateTime.Now,
+                InstallmentAmount = 10M,
                 InstallmentsLeft = loanDto.TotalInstallments,
                 LoanAmount = loanDto.LoanAmount,
                 NextInstallmentDate = loanDto.NextInstallmentDate,

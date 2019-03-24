@@ -5,7 +5,9 @@ namespace Model.Models
     public class BaseLoan : BaseEntity
     {
         public decimal LoanAmount { get; set; }
+        public decimal LoanAmountLeft { get; set; }
         public decimal PercentageRate { get; set; }
+        public decimal InstallmentAmount { get; set; }
         public int TotalInstallments { get; set; }
         public int InstallmentsLeft { get; set; }
         public DateTime DateTaken { get; set; }
