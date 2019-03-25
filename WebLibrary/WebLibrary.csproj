@@ -134,6 +134,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\LoanController.cs" />
     <Compile Include="Controllers\Api\MoneyTransferController.cs" />
     <Compile Include="Controllers\BankAccountController.cs" />
     <Compile Include="Controllers\CreditsController.cs" />

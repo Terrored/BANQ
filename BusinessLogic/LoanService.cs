@@ -24,9 +24,9 @@ namespace BusinessLogic
             _bankAccountService = bankAccountService;
         }
 
-        public void TakeLoan(LoanDto loanDto)
+        public ResultDto TakeLoan(LoanDto loanDto)
         {
-
+            var result = new ResultDto();
             var bankAccount = _bankAccountRepository.GetSingle(loanDto.UserId, u => u.ApplicationIdentityUser, t => t.BankAccountType);
             int activeLoans = _loanRepository.GetAll().Where(l => l.BankAccountId == bankAccount.Id).ToList().Count;
 
@@ -34,12 +34,22 @@ namespace BusinessLogic
 
             if (isValid)
             {
-                CreateLoan(loanDto, bankAccount);
+                var id = CreateLoan(loanDto, bankAccount);
+                if (id > 0)
+                {
+                    _bankAccountService.GiveCash(loanDto.LoanAmount, loanDto.UserId);
+                    result.Success = true;
+                }
+
+
+            }
+            else
+            {
+                result.Message = "You cannot take more loans - upgrade your bank account or contact support";
             }
 
-            _bankAccountService.GiveCash(loanDto.LoanAmount, loanDto.UserId);
 
-
+            return result;
 
         }
 
@@ -50,7 +60,7 @@ namespace BusinessLogic
             if (loan.NextInstallmentDate >= DateTime.Now && !loan.Repayment && loan.InstallmentsLeft > 0)
             {
 
-                
+
                 var installment = new LoanInstallment()
                 {
                     InstallmentAmount = loan.InstallmentAmount,
@@ -65,16 +75,21 @@ namespace BusinessLogic
                     loan.InstallmentsLeft--;
                     loan.LoanAmountLeft = loan.LoanAmountLeft - installment.InstallmentAmount;
                     loan.NextInstallmentDate = DateTime.Now.AddDays(1);
+                    if (loan.InstallmentsLeft == 0 && loan.LoanAmountLeft == 0)
+                    {
+                        loan.Repayment = true;
+                        loan.RepaymentDate = DateTime.Now;
+                    }
                     _loanRepository.Update(loan);
                     _loanInstallmentRepository.Create(installment);
 
                     result.Success = true;
-                    
+
                 }
                 else
                 {
                     result.Message = "There was a problem with paying installment";
-                    
+
                 }
 
             }
@@ -88,26 +103,27 @@ namespace BusinessLogic
 
         }
 
-        private void CreateLoan(LoanDto loanDto, BankAccount bankAccount)
+        private int CreateLoan(LoanDto loanDto, BankAccount bankAccount)
         {
             var loan = new Loan()
             {
                 BankAccount = bankAccount,
                 BankAccountId = bankAccount.Id,
                 DateTaken = DateTime.Now,
-                InstallmentAmount = 10M,
+                InstallmentAmount = loanDto.InstallmentAmount,
                 InstallmentsLeft = loanDto.TotalInstallments,
                 LoanAmount = loanDto.LoanAmount,
-                NextInstallmentDate = loanDto.NextInstallmentDate,
-                PercentageRate = loanDto.PercentageRate,
-                Repayment = loanDto.Repayment,
+                LoanAmountLeft = loanDto.LoanAmount,
+                NextInstallmentDate = DateTime.Now.AddDays(1),
+                PercentageRate = 10,
+                Repayment = false,
                 TotalInstallments = loanDto.TotalInstallments,
                 Installments = new List<LoanInstallment>()
 
             };
             // var loan = Mapper.Map<LoanDto, Loan>(loanDto);
 
-            _loanRepository.CreateAndReturnId(loan);
+            return _loanRepository.CreateAndReturnId(loan);
         }
 
         private bool CanTakeLoan(int numberOfActiveLoans, BankAccountType bankAccountType)

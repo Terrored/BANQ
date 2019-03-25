@@ -1,6 +1,5 @@
 ﻿using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
-using System;
 using System.Web.Mvc;
 using WebLibrary.IdentityExtensions;
 
@@ -26,12 +25,8 @@ namespace WebLibrary.Controllers
             var userId = HttpContext.User.Identity.GetUserId().Value;
             var loan = new LoanDto()
             {
-                DateTaken = DateTime.Now,
-                InstallmentsLeft = 12,
                 LoanAmount = 100M,
-                NextInstallmentDate = DateTime.Now.AddDays(1),
                 PercentageRate = 5,
-                Repayment = false,
                 TotalInstallments = 12,
                 UserId = userId
             };
