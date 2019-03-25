@@ -45,20 +45,12 @@ namespace BusinessLogic
 
         public ResultDto PayInstallment(LoanInstallmentDto installmentDto)
         {
-            //1.sprawdzenie czy można zapłacić ratę dla tego kredytu
-            //2. Zabranie pieniędzy
-            //3. Stworzenie rekordu rata
-            //3.5 Sprawdzenie czy już pożyczka jest spłacona.
-            //4. Aktualizacja pożyczki
-            //TODO:Nie ma w modelu wysokości raty
             var result = new ResultDto();
-
-
             var loan = _loanRepository.GetSingle(installmentDto.LoanId, t => t.BankAccount);
             if (loan.NextInstallmentDate >= DateTime.Now && !loan.Repayment && loan.InstallmentsLeft > 0)
             {
 
-                //Stworz rekord z kwotą i datą
+                
                 var installment = new LoanInstallment()
                 {
                     InstallmentAmount = loan.InstallmentAmount,
@@ -75,20 +67,19 @@ namespace BusinessLogic
                     loan.NextInstallmentDate = DateTime.Now.AddDays(1);
                     _loanRepository.Update(loan);
                     _loanInstallmentRepository.Create(installment);
+
+                    result.Success = true;
+                    
                 }
                 else
                 {
-
+                    result.Message = "There was a problem with paying installment";
+                    
                 }
-
-
-
-
 
             }
             else
             {
-                result.Success = false;
                 result.Message = "You cannot pay the installment for this loan. Check date of your next installment or contact support.";
             }
 
