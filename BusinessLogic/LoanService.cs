@@ -112,10 +112,10 @@ namespace BusinessLogic
                 DateTaken = DateTime.Now,
                 InstallmentAmount = loanDto.InstallmentAmount,
                 InstallmentsLeft = loanDto.TotalInstallments,
-                LoanAmount = loanDto.LoanAmount,
-                LoanAmountLeft = loanDto.LoanAmount,
+                LoanAmount = loanDto.LoanAmount * ((100 + loanDto.PercentageRate) / 100),
+                LoanAmountLeft = loanDto.LoanAmount * ((100 + loanDto.PercentageRate) / 100),
                 NextInstallmentDate = DateTime.Now.AddDays(1),
-                PercentageRate = 10,
+                PercentageRate = loanDto.PercentageRate,
                 Repayment = false,
                 TotalInstallments = loanDto.TotalInstallments,
                 Installments = new List<LoanInstallment>()
