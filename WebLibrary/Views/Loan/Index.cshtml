@@ -1,12 +1,87 @@
-﻿
-
-@{
-    ViewBag.Title = "title";
+﻿@{
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="jumbotron">
-    @Html.ActionLink("Take Loan","TakeLoan","Loan",new{@class="btn btn-primary"})
-    @Html.ActionLink("Pay installment for Id3","PayInstallment","Loan",new{@class="btn btn-primary"})
 
+<div class="row justify-content-center">
+
+    <div class="col-md-4">
+        <div class="jumbotron py-5">
+
+            <form class="ml-1" id="loanForm">
+                <h3 class="display-4 mb-5" align="center">New Loan</h3>
+                <label for="loanAmount">Loan amount</label>
+                <div class="input-group mb-3">
+                    
+                    <input type="text" class="form-control" id="loanAmount" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">$</span>
+                    </div>
+
+                </div>
+                <label for="totalInstallments">Total installments</label>
+                <div class="input-group mb-3">
+                    <input type="number" class="form-control" id="totalInstallments" />
+                </div>
+                <label for="installmentAmount">Installment amount</label>
+                <div class="input-group mb-3">
+                    <input disabled="disabled" type="text" class="form-control" id="installmentAmount" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">$</span>
+                    </div>
+                </div>
+
+                <p onclick="submit()" class="btn btn-primary btn-block">Take a loan!</p>
+            </form>
+
+        </div>
+    </div>
 </div>
+
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script>
+   $("#loanForm").change(function() {
+        calculate();
+   });
+   
+        
+   function calculate() {
+       var loanAmount = $("#loanAmount").val();
+       var totalInstallments = $("#totalInstallments").val();
+       console.log(loanAmount);
+       console.log(totalInstallments);
+       var installmentAmount = (loanAmount * (100 + 10) / 100) / totalInstallments;
+
+           
+       console.log(installmentAmount);
+       $("#installmentAmount").val(installmentAmount);
+
+   }  
+
+        $("#installmentAmount").val("123");
+
+
+    function submit() {
+        var dataForm = {
+            loanAmount: $('#loanAmount').val(),
+            installmentAmount: $('#installmentAmount').val(),
+            totalInstallments: $('#totalInstallments').val()
+        };
+        $.ajax({
+            type: "POST",
+            url: "/api/Loan/TakeLoan",
+            data: dataForm
+        }).done(function (data) {
+            
+                Swal.fire('Great!', data.message, 'success');
+            
+
+        });
+    }
+
+</script>
