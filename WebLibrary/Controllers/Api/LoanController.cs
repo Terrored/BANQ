@@ -24,5 +24,11 @@ namespace WebLibrary.Controllers.Api
             _loanService.TakeLoan(loanDto);
             return Ok();
         }
+        [HttpPost]
+        public IHttpActionResult PayInstallment(LoanInstallmentDto installmentDto)
+        {
+            _loanService.PayInstallment(installmentDto);
+            return Ok();
+        }
     }
 }

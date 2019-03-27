@@ -105,6 +105,8 @@ namespace BusinessLogic
 
         private int CreateLoan(LoanDto loanDto, BankAccount bankAccount)
         {
+           
+
             var loan = new Loan()
             {
                 BankAccount = bankAccount,
