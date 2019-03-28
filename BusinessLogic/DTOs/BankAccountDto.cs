@@ -1,5 +1,4 @@
-﻿using DataAccess.Identity;
-using System;
+﻿using System;
 
 namespace BusinessLogic.DTOs
 {
@@ -13,16 +12,5 @@ namespace BusinessLogic.DTOs
         public string BankAccountType { get; set; }
 
 
-        public static BankAccountDto ToDto(BankAccount bankAccount)
-        {
-            return new BankAccountDto()
-            {
-                ApplicationUserId = bankAccount.ApplicationIdentityUserId,
-                Cash = bankAccount.Cash,
-                CreatedOn = bankAccount.CreatedOn,
-                Id = bankAccount.Id,
-                BankAccountType = bankAccount.BankAccountType.Name
-            };
-        }
     }
 }

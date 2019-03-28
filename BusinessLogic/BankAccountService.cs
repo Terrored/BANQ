@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DTOs;
+﻿using AutoMapper;
+using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.RepositoryInterfaces;
@@ -40,7 +41,7 @@ namespace BusinessLogic
 
         public BankAccountDto GetBankAccountDetails(int userId)
         {
-            var bankAccount = _bankAccountRepository.GetAll(b=>b.BankAccountType).FirstOrDefault(ba => ba.ApplicationIdentityUserId == userId);
+            var bankAccount = _bankAccountRepository.GetAll(b => b.BankAccountType).FirstOrDefault(ba => ba.ApplicationIdentityUserId == userId);
 
             if (bankAccount == null)
             {
@@ -48,7 +49,7 @@ namespace BusinessLogic
             }
             else
             {
-                return BankAccountDto.ToDto(bankAccount);
+                return Mapper.Map<BankAccount, BankAccountDto>(bankAccount);
             }
         }
 
