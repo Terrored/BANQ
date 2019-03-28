@@ -6,6 +6,7 @@ using Model.RepositoryInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 
 namespace BusinessLogic
 {
@@ -57,7 +58,7 @@ namespace BusinessLogic
         {
             var result = new ResultDto();
             var loan = _loanRepository.GetSingle(installmentDto.LoanId, t => t.BankAccount);
-            if (loan.NextInstallmentDate >= DateTime.Now && !loan.Repayment && loan.InstallmentsLeft > 0)
+            if (/*loan.NextInstallmentDate >= DateTime.Now &&*/ !loan.Repayment && loan.InstallmentsLeft > 0)
             {
 
 
@@ -103,6 +104,13 @@ namespace BusinessLogic
 
         }
 
+        public List<LoanDto> GetLoans(int userId)
+        {
+            var loans = _loanRepository.GetAll().Where(l => l.BankAccountId == userId).ToList();
+
+            return Mapper.Map<List<LoanDto>>(loans);
+        }
+
         private int CreateLoan(LoanDto loanDto, BankAccount bankAccount)
         {
            
@@ -114,7 +122,7 @@ namespace BusinessLogic
                 DateTaken = DateTime.Now,
                 InstallmentAmount = loanDto.InstallmentAmount,
                 InstallmentsLeft = loanDto.TotalInstallments,
-                LoanAmount = loanDto.LoanAmount * ((decimal)(100 + 10) / 100),
+                LoanAmount = loanDto.LoanAmount,
                 LoanAmountLeft = loanDto.LoanAmount * ((decimal)(100 + 10) / 100),
                 NextInstallmentDate = DateTime.Now.AddDays(1),
                 PercentageRate = 10,

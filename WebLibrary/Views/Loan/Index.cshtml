@@ -37,34 +37,103 @@
 
         </div>
     </div>
+    <div class="col-md-8">
+        <div class="jumbotron">
+            
+            <table id="loans" class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>Loan amount</th>
+                    <th>Loan amount left</th>
+                    <th>Installment amount</th>
+                    <th>Installments left</th>
+                    <th>Next installment date</th>
+                    <th>Pay installment</th>
+                </tr>
+                </thead>
+            </table>
+            <p id="payInstallment" class="btn btn-primary">Pay Installment</p>
+        </div>
+    </div>
 </div>
 
 
 
-<script src="~/Scripts/jquery-3.3.1.min.js"></script>
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script>
-   $("#loanForm").change(function() {
+
+    $(document).ready(function() {
+
+
+        $('#loans').DataTable({
+            "ajax": { url: "/api/Loan/GetLoans", dataSrc: "" },
+            "paging": false,
+            "ordering": false,
+            "info": false,
+            "searching": false,
+            "columns": [
+                { "data": "loanAmount" },
+                { "data": "loanAmountLeft" },
+                { "data": "installmentAmount" },
+                { "data": "installmentsLeft" },
+                { "data": "nextInstallmentDate", "render": function(data, type, row, meta) {
+
+                    return data.substring(0,10);
+                    }},
+                {
+                    "data": "id",
+                    "render": function(data, type, row, meta) {
+
+                        return "<p class='btn btn-primary payInstallment' value='" + data + "'>Pay!</p>";
+                    }
+                }
+
+            ]
+        });
+
+
+        $("#loans tbody").on("click",".payInstallment",function() {
+            var loanId = $(this).attr('value');
+            console.log(loanId);
+            console.log("XDD");
+            $.ajax({
+                type: "POST",
+                url: "/api/Loan/PayInstallment",
+                data: {
+                    loanId: loanId
+                }
+            }).done(function() {
+                swal.fire('Cool!', 'Installment has been payed', 'success');
+                var table = $("#loans").DataTable();
+                table.ajax.reload();
+                });
+
+            
+            return false;
+        });
+
+    });
+
+    $("#loanForm").change(function() {
         calculate();
-   });
+    });
    
-        
-   function calculate() {
-       var loanAmount = $("#loanAmount").val();
-       var totalInstallments = $("#totalInstallments").val();
-       console.log(loanAmount);
-       console.log(totalInstallments);
-       var installmentAmount = (loanAmount * (100 + 10) / 100) / totalInstallments;
+
+
+    function calculate() {
+        var loanAmount = $("#loanAmount").val();
+        var totalInstallments = $("#totalInstallments").val();
+        console.log(loanAmount);
+        console.log(totalInstallments);
+        var installmentAmount = (loanAmount * (100 + 10) / 100) / totalInstallments;
 
            
-       console.log(installmentAmount);
-       $("#installmentAmount").val(installmentAmount);
+        console.log(installmentAmount);
+        $("#installmentAmount").val(installmentAmount);
 
-   }  
+    }
 
-        $("#installmentAmount").val("123");
-
+   
 
     function submit() {
         var dataForm = {
@@ -78,7 +147,7 @@
             data: dataForm
         }).done(function (data) {
             
-                Swal.fire('Great!', data.message, 'success');
+            Swal.fire('Great!', data.message, 'success');
             
 
         });

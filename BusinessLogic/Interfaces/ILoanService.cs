@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DTOs;
+﻿using System.Collections.Generic;
+using BusinessLogic.DTOs;
 
 namespace BusinessLogic.Interfaces
 {
@@ -6,5 +7,6 @@ namespace BusinessLogic.Interfaces
     {
         ResultDto TakeLoan(LoanDto loanDto);
         ResultDto PayInstallment(LoanInstallmentDto installmentDto);
+        List<LoanDto> GetLoans(int userId);
     }
 }

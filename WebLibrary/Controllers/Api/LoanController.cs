@@ -30,5 +30,13 @@ namespace WebLibrary.Controllers.Api
             _loanService.PayInstallment(installmentDto);
             return Ok();
         }
+
+        [HttpGet]
+        public IHttpActionResult GetLoans()
+        {
+            var userId = User.Identity.GetUserId().Value;
+            var loans = _loanService.GetLoans(userId);
+            return Ok(loans);
+        }
     }
 }
