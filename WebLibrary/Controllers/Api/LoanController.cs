@@ -21,14 +21,31 @@ namespace WebLibrary.Controllers.Api
 
             loanDto.UserId = User.Identity.GetUserId().Value;
 
-            _loanService.TakeLoan(loanDto);
-            return Ok();
+            var result = _loanService.TakeLoan(loanDto);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.Message);
+            }
+
         }
         [HttpPost]
         public IHttpActionResult PayInstallment(LoanInstallmentDto installmentDto)
         {
             var result = _loanService.PayInstallment(installmentDto);
-            return Ok(result);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.Message);
+            }
+
         }
 
         [HttpGet]

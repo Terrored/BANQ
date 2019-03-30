@@ -40,6 +40,7 @@ namespace BusinessLogic
                 {
                     _bankAccountService.GiveCash(loanDto.LoanAmount, loanDto.UserId);
                     result.Success = true;
+                    result.Message = "Money has been added to your account!";
                 }
 
 
@@ -123,7 +124,7 @@ namespace BusinessLogic
                 InstallmentAmount = loanDto.InstallmentAmount,
                 InstallmentsLeft = loanDto.TotalInstallments,
                 LoanAmount = loanDto.LoanAmount,
-                LoanAmountLeft = loanDto.LoanAmount * ((decimal)(100 + 10) / 100),
+                LoanAmountLeft = loanDto.LoanAmountLeft,
                 NextInstallmentDate = DateTime.Now.AddDays(1),
                 PercentageRate = 10,
                 Repayment = false,
