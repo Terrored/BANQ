@@ -4,6 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@if(ViewBag.Message!=null)
+{
+    <div>@ViewBag.Message</div>
+}
 
 <form method="post" action="@Url.Action("ConfirmCredit", "Credits")">
     <button type="submit" value="Confirm"></button>

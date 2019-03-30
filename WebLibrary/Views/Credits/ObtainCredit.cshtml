@@ -8,6 +8,16 @@
     <div class="col-8 py-4 jumbotron visibility3">
         <h2 class="text-center">The best credits on the market</h2>
         <hr />
+        @if (ViewBag.Message != null)
+        {
+            <div class="row">
+                <div class="col">
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.Message
+                    </div>
+                </div>
+            </div>
+        }
         <div class="row mx-0">
             <div class="col">
                 <h3 class="text-center">Customer confidence</h3>
@@ -22,10 +32,11 @@
                 @using (Html.BeginForm())
                 {
                     @Html.AntiForgeryToken()
-                    @Html.TextBoxFor(m => m.CreditAmount, new { @class = "form-control"});
-                    @Html.TextBoxFor(m => m.InstallmentCount);
-                    @Html.TextBoxFor(m => m.PercentageRate);
-                    <button type="submit">Obtain</button>
+                    @Html.TextBoxFor(m => m.CreditAmount, new { @class = "form-control" });
+                    <label>Credit period</label>
+                    <input type="range" id="periodYearsInput" name="CreditPeriodInYears" class="form-control-range" min="1" max="10" />
+                    <label id="periodYearsValue"></label>
+                    <button type="submit" class="btn btn-primary btn-block">Obtain</button>
                 }
 
             </div>
@@ -35,7 +46,7 @@
             <div class="col">
                 <p class="text-center">
                     Not sure about credit conditions? Use our calculator and customize them to your needs!<br />
-                <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#calculatorModal">Open calculator</button>
+                    <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#calculatorModal">Open calculator</button>
                 </p>
             </div>
         </div>
@@ -99,7 +110,7 @@
 
 @section scripts
 {
-    
+
     <script>
         $(document).ready(function () {
 
@@ -124,6 +135,17 @@
                 else
                     return " years";
             };
+
+            (function () {
+                var currentPeriod = $("#periodYearsInput").val();
+                $("#periodYearsValue").html(currentPeriod + getYearSpelling(currentPeriod));
+
+                $("#periodYearsInput").on("input", function () {
+                    var creditPeriod = $(this).val();
+                    $("#periodYearsValue").html(creditPeriod + getYearSpelling(creditPeriod));
+                });
+            })();
+
 
             //initializing stuff...
             (function () {

@@ -31,15 +31,18 @@ namespace WebLibrary.Controllers
 
             var creditDto = new CreditDto()
             {
-                InstallmentCount = model.InstallmentCount,
+                InstallmentCount = model.CreditPeriodInYears * 12,
                 CreditAmount = model.CreditAmount,
-                PercentageRate = model.PercentageRate,
-                Confirmed = false,
                 UserId = userId
             };
 
-            _creditService.CreateCredit(creditDto);
-            return View("ConfirmationPrompt");
+            var result = _creditService.CreateCredit(creditDto);
+            ViewBag.Message = result.Message;
+
+            if (!result.Success)
+                return View(model);
+            else
+                return View("ConfirmationPrompt");
         }
 
         [HttpPost]

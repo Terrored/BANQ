@@ -146,10 +146,6 @@
     <Compile Include="Migrations\201903171350190_AddedConfirmationToCredit.Designer.cs">
       <DependentUpon>201903171350190_AddedConfirmationToCredit.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201903171757447_InsertBankAccountTypes.cs" />
-    <Compile Include="Migrations\201903171757447_InsertBankAccountTypes.Designer.cs">
-      <DependentUpon>201903171757447_InsertBankAccountTypes.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201903172139219_NewLoans.cs" />
     <Compile Include="Migrations\201903172139219_NewLoans.Designer.cs">
       <DependentUpon>201903172139219_NewLoans.cs</DependentUpon>
@@ -210,9 +206,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903171350190_AddedConfirmationToCredit.resx">
       <DependentUpon>201903171350190_AddedConfirmationToCredit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903171757447_InsertBankAccountTypes.resx">
-      <DependentUpon>201903171757447_InsertBankAccountTypes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903172139219_NewLoans.resx">
       <DependentUpon>201903172139219_NewLoans.cs</DependentUpon>

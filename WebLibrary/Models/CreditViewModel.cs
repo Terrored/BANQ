@@ -8,9 +8,6 @@ namespace WebLibrary.Models
         public decimal CreditAmount { get; set; }
 
         [Required]
-        public decimal PercentageRate { get; set; }
-
-        [Required]
-        public int InstallmentCount { get; set; }
+        public int CreditPeriodInYears { get; set; }
     }
 }
