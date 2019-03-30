@@ -1,7 +1,12 @@
-﻿namespace BusinessLogic.Interfaces
+﻿using System.Collections.Generic;
+using BusinessLogic.DTOs;
+
+namespace BusinessLogic.Interfaces
 {
     public interface ILoanService
     {
-        void TakeLoan(int userId);
+        ResultDto TakeLoan(LoanDto loanDto);
+        ResultDto PayInstallment(LoanInstallmentDto installmentDto);
+        List<LoanDto> GetLoans(int userId);
     }
 }
