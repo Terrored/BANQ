@@ -37,6 +37,8 @@ namespace BusinessLogic
                 return new ResultDto() { Success = false, Message = "Provided credit amount is not suitable for your account type" };
 
             decimal percentageRate = GetPercentageRate(creditDto, bankAccount.BankAccountType.Name);
+            creditDto.PercentageRate = percentageRate;
+
             decimal installmentAmount = GetInstallmentAmount(creditDto);
 
             var credit = new Credit()
@@ -60,10 +62,13 @@ namespace BusinessLogic
             return new ResultDto() { Success = true, Message = "You have submitted a credit. Please wait for confirmation from our staff." };
         }
 
-        //temporary
         public decimal GetInstallmentAmount(CreditDto creditDto)
         {
-            return 10m;
+            var q = ((creditDto.PercentageRate / 100) / 12) + 1;
+            var helper = Math.Pow((double)q, creditDto.InstallmentCount);
+
+            var installment = creditDto.CreditAmount * (decimal)helper * (q - 1) / ((decimal)helper - 1);
+            return installment;
         }
 
         public void ConfirmCredit(int userId)
@@ -108,7 +113,22 @@ namespace BusinessLogic
         //temporary
         public decimal GetPercentageRate(CreditDto creditDto, string bankAccountType)
         {
-            return 5m;
+            if (bankAccountType == "Regular")
+            {
+                if (creditDto.CreditAmount < 30000m)
+                    return 8m;
+                else
+                    return 5m;
+            }
+            else if (bankAccountType == "Corporate")
+            {
+                if (creditDto.CreditAmount < 50000m)
+                    return 6m;
+                else
+                    return 4m;
+            }
+            else
+                return 0m;
         }
 
         public bool ValidateCreditPeriod(CreditDto creditDto)

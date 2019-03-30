@@ -6,6 +6,7 @@ using WebLibrary.Models;
 
 namespace WebLibrary.Controllers
 {
+    [Authorize]
     public class CreditsController : Controller
     {
         private readonly ICreditService _creditService;
