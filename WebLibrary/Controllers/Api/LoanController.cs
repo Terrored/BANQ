@@ -27,8 +27,8 @@ namespace WebLibrary.Controllers.Api
         [HttpPost]
         public IHttpActionResult PayInstallment(LoanInstallmentDto installmentDto)
         {
-            _loanService.PayInstallment(installmentDto);
-            return Ok();
+            var result = _loanService.PayInstallment(installmentDto);
+            return Ok(result);
         }
 
         [HttpGet]

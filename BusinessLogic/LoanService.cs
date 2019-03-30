@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DTOs;
+﻿using AutoMapper;
+using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.Models.Enums;
@@ -6,7 +7,6 @@ using Model.RepositoryInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 
 namespace BusinessLogic
 {
@@ -85,12 +85,12 @@ namespace BusinessLogic
                     _loanInstallmentRepository.Create(installment);
 
                     result.Success = true;
+                    result.Message = "Payment has been successful!";
 
                 }
                 else
                 {
                     result.Message = "There was a problem with paying installment";
-
                 }
 
             }
@@ -113,7 +113,7 @@ namespace BusinessLogic
 
         private int CreateLoan(LoanDto loanDto, BankAccount bankAccount)
         {
-           
+
 
             var loan = new Loan()
             {
@@ -131,25 +131,20 @@ namespace BusinessLogic
                 Installments = new List<LoanInstallment>()
 
             };
-            // var loan = Mapper.Map<LoanDto, Loan>(loanDto);
-
             return _loanRepository.CreateAndReturnId(loan);
         }
 
         private bool CanTakeLoan(int numberOfActiveLoans, BankAccountType bankAccountType)
         {
-            if (bankAccountType.Name ==
-                Enum.GetName(typeof(BankAccountTypeEnum), BankAccountTypeEnum.Corporate))
+            if (bankAccountType.Name == BankAccountTypeEnum.Corporate.ToString("G"))
             {
                 return true;
             }
-            else if (numberOfActiveLoans <= 2 && bankAccountType.Name ==
-                     Enum.GetName(typeof(BankAccountTypeEnum), BankAccountTypeEnum.Regular))
+            else if (numberOfActiveLoans <= 2 && bankAccountType.Name == BankAccountTypeEnum.Regular.ToString("G"))
             {
                 return true;
             }
-            else if (numberOfActiveLoans <= 0 && bankAccountType.Name ==
-                     Enum.GetName(typeof(BankAccountTypeEnum), BankAccountTypeEnum.Student))
+            else if (numberOfActiveLoans <= 0 && bankAccountType.Name == BankAccountTypeEnum.Student.ToString("G"))
             {
                 return true;
             }
