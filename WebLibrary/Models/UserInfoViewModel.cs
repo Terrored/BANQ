@@ -8,6 +8,7 @@ namespace WebLibrary.Models
         public string UserFirstName { get; set; }
         public string UserSex { get; set; }
         public string UserLastName { get; set; }
+        public bool UnconfirmedCredit { get; set; }
 
         public string IconClass
         {

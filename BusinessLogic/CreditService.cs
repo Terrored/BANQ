@@ -12,12 +12,14 @@ namespace BusinessLogic
         private readonly IEntityRepository<BankAccount> _bankAccountRepository;
         private readonly IEntityRepository<Credit> _creditRepository;
         private readonly IApplicationUserManager _applicationUserManager;
+        private readonly IBankAccountService _bankAccountService;
 
-        public CreditService(IEntityRepository<BankAccount> bankAccountRepository, IEntityRepository<Credit> creditRepository, IApplicationUserManager applicationUserManager)
+        public CreditService(IEntityRepository<BankAccount> bankAccountRepository, IEntityRepository<Credit> creditRepository, IApplicationUserManager applicationUserManager, IBankAccountService bankAccountService)
         {
             _bankAccountRepository = bankAccountRepository;
             _creditRepository = creditRepository;
             _applicationUserManager = applicationUserManager;
+            _bankAccountService = bankAccountService;
         }
 
         public ResultDto CreateCredit(CreditDto creditDto)
@@ -59,7 +61,13 @@ namespace BusinessLogic
 
             _creditRepository.Create(credit);
 
-            return new ResultDto() { Success = true, Message = "You have submitted a credit. Please wait for confirmation from our staff." };
+            return new ResultDto()
+            {
+                Success = true,
+                Message = "You have submitted a credit request. " +
+                    "Since we are taking care about your safety, the request will be analyzed by our staff. " +
+                    "You will be contacted within 24 hours in order to confirm the credit. "
+            };
         }
 
         public decimal GetInstallmentAmount(CreditDto creditDto)
@@ -69,14 +77,6 @@ namespace BusinessLogic
 
             var installment = creditDto.CreditAmount * (decimal)helper * (q - 1) / ((decimal)helper - 1);
             return installment;
-        }
-
-        public void ConfirmCredit(int userId)
-        {
-            var credit = _creditRepository.GetAll().SingleOrDefault(c => c.BankAccountId == userId);
-            credit.Confirmed = true;
-            credit.ConfirmationDate = DateTime.Now;
-            _creditRepository.Update(credit);
         }
 
         public bool ValidateCreditAmount(CreditDto creditDto, string bankAccountType)
@@ -116,16 +116,16 @@ namespace BusinessLogic
             if (bankAccountType == "Regular")
             {
                 if (creditDto.CreditAmount < 30000m)
-                    return 8m;
+                    return 12m;
                 else
-                    return 5m;
+                    return 10m;
             }
             else if (bankAccountType == "Corporate")
             {
                 if (creditDto.CreditAmount < 50000m)
-                    return 6m;
+                    return 9.5m;
                 else
-                    return 4m;
+                    return 7m;
             }
             else
                 return 0m;
@@ -137,6 +137,16 @@ namespace BusinessLogic
                 return false;
             else
                 return true;
+        }
+
+        public void ConfirmCredit(int userId)
+        {
+            var credit = _creditRepository.GetAll().SingleOrDefault(c => c.BankAccountId == userId);
+            credit.Confirmed = true;
+            credit.ConfirmationDate = DateTime.Now;
+            _creditRepository.Update(credit);
+
+            _bankAccountService.GiveCash(credit.CreditAmount, userId);
         }
     }
 }
