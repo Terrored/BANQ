@@ -4,14 +4,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@if(ViewBag.Message!=null)
-{
-    <div>@ViewBag.Message</div>
-}
 
-<form method="post" action="@Url.Action("ConfirmCredit", "Credits")">
-    <button type="submit" value="Confirm"></button>
-</form>
 
-<a href="@Url.Action("Index", "UserInfo")">I'll do it later</a>
+<div class="row mt-5 mx-0">
+    <div class="alert alert-primary" role="alert">
+        @if (ViewBag.Message != null)
+        {
+            <h4 class="display-4 text-center">@ViewBag.Message</h4>
+
+            <form method="post" class="mt-4" action="@Url.Action("ConfirmCredit", "Credits")">
+                <button class="btn btn-primary" type="submit">Confirm</button>
+            </form>
+            <a href="@Url.Action("Index", "UserInfo")">I'll do it later</a>
+        }
+    </div>
+</div>
+
+
+
 

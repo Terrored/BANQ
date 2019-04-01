@@ -11,11 +11,13 @@ namespace BusinessLogic
     public class BankAccountService : IBankAccountService
     {
         private readonly IEntityRepository<BankAccount> _bankAccountRepository;
+        private readonly IEntityRepository<Credit> _creditRepository;
         private readonly IApplicationUserManager _applicationUserManager;
 
-        public BankAccountService(IEntityRepository<BankAccount> bankAccountRepository, IApplicationUserManager applicationUserManager)
+        public BankAccountService(IEntityRepository<BankAccount> bankAccountRepository, IEntityRepository<Credit> creditRepository, IApplicationUserManager applicationUserManager)
         {
             _bankAccountRepository = bankAccountRepository;
+            _creditRepository = creditRepository;
             _applicationUserManager = applicationUserManager;
         }
 
@@ -80,5 +82,15 @@ namespace BusinessLogic
             return success;
         }
 
+        public bool HasUnconfirmedCredit(int userId)
+        {
+            var bankAccountId = userId;
+            var credit = _creditRepository.GetAll().Where(c => c.BankAccountId == bankAccountId).SingleOrDefault();
+
+            if (credit == null || credit.Confirmed == true)
+                return false;
+            else
+                return true;
+        }
     }
 }
