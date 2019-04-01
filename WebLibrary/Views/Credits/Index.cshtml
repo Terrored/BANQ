@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mx-0 justify-content-center">
+    <div class="col-8 jumbotron py-4 mt-5 visibility3">
+        <h2 class="text-center">The best credits on the market</h2>
+        <hr />
+        "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
+        voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati
+        cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est
+        laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero
+        tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat
+        facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam
+        et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint
+        et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis
+        voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat." <br />
+
+        Our conditions: <br />
+        Regular - Up to 50 000 PLN with only 10% rate <br />
+        Corporate - Up to 100 000 PLN with only 7% rate <br />
+        Student - We have a special offer for students (Work in progress) <br />
+        Savings - Saving accounts are not allowed for credits. <br />
+
+        <hr />
+        <div>
+            <h4>Interested?</h4>
+            Call out consultant (WIP) or <a href="@Url.Action("ObtainCredit", "Credits")">obtain credit right now!</a>
+        </div>
+    </div>
+</div>

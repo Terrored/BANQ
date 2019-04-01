@@ -16,6 +16,11 @@ namespace WebLibrary.Controllers
             _creditService = creditService;
         }
 
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         public ActionResult ObtainCredit()
         {
             return View(new CreditViewModel());

@@ -36,7 +36,8 @@ namespace WebLibrary.Controllers
                     BankAccount = bankAccount,
                     UserFirstName = User.Identity.Name,
                     UserLastName = lastName,
-                    UserSex = sex
+                    UserSex = sex,
+                    UnconfirmedCredit = _bankAccountService.HasUnconfirmedCredit(currentUserId)
                 };
                 return View(userInfo);
             }
