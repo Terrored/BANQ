@@ -2,19 +2,24 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script src="https://cdn.rawgit.com/JDMcKinstry/JavaScriptDateFormat/master/Date.format.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/bootstrap.bundle.min.js"></script>
+<script src="~/Scripts/jquery-validate.bootstrap-tooltip.min.js"></script>
 
 <div class="row justify-content-center">
 
     <div class="col-md-4">
         <div class="jumbotron py-5">
 
-            <form class="ml-1" id="loanForm">
+            <form class="ml-1" method="post" id="loanForm">
                 <h3 class="display-4 mb-5" align="center">New Loan</h3>
                 <label for="loanAmount">Loan amount</label>
                 <div class="input-group mb-3">
 
-                    <input type="text" class="form-control" id="loanAmount" />
+                    <input type="text" class="form-control" name="loanAmount" id="loanAmount" />
                     <div class="input-group-append">
                         <span class="input-group-text">PLN</span>
                     </div>
@@ -22,7 +27,7 @@
                 </div>
                 <div class="input-group my-3">
                     <label for="totalInstallments">Total installments</label>
-                    <input type="range" class="custom-range" id="totalInstallments" min="1" max="20" step="1" />
+                    <input type="range" class="custom-range" id="totalInstallments" min="6" max="24" step="1" />
                     <label id="installmentInfo">installment(s)</label>
                 </div>
                 <label for="installmentAmount">Installment amount</label>
@@ -33,38 +38,80 @@
                     </div>
                 </div>
 
-                <p onclick="submit()" class="btn btn-primary btn-block">Take a loan!</p>
+                <input type="submit" class="btn btn-primary btn-block" value="Take a loan!" />
             </form>
 
         </div>
     </div>
     <div class="col-md-8">
         <div class="jumbotron">
-            
+
             <table id="loans" class="table table-striped table-bordered">
                 <thead>
-                <tr>
-                    <th>Loan amount</th>
-                    <th>Loan amount left</th>
-                    <th>Installment amount</th>
-                    <th>Installments left</th>
-                    <th>Next installment date</th>
-                    <th>Pay installment</th>
-                </tr>
+                    <tr>
+                        <th>Loan amount</th>
+                        <th>Loan amount left</th>
+                        <th>Installment amount</th>
+                        <th>Installments left</th>
+                        <th>Next installment date</th>
+                        <th>Pay installment</th>
+                    </tr>
                 </thead>
             </table>
-            </div>
+        </div>
     </div>
 </div>
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script src="https://cdn.rawgit.com/JDMcKinstry/JavaScriptDateFormat/master/Date.format.min.js"></script>
+
 <script>
 
-    $(document).ready(function() {
+    $(document).ready(function () {
+        $("#loanForm").validate({
+            rules: {
+                loanAmount: {
+                    required: true,
+                    min: 500 + Number.MIN_VALUE,
+                    max: 10000 + Number.MIN_VALUE
+                }
+            },
+            messages: {
+                loanAmount: "Min loan amount is 500 PLN and max is 10000 PLN!"
+            },
+            tooltip_options: {
 
+                loanAmount: { placement: 'right' }
+
+            },
+            submitHandler: function (form) {
+                var dataForm = {
+                    loanAmount: $('#loanAmount').val(),
+                    installmentAmount: $('#installmentAmount').val(),
+                    totalInstallments: $('#totalInstallments').val(),
+                    loanAmountLeft: ($('#totalInstallments').val() * $('#installmentAmount').val()).toFixed(2)
+                };
+                console.log(form);
+                $.ajax({
+                    type: "POST",
+                    url: "/api/Loan/TakeLoan",
+                    data: dataForm
+                }).done(function (data) {
+                    console.log(data);
+                    Swal.fire('Great!', data.message, 'success');
+                    var table = $("#loans").DataTable();
+                    table.ajax.reload();
+                }).fail(function (data) {
+
+                    swal.fire('Oops!', data.responseJSON.message, 'error');
+
+                });
+
+
+
+
+            }
+        });
 
         $('#loans').DataTable({
             "ajax": { url: "/api/Loan/GetLoans", dataSrc: "" },
@@ -74,8 +121,8 @@
             "searching": false,
             "columns": [
                 {
-                    "data": "loanAmount" ,
-                    "render": function(data, type, row, meta) {
+                    "data": "loanAmount",
+                    "render": function (data, type, row, meta) {
                         return data.toFixed(2).toLocaleString() + " PLN";
                     }
                 },
@@ -83,20 +130,24 @@
                     "data": "loanAmountLeft",
                     "render": function (data, type, row, meta) {
                         return data.toFixed(2).toLocaleString() + " PLN";
-                    } },
+                    }
+                },
                 {
                     "data": "installmentAmount",
                     "render": function (data, type, row, meta) {
                         return data.toFixed(2).toLocaleString() + " PLN";
-                    } },
+                    }
+                },
                 { "data": "installmentsLeft" },
-                { "data": "nextInstallmentDate", "render": function(data, type, row, meta) {
+                {
+                    "data": "nextInstallmentDate", "render": function (data, type, row, meta) {
 
-                    return data.substring(0,10);
-                    }},
+                        return data.substring(0, 10);
+                    }
+                },
                 {
                     "data": "id",
-                    "render": function(data, type, row, meta) {
+                    "render": function (data, type, row, meta) {
                         if (row.installmentsLeft == 0) {
                             return null;
                         }
@@ -116,7 +167,7 @@
         });
 
 
-        $("#loans tbody").on("click",".payInstallment",function() {
+        $("#loans tbody").on("click", ".payInstallment", function () {
 
 
             swal.fire({
@@ -140,68 +191,47 @@
                         swal.fire('Success!', data.message, 'success');
                         var table = $("#loans").DataTable();
                         table.ajax.reload();
-                        }).fail(function (data) {
+                    }).fail(function (data) {
+
                         swal.fire('Oops!', data.responseJSON.message, 'error');
+
                     });
 
                 }
             })
 
-           
-            
+
+
             return false;
         });
 
-    });
-
-    $("#loanForm").change(function() {
-        calculate();
-        var installmentsNumber = $("#totalInstallments").val();
-        $("#installmentInfo").empty();
-        $("#installmentInfo").append(installmentsNumber + " installment(s)");
-    });
-   
 
 
-    function calculate() {
-
-        var loanAmount = $("#loanAmount").val();
-        var totalInstallments = $("#totalInstallments").val();
-
-        var inst = 0;
-
-        for (var i = 1; i <= totalInstallments; i++) {
-
-            inst = inst + (1 / Math.pow((1 + 0.10 / 2), i));
-        }
-        var installmentAmount = loanAmount / inst;
-        $("#installmentAmount").val(installmentAmount.toFixed(2));
-
-    }
-
-   
-
-    function submit() {
-        var dataForm = {
-            loanAmount: $('#loanAmount').val(),
-            installmentAmount: $('#installmentAmount').val(),
-            totalInstallments: $('#totalInstallments').val(),
-            loanAmountLeft: ($('#totalInstallments').val() * $('#installmentAmount').val()).toFixed(2)
-        };
-        $.ajax({
-            type: "POST",
-            url: "/api/Loan/TakeLoan",
-            data: dataForm
-        }).done(function (data) {
-            console.log(data);
-            Swal.fire('Great!', data.message, 'success');
-            var table = $("#loans").DataTable();
-            table.ajax.reload();
-            }).fail(function (data) {
-
-                Swal.fire('Oops!', data.responeJSON.message, 'error');
-
+        $("#loanForm").change(function () {
+            calculate();
+            var installmentsNumber = $("#totalInstallments").val();
+            $("#installmentInfo").empty();
+            $("#installmentInfo").append(installmentsNumber + " installment(s)");
         });
-    }
+
+
+
+        function calculate() {
+
+            var loanAmount = $("#loanAmount").val();
+            var totalInstallments = $("#totalInstallments").val();
+
+            var inst = 0;
+
+            for (var i = 1; i <= totalInstallments; i++) {
+
+                inst = inst + (1 / Math.pow((1 + 0.10 / 2), i));
+            }
+            var installmentAmount = loanAmount / inst;
+            $("#installmentAmount").val(installmentAmount.toFixed(2));
+
+        }
+
+    });
 
 </script>

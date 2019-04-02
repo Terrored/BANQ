@@ -7,6 +7,7 @@ using Model.RepositoryInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Helpers;
 
 namespace BusinessLogic
 {
@@ -27,7 +28,14 @@ namespace BusinessLogic
 
         public ResultDto TakeLoan(LoanDto loanDto)
         {
-            var result = new ResultDto();
+            var result = new ResultDto(){Success = false};
+
+            if (loanDto.LoanAmount < 500 || loanDto.LoanAmount > 10000)
+            {
+                result.Message = "Invalid loan amount! MIN is 500 PLN and MAX is 10000 PLN";
+                return result;
+            }
+
             var bankAccount = _bankAccountRepository.GetSingle(loanDto.UserId, u => u.ApplicationIdentityUser, t => t.BankAccountType);
             int activeLoans = _loanRepository.GetAll().Where(l => l.BankAccountId == bankAccount.Id).ToList().Count;
 
