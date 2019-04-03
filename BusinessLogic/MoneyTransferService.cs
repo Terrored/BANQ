@@ -49,7 +49,7 @@ namespace BusinessLogic
                         _moneyTransferRepository.Create(moneyTransfer);
 
                         resultDto.Success = true;
-                        resultDto.Message = "Tranfer has been successful";
+                        resultDto.Message = "Transfer has been successful";
 
                     }
                     else

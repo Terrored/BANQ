@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DTOs;
+﻿using AutoMapper;
+using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.Models.Enums;
@@ -6,7 +7,6 @@ using Model.RepositoryInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 
 namespace BusinessLogic
 {
@@ -27,7 +27,14 @@ namespace BusinessLogic
 
         public ResultDto TakeLoan(LoanDto loanDto)
         {
-            var result = new ResultDto();
+            var result = new ResultDto() { Success = false };
+
+            if (loanDto.LoanAmount < 500 || loanDto.LoanAmount > 10000)
+            {
+                result.Message = "Invalid loan amount! MIN is 500 PLN and MAX is 10000 PLN";
+                return result;
+            }
+
             var bankAccount = _bankAccountRepository.GetSingle(loanDto.UserId, u => u.ApplicationIdentityUser, t => t.BankAccountType);
             int activeLoans = _loanRepository.GetAll().Where(l => l.BankAccountId == bankAccount.Id).ToList().Count;
 
@@ -40,6 +47,7 @@ namespace BusinessLogic
                 {
                     _bankAccountService.GiveCash(loanDto.LoanAmount, loanDto.UserId);
                     result.Success = true;
+                    result.Message = "Money has been added to your account!";
                 }
 
 
@@ -60,11 +68,18 @@ namespace BusinessLogic
             var loan = _loanRepository.GetSingle(installmentDto.LoanId, t => t.BankAccount);
             if (/*loan.NextInstallmentDate >= DateTime.Now &&*/ !loan.Repayment && loan.InstallmentsLeft > 0)
             {
+                decimal penalty = 0m;
+                if (loan.NextInstallmentDate <= DateTime.Today)
+                {
+                    //TODO: dodaj karę
+                    penalty = loan.InstallmentAmount * 1.10m - loan.InstallmentAmount;
 
+                    loan.LoanAmountLeft += penalty;
+                }
 
                 var installment = new LoanInstallment()
                 {
-                    InstallmentAmount = loan.InstallmentAmount,
+                    InstallmentAmount = loan.InstallmentAmount + penalty,
                     LoanId = loan.Id,
                     PaidOn = DateTime.Now
                 };
@@ -74,7 +89,7 @@ namespace BusinessLogic
                 if (isValid)
                 {
                     loan.InstallmentsLeft--;
-                    loan.LoanAmountLeft = loan.LoanAmountLeft - installment.InstallmentAmount;
+                    loan.LoanAmountLeft -= installment.InstallmentAmount;
                     loan.NextInstallmentDate = DateTime.Now.AddDays(1);
                     if (loan.InstallmentsLeft == 0 && loan.LoanAmountLeft == 0)
                     {
@@ -85,12 +100,12 @@ namespace BusinessLogic
                     _loanInstallmentRepository.Create(installment);
 
                     result.Success = true;
+                    result.Message = "Payment has been successful!";
 
                 }
                 else
                 {
                     result.Message = "There was a problem with paying installment";
-
                 }
 
             }
@@ -113,7 +128,7 @@ namespace BusinessLogic
 
         private int CreateLoan(LoanDto loanDto, BankAccount bankAccount)
         {
-           
+
 
             var loan = new Loan()
             {
@@ -123,7 +138,7 @@ namespace BusinessLogic
                 InstallmentAmount = loanDto.InstallmentAmount,
                 InstallmentsLeft = loanDto.TotalInstallments,
                 LoanAmount = loanDto.LoanAmount,
-                LoanAmountLeft = loanDto.LoanAmount * ((decimal)(100 + 10) / 100),
+                LoanAmountLeft = loanDto.LoanAmountLeft,
                 NextInstallmentDate = DateTime.Now.AddDays(1),
                 PercentageRate = 10,
                 Repayment = false,
@@ -131,25 +146,20 @@ namespace BusinessLogic
                 Installments = new List<LoanInstallment>()
 
             };
-            // var loan = Mapper.Map<LoanDto, Loan>(loanDto);
-
             return _loanRepository.CreateAndReturnId(loan);
         }
 
         private bool CanTakeLoan(int numberOfActiveLoans, BankAccountType bankAccountType)
         {
-            if (bankAccountType.Name ==
-                Enum.GetName(typeof(BankAccountTypeEnum), BankAccountTypeEnum.Corporate))
+            if (bankAccountType.Name == BankAccountTypeEnum.Corporate.ToString("G"))
             {
                 return true;
             }
-            else if (numberOfActiveLoans <= 2 && bankAccountType.Name ==
-                     Enum.GetName(typeof(BankAccountTypeEnum), BankAccountTypeEnum.Regular))
+            else if (numberOfActiveLoans <= 2 && bankAccountType.Name == BankAccountTypeEnum.Regular.ToString("G"))
             {
                 return true;
             }
-            else if (numberOfActiveLoans <= 0 && bankAccountType.Name ==
-                     Enum.GetName(typeof(BankAccountTypeEnum), BankAccountTypeEnum.Student))
+            else if (numberOfActiveLoans <= 0 && bankAccountType.Name == BankAccountTypeEnum.Student.ToString("G"))
             {
                 return true;
             }
