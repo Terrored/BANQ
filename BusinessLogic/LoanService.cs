@@ -7,7 +7,6 @@ using Model.RepositoryInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Helpers;
 
 namespace BusinessLogic
 {
@@ -28,7 +27,7 @@ namespace BusinessLogic
 
         public ResultDto TakeLoan(LoanDto loanDto)
         {
-            var result = new ResultDto(){Success = false};
+            var result = new ResultDto() { Success = false };
 
             if (loanDto.LoanAmount < 500 || loanDto.LoanAmount > 10000)
             {
@@ -69,11 +68,18 @@ namespace BusinessLogic
             var loan = _loanRepository.GetSingle(installmentDto.LoanId, t => t.BankAccount);
             if (/*loan.NextInstallmentDate >= DateTime.Now &&*/ !loan.Repayment && loan.InstallmentsLeft > 0)
             {
+                decimal penalty = 0m;
+                if (loan.NextInstallmentDate <= DateTime.Today)
+                {
+                    //TODO: dodaj karę
+                    penalty = loan.InstallmentAmount * 1.10m - loan.InstallmentAmount;
 
+                    loan.LoanAmountLeft += penalty;
+                }
 
                 var installment = new LoanInstallment()
                 {
-                    InstallmentAmount = loan.InstallmentAmount,
+                    InstallmentAmount = loan.InstallmentAmount + penalty,
                     LoanId = loan.Id,
                     PaidOn = DateTime.Now
                 };
@@ -83,7 +89,7 @@ namespace BusinessLogic
                 if (isValid)
                 {
                     loan.InstallmentsLeft--;
-                    loan.LoanAmountLeft = loan.LoanAmountLeft - installment.InstallmentAmount;
+                    loan.LoanAmountLeft -= installment.InstallmentAmount;
                     loan.NextInstallmentDate = DateTime.Now.AddDays(1);
                     if (loan.InstallmentsLeft == 0 && loan.LoanAmountLeft == 0)
                     {
