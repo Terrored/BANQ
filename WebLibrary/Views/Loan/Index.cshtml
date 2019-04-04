@@ -68,6 +68,7 @@
 <script>
 
     $(document).ready(function () {
+        
         $("#loanForm").validate({
             rules: {
                 loanAmount: {
@@ -151,7 +152,7 @@
                         if (row.installmentsLeft == 0) {
                             return null;
                         }
-                        return "<p class='btn btn-warning btn-block payInstallment' value='" + data + "'>Pay!</p>";
+                        return "<button type='button' class='btn btn-warning btn-block payInstallment' data-toggle='tooltip' data-placement='right' value='" + data + "'>Pay!</button>";
                     }
                 }
 
@@ -162,16 +163,26 @@
                     $('td', row).css('background-color', '#50C878');
                 } else if (data.nextInstallmentDate < date) {
                     $('td', row).css('background-color', '#e22343');
+                    $('button', row).attr('title', "You're late!");
+                    $('button', row).attr('data-late', 'true');
+                    $(function () {
+                        $('[data-toggle="tooltip"]').tooltip();
+                    });
+
                 }
+
             }
         });
 
 
-        $("#loans tbody").on("click", ".payInstallment", function () {
+        $("#loans tbody").on("click", ".payInstallment", function (data) {
 
-
+            var titleText = "Are you sure?";
+            if (data.currentTarget.dataset.late === "true") {
+                titleText= "You have to pay 10% extra as a penalty because you are late!";
+            }
             swal.fire({
-                title: "Are you sure?",
+                title: titleText,
                 text: "Are you sure that you want to pay installment?",
                 type: "warning",
                 showCancelButton: true,
@@ -232,6 +243,7 @@
 
         }
 
+        
     });
 
 </script>

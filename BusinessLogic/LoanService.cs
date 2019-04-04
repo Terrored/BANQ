@@ -66,14 +66,12 @@ namespace BusinessLogic
         {
             var result = new ResultDto();
             var loan = _loanRepository.GetSingle(installmentDto.LoanId, t => t.BankAccount);
-            if (/*loan.NextInstallmentDate >= DateTime.Now &&*/ !loan.Repayment && loan.InstallmentsLeft > 0)
+            if (!loan.Repayment && loan.InstallmentsLeft > 0)
             {
                 decimal penalty = 0m;
                 if (loan.NextInstallmentDate <= DateTime.Today)
                 {
-                    //TODO: dodaj karę
                     penalty = loan.InstallmentAmount * 1.10m - loan.InstallmentAmount;
-
                     loan.LoanAmountLeft += penalty;
                 }
 
@@ -90,7 +88,7 @@ namespace BusinessLogic
                 {
                     loan.InstallmentsLeft--;
                     loan.LoanAmountLeft -= installment.InstallmentAmount;
-                    loan.NextInstallmentDate = DateTime.Now.AddDays(1);
+                    loan.NextInstallmentDate = loan.NextInstallmentDate.Value.AddDays(1);
                     if (loan.InstallmentsLeft == 0 && loan.LoanAmountLeft == 0)
                     {
                         loan.Repayment = true;
