@@ -110,7 +110,6 @@ namespace BusinessLogic
             }
         }
 
-        //temporary
         public decimal GetPercentageRate(CreditDto creditDto, string bankAccountType)
         {
             if (bankAccountType == "Regular")

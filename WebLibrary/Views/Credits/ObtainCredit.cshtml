@@ -26,13 +26,13 @@
                 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
             </div>
 
-            <div class="col px-5">
+            <div class="col">
                 <h3 class="text-center">Complete the form</h3>
                 @using (Html.BeginForm())
                 {
                     @Html.AntiForgeryToken()
                     <div class="input-group mt-3">
-                        @Html.TextBoxFor(m => m.CreditAmount, new { @class = "form-control", placeholder = "Credit amount" })
+                        @Html.TextBoxFor(m => m.CreditAmount, new { @class = "form-control", placeholder = "Credit amount", id = "formCreditAmount" })
                         <div class="input-group-append">
                             <span class="input-group-text">PLN</span>
                         </div>
@@ -40,8 +40,8 @@
 
                     <div class="input-group mt-3">
                         <label>Credit period</label>
-                        <input type="range" id="periodYearsInput" name="CreditPeriodInYears" class="form-control-range" min="1" max="10" />
-                        <label id="periodYearsValue"></label>
+                        <input type="range" name="CreditPeriodInYears" class="custom-range" id="formPeriodInput" min="1" max="10" />
+                        <label id="formPeriodValue"></label>
                     </div>
 
 
@@ -65,53 +65,46 @@
 
 <div class="modal fade" id="calculatorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content px-4 py-2">
+            <div class="modal-header px-0">
                 <h5 class="modal-title">Credit calculator</h5>
                 <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body px-0">
+
                 <form>
-                    <div class="input-group">
-                        <input type="text" id="creditAmount" placeholder="Credit Amount" class="form-control" />
+                    <div class="input-group mb-3">
+                        <input class="form-control" type="text" id="calculatorCreditAmount" placeholder="Credit amount" />
                         <div class="input-group-append">
                             <span class="input-group-text">PLN</span>
                         </div>
-                        <div class="invalid-feedback">
-                            Please provide a valid credit amount.
-                        </div>
                     </div>
 
-                    <div class="input-group my-3">
-                        <input type="text" id="percentageRate" placeholder="Percentage rate" class="form-control" />
+                    <div class="input-group mb-3">
+                        <input class="form-control" type="text" id="calculatorPercentageRate" placeholder="Percentage rate" />
                         <div class="input-group-append">
                             <span class="input-group-text">%</span>
                         </div>
-                        <div class="invalid-feedback">
-                            Please provide a valid rate.
-                        </div>
                     </div>
 
-                    <div class="input-group my-3">
-                        <label>Credit period</label>
-                        <input type="range" class="custom-range" id="creditPeriod" min="1" max="20" step="1" />
-                        <label id="creditPeriodInfo">year(s)</label>
+                    <div class="input-group mb-3">
+                        <label for="creditPeriod">Credit period</label>
+                        <input type="range" class="custom-range" value="5" min="1" max="10" step="1" id="calculatorPeriodInput" />
+                        <label id="calculatorPeriodValue"></label>
                     </div>
-                    <button type="button" id="calculate" class="btn btn-primary btn-block">Calculate</button>
+
+                    <button type="button" id="calculateButton" class="btn btn-primary btn-block">Calculate</button>
+
                 </form>
-                <hr />
-                <div class="alert alert-success text-center">
-                    <span id="installmentCount" class="font-weight-bold"></span>
-                    total installments
-                    <span id="installmentAmount" class="font-weight-bold"></span> PLN each. <br />
-                    <span id="totalMoney" class="font-weight-bold"></span> PLN in total.
 
-                </div>
             </div>
-            <div class="modal-footer">
-
+            <div class="modal-footer px-0">
+                <div class="alert alert-primary w-100" role="alert" id="creditInfoSuccess"></div>
+                <div class="alert alert-danger w-100" role="alert" id="creditInfoError">
+                    <strong>An error encountered when processing your request</strong>
+                </div>
             </div>
         </div>
     </div>
@@ -145,41 +138,74 @@
                     return " years";
             };
 
-            (function () {
-                var currentPeriod = $("#periodYearsInput").val();
-                $("#periodYearsValue").html(currentPeriod + getYearSpelling(currentPeriod));
+            var adjustNumberOfYears = function (elementToAdjust) {
+                var currentPeriod = $(elementToAdjust + "Input").val();
+                $(elementToAdjust + "Value").html(currentPeriod + getYearSpelling(currentPeriod));
+            };
 
-                $("#periodYearsInput").on("input", function () {
-                    var creditPeriod = $(this).val();
-                    $("#periodYearsValue").html(creditPeriod + getYearSpelling(creditPeriod));
+            (function () {
+                adjustNumberOfYears("#formPeriod");
+                adjustNumberOfYears("#calculatorPeriod");
+
+                $("#formCreditAmount").inputFilter(function (value) {
+                    return /^\d*[.,]?\d{0,2}$/.test(value);
                 });
+
+                $("#calculatorCreditAmount").inputFilter(function (value) {
+                    return /^\d*[.,]?\d{0,2}$/.test(value);
+                });
+
+                $("#calculatorPercentageRate").inputFilter(function (value) {
+                    return /^\d*[.]?\d*$/.test(value);
+                });
+                
+
+                $("#formPeriodInput").on("input", function () {
+                    var name = $(this).attr("id").replace("Input", "");
+                    adjustNumberOfYears("#" + name);
+                });
+
+                $("#calculatorPeriodInput").on("input", function () {
+                    var name = $(this).attr("id").replace("Input", "");
+                    adjustNumberOfYears("#" + name);
+                });
+
+                $("#creditInfoSuccess").hide();
+                $("#creditInfoError").hide();
+
             })();
 
+            $("#calculatorModal").on("hidden.bs.modal", function () {
+                $("#creditInfoSuccess").hide();
+                $("#creditInfoError").hide();
+            });
 
-            //initializing stuff...
-            (function () {
-                //$(".alert").hide();
+            $("#calculateButton").on("click", function () {
+                var amount = $("#calculatorCreditAmount").val();
+                var rate = $("#calculatorPercentageRate").val();
+                var installments = $("#calculatorPeriodInput").val() * 12;
 
-                var currentPeriod = $("#creditPeriod").val();
-                $("#creditPeriodInfo").html(currentPeriod + getYearSpelling(currentPeriod));
+                var creditDto = {
+                    creditAmount: amount,
+                    percentageRate: rate,
+                    installmentCount: installments
+                };
 
-                $("#creditAmount").inputFilter(function (value) {
-                    return /^\d*$/.test(value);
+                $.ajax({
+                    method: "POST",
+                    url: "/api/credits/loancalculator",
+                    data: creditDto,
+                    success: function (d) {
+                        $("#creditInfoError").hide();
+                        $("#creditInfoSuccess").html("<strong>" + installments + "</strong>" + " installments, " + "<strong>" + d.toFixed(2) + "</strong>" + " each. Total amount: " + "<strong>" + (installments * d).toFixed(2) + "</strong>");
+                        $("#creditInfoSuccess").slideDown();
+                    },
+                    error: function () {
+                        $("#creditInfoSuccess").hide();
+                        $("#creditInfoError").slideDown();
+                    }
                 });
-
-                $("#percentageRate").inputFilter(function (value) {
-                    return /^-?\d*[.,]?\d{0,2}$/.test(value);
-                });
-
-                $("#creditPeriod").on("input", function () {
-                    var creditPeriod = $(this).val();
-                    $("#creditPeriodInfo").html(creditPeriod + getYearSpelling(creditPeriod));
-                });
-
-                //$("input").on("input", function () {
-                //    $(".alert").slideUp();
-                //});
-            })();
+            });
         });
     </script>
 
