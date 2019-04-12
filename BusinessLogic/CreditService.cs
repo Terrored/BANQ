@@ -24,12 +24,12 @@ namespace BusinessLogic
 
         public ResultDto CreateCredit(CreditDto creditDto)
         {
-            var bankAccount = _bankAccountRepository.GetSingle(creditDto.UserId, ba => ba.ApplicationIdentityUser, ba => ba.BankAccountType);
+            var bankAccount = _bankAccountRepository.GetSingle(creditDto.UserId, ba => ba.ApplicationIdentityUser, ba => ba.BankAccountType, ba => ba.Credits);
 
             if (bankAccount == null)
                 return new ResultDto() { Success = false, Message = "The referenced bank account does not exist" };
 
-            if (bankAccount.CreditId != 0)
+            if (bankAccount.Credits.Any(c => c.PaidInFull == false))
                 return new ResultDto() { Success = false, Message = "You already have obtained a credit and it's not fully paid." };
 
             if (ValidateCreditPeriod(creditDto) == false)
@@ -110,7 +110,6 @@ namespace BusinessLogic
             }
         }
 
-        //temporary
         public decimal GetPercentageRate(CreditDto creditDto, string bankAccountType)
         {
             if (bankAccountType == "Regular")
@@ -141,12 +140,27 @@ namespace BusinessLogic
 
         public void ConfirmCredit(int userId)
         {
-            var credit = _creditRepository.GetAll().SingleOrDefault(c => c.BankAccountId == userId);
+            var credit = _creditRepository.GetAll().SingleOrDefault(c => c.BankAccountId == userId && c.Confirmed == false && c.PaidInFull == false);
             credit.Confirmed = true;
             credit.ConfirmationDate = DateTime.Now;
             _creditRepository.Update(credit);
 
             _bankAccountService.GiveCash(credit.CreditAmount, userId);
+        }
+
+        public ResultDto GetCalculatedInstallment(CreditDto creditDto)
+        {
+            if (creditDto.CreditAmount <= 0)
+                return new ResultDto() { Success = false, Message = "The entered amount has to be greater than 0" };
+            if (creditDto.CreditAmount >= 10000000m)
+                return new ResultDto { Success = false, Message = "The entered amount has to be less than 10 million" };
+            if (creditDto.PercentageRate <= 0 || creditDto.PercentageRate > 100)
+                return new ResultDto() { Success = false, Message = "Percentage rate has to be between 0 and 100%" };
+            if (creditDto.InstallmentCount <= 0 || creditDto.InstallmentCount > 120 || creditDto.InstallmentCount % 12 != 0)
+                return new ResultDto() { Success = false, Message = "We do not support credits for such periods" };
+
+            decimal installment = GetInstallmentAmount(creditDto);
+            return new ResultDto() { Success = true, Message = installment.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) };
         }
     }
 }

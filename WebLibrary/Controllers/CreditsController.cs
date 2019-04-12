@@ -1,8 +1,6 @@
-﻿using BusinessLogic.DTOs;
-using BusinessLogic.Interfaces;
+﻿using BusinessLogic.Interfaces;
 using System.Web.Mvc;
 using WebLibrary.IdentityExtensions;
-using WebLibrary.Models;
 
 namespace WebLibrary.Controllers
 {
@@ -23,32 +21,7 @@ namespace WebLibrary.Controllers
 
         public ActionResult ObtainCredit()
         {
-            return View(new CreditViewModel());
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ObtainCredit(CreditViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            var userId = User.Identity.GetUserId().Value;
-
-            var creditDto = new CreditDto()
-            {
-                InstallmentCount = model.CreditPeriodInYears * 12,
-                CreditAmount = model.CreditAmount,
-                UserId = userId
-            };
-
-            var result = _creditService.CreateCredit(creditDto);
-            ViewBag.Message = result.Message;
-
-            if (!result.Success)
-                return View(model);
-            else
-                return View("ConfirmationPrompt");
+            return View();
         }
 
         [HttpPost]
