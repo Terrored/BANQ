@@ -23,13 +23,6 @@ body {
     white-space: normal;
 }
 
- /*Set width on the form input elements since they're 100% wide by default*/ 
-input,
-select,
-textarea {
-    min-width: 70%;
-}
-
 .visibility {
     opacity: 0.7;
 }
@@ -89,6 +82,7 @@ label.error{
     color:red;
     font-size: 0.8rem;
     font-weight:bold;
+    width:100%;
 }
 
 input.error{

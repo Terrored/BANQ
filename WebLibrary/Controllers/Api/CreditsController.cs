@@ -5,6 +5,7 @@ using WebLibrary.IdentityExtensions;
 
 namespace WebLibrary.Controllers.Api
 {
+    [Authorize]
     public class CreditsController : ApiController
     {
         private readonly ICreditService _creditService;
@@ -14,8 +15,8 @@ namespace WebLibrary.Controllers.Api
             _creditService = creditService;
         }
 
-        [HttpPost]
-        public IHttpActionResult LoanCalculator(CreditDto creditDto)
+        [HttpGet]
+        public IHttpActionResult Calculate([FromUri]CreditDto creditDto)
         {
             var result = _creditService.GetCalculatedInstallment(creditDto);
 

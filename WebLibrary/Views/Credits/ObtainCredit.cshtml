@@ -97,9 +97,7 @@
             </div>
             <div class="modal-footer px-0">
                 <div class="alert alert-primary w-100" role="alert" id="creditInfoSuccess"></div>
-                <div class="alert alert-danger w-100" role="alert" id="creditInfoError">
-                    <strong>An error encountered when processing your request</strong>
-                </div>
+                <div class="alert alert-danger w-100" role="alert" id="creditInfoError"></div>
             </div>
         </div>
     </div>
@@ -194,8 +192,8 @@
                     };
 
                     $.ajax({
-                        method: "POST",
-                        url: "/api/credits/loancalculator",
+                        method: "GET",
+                        url: "/api/credits/calculate",
                         data: creditDto,
                         success: function (d) {
                             console.log(d);
@@ -203,8 +201,9 @@
                             $("#creditInfoSuccess").html("<strong>" + installments + "</strong>" + " installments, " + "<strong>" + (parseFloat(d)).toFixed(2) + "</strong>" + " each. Total amount: " + "<strong>" + (d * installments).toFixed(2) + "</strong>");
                             $("#creditInfoSuccess").slideDown();
                         },
-                        error: function () {
+                        error: function (d) {
                             $("#creditInfoSuccess").hide();
+                            $("#creditInfoError").html("<strong>" + d.responseJSON.message + "</strong>");
                             $("#creditInfoError").slideDown();
                         }
                     });
