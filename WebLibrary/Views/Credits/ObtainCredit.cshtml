@@ -1,21 +1,17 @@
-﻿@model WebLibrary.Models.CreditViewModel
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
 
 <div class="row mx-0 mt-5 justify-content-center">
     <div class="col-8 py-4 jumbotron visibility3">
         <h2 class="text-center">Request a credit</h2>
         <hr />
 
-        @if (ViewBag.Message != null)
-        {
-            <div class="alert alert-danger text-center" role="alert">
-                <strong>@ViewBag.Message</strong>
-            </div>
-        }
 
         <div class="row mx-0">
             <div class="col pl-0">
@@ -28,11 +24,10 @@
 
             <div class="col">
                 <h3 class="text-center">Complete the form</h3>
-                @using (Html.BeginForm())
-                {
-                    @Html.AntiForgeryToken()
+                <form id="obtainCreditForm">
+
                     <div class="input-group mt-3">
-                        @Html.TextBoxFor(m => m.CreditAmount, new { @class = "form-control", placeholder = "Credit amount", id = "formCreditAmount" })
+                        <input type="text" id="formCreditAmount" placeholder="Credit amount" name="formCreditAmount" class="form-control" />
                         <div class="input-group-append">
                             <span class="input-group-text">PLN</span>
                         </div>
@@ -40,13 +35,13 @@
 
                     <div class="input-group mt-3">
                         <label>Credit period</label>
-                        <input type="range" name="CreditPeriodInYears" class="custom-range" id="formPeriodInput" min="1" max="10" />
+                        <input type="range" class="custom-range" id="formPeriodInput" min="1" max="10" />
                         <label id="formPeriodValue"></label>
                     </div>
 
 
-                    <button type="submit" class="btn btn-primary btn-block mt-3">Obtain</button>
-                }
+                    <button type="submit" id="formSubmitButton" class="btn btn-primary btn-block mt-3">Obtain</button>
+                </form>
 
             </div>
         </div>
@@ -74,16 +69,16 @@
             </div>
             <div class="modal-body px-0">
 
-                <form>
+                <form id="calculateCredit">
                     <div class="input-group mb-3">
-                        <input class="form-control" type="text" id="calculatorCreditAmount" placeholder="Credit amount" />
+                        <input class="form-control" type="text" id="calculatorCreditAmount" placeholder="Credit amount" name="calculatorCreditAmount"/>
                         <div class="input-group-append">
                             <span class="input-group-text">PLN</span>
                         </div>
                     </div>
 
                     <div class="input-group mb-3">
-                        <input class="form-control" type="text" id="calculatorPercentageRate" placeholder="Percentage rate" />
+                        <input class="form-control" type="text" id="calculatorPercentageRate" placeholder="Percentage rate" name="calculatorPercentageRate"/>
                         <div class="input-group-append">
                             <span class="input-group-text">%</span>
                         </div>
@@ -95,7 +90,7 @@
                         <label id="calculatorPeriodValue"></label>
                     </div>
 
-                    <button type="button" id="calculateButton" class="btn btn-primary btn-block">Calculate</button>
+                    <button type="submit" id="calculateButton" class="btn btn-primary btn-block">Calculate</button>
 
                 </form>
 
@@ -116,20 +111,108 @@
     <script>
         $(document).ready(function () {
 
-            (function ($) {
-                $.fn.inputFilter = function (inputFilter) {
-                    return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function () {
-                        if (inputFilter(this.value)) {
-                            this.oldValue = this.value;
-                            this.oldSelectionStart = this.selectionStart;
-                            this.oldSelectionEnd = this.selectionEnd;
-                        } else if (this.hasOwnProperty("oldValue")) {
-                            this.value = this.oldValue;
-                            this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+            $.validator.addMethod("regex", function (value, element, regexpr) {
+                return this.optional(element) || value.match(typeof regexpr == "string" ? new RegExp(regexpr) : regexpr);
+            }, "Please provide a valid input");
+
+            $("#obtainCreditForm").validate({
+                rules: {
+                    formCreditAmount: {
+                        required: true,
+                        regex: /^\d*[.,]?\d{0,2}$/
+                    }
+                },
+                messages: {
+                    formCreditAmount: {
+                        required: "This field is required",
+                        regex: "This field must be a real positive number"
+                    }
+                },
+                submitHandler: function () {
+                    var creditDto = {
+                        creditAmount: $("#formCreditAmount").val(),
+                        installmentCount: $("#formPeriodInput").val() * 12
+                    };
+
+                    $.ajax({
+                        method: "POST",
+                        url: "/api/credits/obtaincredit",
+                        data: creditDto,
+                        success: function (data) {
+                            swal({
+                                title: "Success",
+                                text: data,
+                                icon: "success",
+                                button: "OK"
+                            });
+                        },
+                        error: function (data) {
+                            swal({
+                                title: "Error",
+                                text: data.responseJSON.message,
+                                icon: "error",
+                                button: "OK"
+                            });
                         }
                     });
-                };
-            }(jQuery));
+                },
+                errorPlacement: function (error, element) {
+                    error.appendTo(element.parent());
+                }
+            });
+
+            $("#calculateCredit").validate({
+                rules: {
+                    calculatorCreditAmount: {
+                        required: true,
+                        regex: /^\d*[.,]?\d{0,2}$/
+                    },
+                    calculatorPercentageRate: {
+                        required: true,
+                        regex: /^\d*[.,]?\d{0,2}$/
+                    }
+                },
+                messages: {
+                    calculatorCreditAmount: {
+                        required: "This field is required",
+                        regex: "This field must be a real positive number"
+                    }, 
+                    calculatorPercentageRate: {
+                        required: "This field is required",
+                        regex: "This field must be a real positive number"
+                    }
+                },
+                submitHandler: function () {
+                    var amount = $("#calculatorCreditAmount").val();
+                    var rate = $("#calculatorPercentageRate").val();
+                    var installments = $("#calculatorPeriodInput").val() * 12;
+
+                    var creditDto = {
+                        creditAmount: amount,
+                        percentageRate: rate,
+                        installmentCount: installments
+                    };
+
+                    $.ajax({
+                        method: "POST",
+                        url: "/api/credits/loancalculator",
+                        data: creditDto,
+                        success: function (d) {
+                            console.log(d);
+                            $("#creditInfoError").hide();
+                            $("#creditInfoSuccess").html("<strong>" + installments + "</strong>" + " installments, " + "<strong>" + (parseFloat(d)).toFixed(2) + "</strong>" + " each. Total amount: " + "<strong>" + (d * installments).toFixed(2) + "</strong>");
+                            $("#creditInfoSuccess").slideDown();
+                        },
+                        error: function () {
+                            $("#creditInfoSuccess").hide();
+                            $("#creditInfoError").slideDown();
+                        }
+                    });
+                },
+                errorPlacement: function (error, element) {
+                    error.appendTo(element.parent());
+                }
+            });
 
             var getYearSpelling = function (value) {
                 if (value == 1)
@@ -146,19 +229,6 @@
             (function () {
                 adjustNumberOfYears("#formPeriod");
                 adjustNumberOfYears("#calculatorPeriod");
-
-                $("#formCreditAmount").inputFilter(function (value) {
-                    return /^\d*[.,]?\d{0,2}$/.test(value);
-                });
-
-                $("#calculatorCreditAmount").inputFilter(function (value) {
-                    return /^\d*[.,]?\d{0,2}$/.test(value);
-                });
-
-                $("#calculatorPercentageRate").inputFilter(function (value) {
-                    return /^\d*[.]?\d*$/.test(value);
-                });
-                
 
                 $("#formPeriodInput").on("input", function () {
                     var name = $(this).attr("id").replace("Input", "");
@@ -180,32 +250,6 @@
                 $("#creditInfoError").hide();
             });
 
-            $("#calculateButton").on("click", function () {
-                var amount = $("#calculatorCreditAmount").val();
-                var rate = $("#calculatorPercentageRate").val();
-                var installments = $("#calculatorPeriodInput").val() * 12;
-
-                var creditDto = {
-                    creditAmount: amount,
-                    percentageRate: rate,
-                    installmentCount: installments
-                };
-
-                $.ajax({
-                    method: "POST",
-                    url: "/api/credits/loancalculator",
-                    data: creditDto,
-                    success: function (d) {
-                        $("#creditInfoError").hide();
-                        $("#creditInfoSuccess").html("<strong>" + installments + "</strong>" + " installments, " + "<strong>" + d.toFixed(2) + "</strong>" + " each. Total amount: " + "<strong>" + (installments * d).toFixed(2) + "</strong>");
-                        $("#creditInfoSuccess").slideDown();
-                    },
-                    error: function () {
-                        $("#creditInfoSuccess").hide();
-                        $("#creditInfoError").slideDown();
-                    }
-                });
-            });
         });
     </script>
 

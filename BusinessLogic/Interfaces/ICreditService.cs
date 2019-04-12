@@ -10,5 +10,6 @@ namespace BusinessLogic.Interfaces
         decimal GetPercentageRate(CreditDto creditDto, string bankAccountType);
         ResultDto CreateCredit(CreditDto creditDto);
         void ConfirmCredit(int userId);
+        ResultDto GetCalculatedInstallment(CreditDto creditDto);
     }
 }

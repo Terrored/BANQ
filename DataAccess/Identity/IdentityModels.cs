@@ -46,9 +46,7 @@ namespace DataAccess.Identity
         public ApplicationIdentityUser ApplicationIdentityUser { get; set; }
         public int ApplicationIdentityUserId { get; set; }
 
-        public Credit Credit { get; set; }
-        public int CreditId { get; set; }
-
+        public ICollection<Credit> Credits { get; set; }
         public ICollection<Loan> Loans { get; set; }
     }
 

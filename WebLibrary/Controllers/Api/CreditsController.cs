@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using System.Web.Http;
+using WebLibrary.IdentityExtensions;
 
 namespace WebLibrary.Controllers.Api
 {
@@ -16,10 +17,29 @@ namespace WebLibrary.Controllers.Api
         [HttpPost]
         public IHttpActionResult LoanCalculator(CreditDto creditDto)
         {
-            if (creditDto == null || creditDto.PercentageRate <= 0 || creditDto.CreditAmount <= 0)
-                return BadRequest();
+            var result = _creditService.GetCalculatedInstallment(creditDto);
+
+            if (!result.Success)
+                return BadRequest(result.Message);
             else
-                return Ok(_creditService.GetInstallmentAmount(creditDto));
+                return Ok(result.Message);
+        }
+
+        [HttpPost]
+        public IHttpActionResult ObtainCredit(CreditDto creditDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Provided data is incorrect");
+
+            var userId = User.Identity.GetUserId().Value;
+            creditDto.UserId = userId;
+
+            var result = _creditService.CreateCredit(creditDto);
+
+            if (!result.Success)
+                return BadRequest(result.Message);
+            else
+                return Ok(result.Message);
         }
     }
 }
