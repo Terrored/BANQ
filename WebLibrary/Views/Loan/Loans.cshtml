@@ -1,0 +1,136 @@
+﻿
+@{
+    ViewBag.Title = "Loans";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script src="https://cdn.rawgit.com/JDMcKinstry/JavaScriptDateFormat/master/Date.format.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/bootstrap.bundle.min.js"></script>
+<script src="~/Scripts/jquery-validate.bootstrap-tooltip.min.js"></script>
+
+
+    <div class="jumbotron mt-4">
+        <h1 class="display-4 text-center mb-5">Your loans</h1>
+        <table id="loans" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Loan amount</th>
+                    <th>Loan amount left</th>
+                    <th>Installment amount</th>
+                    <th>Installments left</th>
+                    <th>Next installment date</th>
+                    <th>Pay installment</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#loans').DataTable({
+            "ajax": { url: "/api/Loan/GetLoans", dataSrc: "" },
+            "paging": false,
+            "ordering": false,
+            "info": false,
+            "searching": false,
+            "columns": [
+                {
+                    "data": "loanAmount",
+                    "render": function (data, type, row, meta) {
+                        return data.toFixed(2).toLocaleString() + " PLN";
+                    }
+                },
+                {
+                    "data": "loanAmountLeft",
+                    "render": function (data, type, row, meta) {
+                        return data.toFixed(2).toLocaleString() + " PLN";
+                    }
+                },
+                {
+                    "data": "installmentAmount",
+                    "render": function (data, type, row, meta) {
+                        return data.toFixed(2).toLocaleString() + " PLN";
+                    }
+                },
+                { "data": "installmentsLeft" },
+                {
+                    "data": "nextInstallmentDate", "render": function (data, type, row, meta) {
+
+                        return data.substring(0, 10);
+                    }
+                },
+                {
+                    "data": "id",
+                    "render": function (data, type, row, meta) {
+                        if (row.installmentsLeft == 0) {
+                            return null;
+                        }
+                        return "<button type='button' class='btn btn-warning btn-block payInstallment' data-toggle='tooltip' data-placement='right' value='" + data + "'>Pay!</button>";
+                    }
+                }
+
+            ],
+            "rowCallback": function (row, data, index) {
+                var date = new Date().format('Y-m-d');
+                if (data.installmentsLeft == 0) {
+                    $('td', row).css('background-color', '#50C878');
+                } else if (data.nextInstallmentDate < date) {
+                    $('td', row).css('background-color', '#e22343');
+                    $('button', row).attr('title', "You're late!");
+                    $('button', row).attr('data-late', 'true');
+                    $(function () {
+                        $('[data-toggle="tooltip"]').tooltip();
+                    });
+
+                }
+
+            }
+        });
+
+
+        $("#loans tbody").on("click", ".payInstallment", function (data) {
+
+            var titleText = "Are you sure?";
+            if (data.currentTarget.dataset.late === "true") {
+                titleText = "You have to pay 10% extra as a penalty because you are late!";
+            }
+            swal.fire({
+                title: titleText,
+                text: "Are you sure that you want to pay installment?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Pay installment!",
+                cancelButtonText: "No, cancel!"
+
+            }).then((result) => {
+                if (result.value) {
+                    var loanId = $(this).attr('value');
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/Loan/PayInstallment",
+                        data: {
+                            loanId: loanId
+                        }
+                    }).done(function (data) {
+                        swal.fire('Success!', data.message, 'success');
+                        var table = $("#loans").DataTable();
+                        table.ajax.reload();
+                    }).fail(function (data) {
+
+                        swal.fire('Oops!', data.responseJSON.message, 'error');
+
+                    });
+
+                }
+            })
+
+
+
+            return false;
+        });
+
+    })
+</script>

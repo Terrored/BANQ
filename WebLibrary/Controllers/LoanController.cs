@@ -18,6 +18,11 @@ namespace WebLibrary.Controllers
             return View();
         }
 
+        public ActionResult Loans()
+        {
+            return View();
+        }
+
 
     }
 }

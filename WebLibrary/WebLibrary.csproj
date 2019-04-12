@@ -285,6 +285,7 @@
     <Content Include="Views\Credits\ConfirmationPrompt.cshtml" />
     <Content Include="Views\Loan\Index.cshtml" />
     <Content Include="Views\Credits\Index.cshtml" />
+    <Content Include="Views\Loan\Loans.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
