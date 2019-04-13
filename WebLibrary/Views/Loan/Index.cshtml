@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System.Web.UI.HtmlControls
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -8,62 +9,64 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/bootstrap.bundle.min.js"></script>
 <script src="~/Scripts/jquery-validate.bootstrap-tooltip.min.js"></script>
+<div class="container">
+    <div class="row">
 
-<div class="row justify-content-center">
+        <div class="col-md-4"  style="display: flex">
+            <div class="jumbotron mt-4 py-5">
 
-    <div class="col-md-4">
-        <div class="jumbotron py-5">
+                <form class="ml-1" method="post" id="loanForm">
+                    <h3 class="display-4 mb-5" align="center">New Loan</h3>
+                    <label for="loanAmount">Loan amount</label>
+                    <div class="input-group mb-3">
 
-            <form class="ml-1" method="post" id="loanForm">
-                <h3 class="display-4 mb-5" align="center">New Loan</h3>
-                <label for="loanAmount">Loan amount</label>
-                <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="loanAmount" id="loanAmount" />
+                        <div class="input-group-append">
+                            <span class="input-group-text">PLN</span>
+                        </div>
 
-                    <input type="text" class="form-control" name="loanAmount" id="loanAmount" />
-                    <div class="input-group-append">
-                        <span class="input-group-text">PLN</span>
+                    </div>
+                    <div class="input-group my-3">
+                        <label for="totalInstallments">Total installments</label>
+                        <input type="range" class="custom-range" id="totalInstallments" min="6" max="24" step="1" />
+                        <label id="installmentInfo">installment(s)</label>
+                    </div>
+                    <label for="installmentAmount">Installment amount</label>
+                    <div class="input-group mb-3">
+                        <input disabled="disabled" type="text" class="form-control" id="installmentAmount" />
+                        <div class="input-group-append">
+                            <span class="input-group-text">PLN</span>
+                        </div>
                     </div>
 
-                </div>
-                <div class="input-group my-3">
-                    <label for="totalInstallments">Total installments</label>
-                    <input type="range" class="custom-range" id="totalInstallments" min="6" max="24" step="1" />
-                    <label id="installmentInfo">installment(s)</label>
-                </div>
-                <label for="installmentAmount">Installment amount</label>
-                <div class="input-group mb-3">
-                    <input disabled="disabled" type="text" class="form-control" id="installmentAmount" />
-                    <div class="input-group-append">
-                        <span class="input-group-text">PLN</span>
-                    </div>
-                </div>
+                    <input type="submit" class="btn btn-primary btn-block" value="Take a loan!" />
+                </form>
 
-                <input type="submit" class="btn btn-primary btn-block" value="Take a loan!" />
-            </form>
-
+            </div>
+        </div>
+        <div class="col-md-8"  style="display: flex">
+            <div class="jumbotron mt-4 py-5">
+                <div class="display-4 mb-3 text-center">Best loans for you!</div>
+                <div>
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+                    in culpa qui officia deserunt mollit anim id est laborum."
+                </div>
+                <div class="mt-3">
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+                    in culpa qui officia deserunt mollit anim id est laborum."
+                    <strong>Take your loans to another level!</strong>
+                </div>
+                @Html.ActionLink("Go to loans", "Loans", "Loan", null, new { @class = "mt-4 btn btn-info btn-block" })
+            </div>
         </div>
     </div>
-    <div class="col-md-8">
-        <div class="jumbotron">
 
-            <table id="loans" class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>Loan amount</th>
-                        <th>Loan amount left</th>
-                        <th>Installment amount</th>
-                        <th>Installments left</th>
-                        <th>Next installment date</th>
-                        <th>Pay installment</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-    </div>
 </div>
-
-
-
 
 <script>
 
@@ -114,109 +117,7 @@
             }
         });
 
-        $('#loans').DataTable({
-            "ajax": { url: "/api/Loan/GetLoans", dataSrc: "" },
-            "paging": false,
-            "ordering": false,
-            "info": false,
-            "searching": false,
-            "columns": [
-                {
-                    "data": "loanAmount",
-                    "render": function (data, type, row, meta) {
-                        return data.toFixed(2).toLocaleString() + " PLN";
-                    }
-                },
-                {
-                    "data": "loanAmountLeft",
-                    "render": function (data, type, row, meta) {
-                        return data.toFixed(2).toLocaleString() + " PLN";
-                    }
-                },
-                {
-                    "data": "installmentAmount",
-                    "render": function (data, type, row, meta) {
-                        return data.toFixed(2).toLocaleString() + " PLN";
-                    }
-                },
-                { "data": "installmentsLeft" },
-                {
-                    "data": "nextInstallmentDate", "render": function (data, type, row, meta) {
-
-                        return data.substring(0, 10);
-                    }
-                },
-                {
-                    "data": "id",
-                    "render": function (data, type, row, meta) {
-                        if (row.installmentsLeft == 0) {
-                            return null;
-                        }
-                        return "<button type='button' class='btn btn-warning btn-block payInstallment' data-toggle='tooltip' data-placement='right' value='" + data + "'>Pay!</button>";
-                    }
-                }
-
-            ],
-            "rowCallback": function (row, data, index) {
-                var date = new Date().format('Y-m-d');
-                if (data.installmentsLeft == 0) {
-                    $('td', row).css('background-color', '#50C878');
-                } else if (data.nextInstallmentDate < date) {
-                    $('td', row).css('background-color', '#e22343');
-                    $('button', row).attr('title', "You're late!");
-                    $('button', row).attr('data-late', 'true');
-                    $(function () {
-                        $('[data-toggle="tooltip"]').tooltip();
-                    });
-
-                }
-
-            }
-        });
-
-
-        $("#loans tbody").on("click", ".payInstallment", function (data) {
-
-            var titleText = "Are you sure?";
-            if (data.currentTarget.dataset.late === "true") {
-                titleText= "You have to pay 10% extra as a penalty because you are late!";
-            }
-            swal.fire({
-                title: titleText,
-                text: "Are you sure that you want to pay installment?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Pay installment!",
-                cancelButtonText: "No, cancel!"
-
-            }).then((result) => {
-                if (result.value) {
-                    var loanId = $(this).attr('value');
-                    $.ajax({
-                        type: "POST",
-                        url: "/api/Loan/PayInstallment",
-                        data: {
-                            loanId: loanId
-                        }
-                    }).done(function (data) {
-                        swal.fire('Success!', data.message, 'success');
-                        var table = $("#loans").DataTable();
-                        table.ajax.reload();
-                    }).fail(function (data) {
-
-                        swal.fire('Oops!', data.responseJSON.message, 'error');
-
-                    });
-
-                }
-            })
-
-
-
-            return false;
-        });
-
-
+        
 
         $("#loanForm").change(function () {
             calculate();
