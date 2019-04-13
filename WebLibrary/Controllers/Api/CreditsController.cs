@@ -26,6 +26,24 @@ namespace WebLibrary.Controllers.Api
                 return Ok(result.Message);
         }
 
+        [HttpGet]
+        public IHttpActionResult GetPercentageRate([FromUri]CreditDto creditDto)
+        {
+            var userId = User.Identity.GetUserId().Value;
+            creditDto.UserId = userId;
+
+            var result = _creditService.GetCalculatedPercentageRate(creditDto);
+
+            if (!result.Success)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(result.Message);
+            }
+        }
+
         [HttpPost]
         public IHttpActionResult ObtainCredit(CreditDto creditDto)
         {
