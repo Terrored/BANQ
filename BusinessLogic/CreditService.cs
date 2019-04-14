@@ -3,6 +3,7 @@ using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.RepositoryInterfaces;
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace BusinessLogic
@@ -70,7 +71,59 @@ namespace BusinessLogic
             };
         }
 
-        public decimal GetInstallmentAmount(CreditDto creditDto)
+        public ResultDto GetCalculatedInstallment(CreditDto creditDto)
+        {
+            if (creditDto.CreditAmount <= 0)
+            {
+                return new ResultDto() { Success = false, Message = "The entered amount has to be greater than 0" };
+            }
+
+            if (creditDto.CreditAmount >= 10000000m)
+            {
+                return new ResultDto { Success = false, Message = "The entered amount has to be less than 10 million" };
+            }
+
+            if (creditDto.PercentageRate <= 0 || creditDto.PercentageRate > 100)
+            {
+                return new ResultDto() { Success = false, Message = "Percentage rate has to be between 0 and 100%" };
+            }
+
+            if (creditDto.InstallmentCount <= 0 || creditDto.InstallmentCount > 120 || creditDto.InstallmentCount % 12 != 0)
+            {
+                return new ResultDto() { Success = false, Message = "We do not support credits for such periods" };
+            }
+
+            decimal installment = GetInstallmentAmount(creditDto);
+            return new ResultDto() { Success = true, Message = installment.ToString("0.00", CultureInfo.InvariantCulture) };
+        }
+
+        public ResultDto GetCalculatedPercentageRate(CreditDto creditDto)
+        {
+            if (creditDto.CreditAmount <= 0 || creditDto.CreditAmount > 10000000m)
+            {
+                return new ResultDto() { Success = false, Message = "Unsupported credit amount" };
+            }
+
+            var bankAccount = _bankAccountRepository.GetSingle(creditDto.UserId, ba => ba.BankAccountType);
+            var bankAccountType = bankAccount.BankAccountType.Name;
+
+            var rate = GetPercentageRate(creditDto, bankAccountType);
+            return new ResultDto() { Success = true, Message = rate.ToString("0.00", CultureInfo.InvariantCulture) };
+        }
+
+        public void ConfirmCredit(int userId)
+        {
+            var credit = _creditRepository.GetAll().SingleOrDefault(c => c.BankAccountId == userId && c.Confirmed == false && c.PaidInFull == false);
+            credit.Confirmed = true;
+            credit.ConfirmationDate = DateTime.Now;
+            _creditRepository.Update(credit);
+
+            _bankAccountService.GiveCash(credit.CreditAmount, userId);
+        }
+
+        #region Private helpers
+
+        private decimal GetInstallmentAmount(CreditDto creditDto)
         {
             var q = ((creditDto.PercentageRate / 100) / 12) + 1;
             var helper = Math.Pow((double)q, creditDto.InstallmentCount);
@@ -79,7 +132,7 @@ namespace BusinessLogic
             return installment;
         }
 
-        public bool ValidateCreditAmount(CreditDto creditDto, string bankAccountType)
+        private bool ValidateCreditAmount(CreditDto creditDto, string bankAccountType)
         {
             if (bankAccountType == "Regular")
             {
@@ -110,7 +163,7 @@ namespace BusinessLogic
             }
         }
 
-        public decimal GetPercentageRate(CreditDto creditDto, string bankAccountType)
+        private decimal GetPercentageRate(CreditDto creditDto, string bankAccountType)
         {
             if (bankAccountType == "Regular")
             {
@@ -130,7 +183,7 @@ namespace BusinessLogic
                 return 0m;
         }
 
-        public bool ValidateCreditPeriod(CreditDto creditDto)
+        private bool ValidateCreditPeriod(CreditDto creditDto)
         {
             if (creditDto.InstallmentCount < 12 || creditDto.InstallmentCount > 120)
                 return false;
@@ -138,29 +191,6 @@ namespace BusinessLogic
                 return true;
         }
 
-        public void ConfirmCredit(int userId)
-        {
-            var credit = _creditRepository.GetAll().SingleOrDefault(c => c.BankAccountId == userId && c.Confirmed == false && c.PaidInFull == false);
-            credit.Confirmed = true;
-            credit.ConfirmationDate = DateTime.Now;
-            _creditRepository.Update(credit);
-
-            _bankAccountService.GiveCash(credit.CreditAmount, userId);
-        }
-
-        public ResultDto GetCalculatedInstallment(CreditDto creditDto)
-        {
-            if (creditDto.CreditAmount <= 0)
-                return new ResultDto() { Success = false, Message = "The entered amount has to be greater than 0" };
-            if (creditDto.CreditAmount >= 10000000m)
-                return new ResultDto { Success = false, Message = "The entered amount has to be less than 10 million" };
-            if (creditDto.PercentageRate <= 0 || creditDto.PercentageRate > 100)
-                return new ResultDto() { Success = false, Message = "Percentage rate has to be between 0 and 100%" };
-            if (creditDto.InstallmentCount <= 0 || creditDto.InstallmentCount > 120 || creditDto.InstallmentCount % 12 != 0)
-                return new ResultDto() { Success = false, Message = "We do not support credits for such periods" };
-
-            decimal installment = GetInstallmentAmount(creditDto);
-            return new ResultDto() { Success = true, Message = installment.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) };
-        }
+        #endregion
     }
 }

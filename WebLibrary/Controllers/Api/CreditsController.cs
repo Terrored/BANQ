@@ -5,6 +5,7 @@ using WebLibrary.IdentityExtensions;
 
 namespace WebLibrary.Controllers.Api
 {
+    [Authorize]
     public class CreditsController : ApiController
     {
         private readonly ICreditService _creditService;
@@ -14,8 +15,8 @@ namespace WebLibrary.Controllers.Api
             _creditService = creditService;
         }
 
-        [HttpPost]
-        public IHttpActionResult LoanCalculator(CreditDto creditDto)
+        [HttpGet]
+        public IHttpActionResult Calculate([FromUri]CreditDto creditDto)
         {
             var result = _creditService.GetCalculatedInstallment(creditDto);
 
@@ -23,6 +24,24 @@ namespace WebLibrary.Controllers.Api
                 return BadRequest(result.Message);
             else
                 return Ok(result.Message);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetPercentageRate([FromUri]CreditDto creditDto)
+        {
+            var userId = User.Identity.GetUserId().Value;
+            creditDto.UserId = userId;
+
+            var result = _creditService.GetCalculatedPercentageRate(creditDto);
+
+            if (!result.Success)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(result.Message);
+            }
         }
 
         [HttpPost]

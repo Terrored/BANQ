@@ -4,7 +4,7 @@
 }
 
 
-<div class="mt-3 jumbotron">
+<div class="mt-3 jumbotron visibility3">
     <h2>@ViewBag.Title.</h2>
     <p class="text-success">@ViewBag.StatusMessage</p>
     <div>
@@ -26,8 +26,9 @@
             </dd>
             <dt>External Logins:</dt>
             <dd>
-                @Model.Logins.Count [
-                @Html.ActionLink("Manage", "ManageLogins") ]
+                <div class="alert alert-light">
+                    <strong>Currently not supported</strong>
+                </div>
             </dd>
             @*
                 Phone Numbers can used as a second factor of verification in a two-factor authentication system.

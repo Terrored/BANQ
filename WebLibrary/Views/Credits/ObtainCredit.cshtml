@@ -39,6 +39,9 @@
                         <label id="formPeriodValue"></label>
                     </div>
 
+                    <label>
+                        Current percentage rate: <strong id="displayPercentageRate"></strong>
+                    </label>
 
                     <button type="submit" id="formSubmitButton" class="btn btn-primary btn-block mt-3">Obtain</button>
                 </form>
@@ -71,14 +74,14 @@
 
                 <form id="calculateCredit">
                     <div class="input-group mb-3">
-                        <input class="form-control" type="text" id="calculatorCreditAmount" placeholder="Credit amount" name="calculatorCreditAmount"/>
+                        <input class="form-control" type="text" id="calculatorCreditAmount" placeholder="Credit amount" name="calculatorCreditAmount" />
                         <div class="input-group-append">
                             <span class="input-group-text">PLN</span>
                         </div>
                     </div>
 
                     <div class="input-group mb-3">
-                        <input class="form-control" type="text" id="calculatorPercentageRate" placeholder="Percentage rate" name="calculatorPercentageRate"/>
+                        <input class="form-control" type="text" id="calculatorPercentageRate" placeholder="Percentage rate" name="calculatorPercentageRate" />
                         <div class="input-group-append">
                             <span class="input-group-text">%</span>
                         </div>
@@ -97,9 +100,7 @@
             </div>
             <div class="modal-footer px-0">
                 <div class="alert alert-primary w-100" role="alert" id="creditInfoSuccess"></div>
-                <div class="alert alert-danger w-100" role="alert" id="creditInfoError">
-                    <strong>An error encountered when processing your request</strong>
-                </div>
+                <div class="alert alert-danger w-100" role="alert" id="creditInfoError"></div>
             </div>
         </div>
     </div>
@@ -110,6 +111,25 @@
 
     <script>
         $(document).ready(function () {
+
+            $("#obtainCreditForm").on("input", function () {
+
+                var creditDto = {
+                    creditAmount: $("#formCreditAmount").val()
+                };
+
+                $.ajax({
+                    url: "/api/credits/getpercentagerate",
+                    method: "GET",
+                    data: creditDto,
+                    success: function (d) {
+                        $("#displayPercentageRate").html(d + " %");
+                    },
+                    error: function () {
+                        $("#displayPercentageRate").html("Invalid input");
+                    }
+                });
+            });
 
             $.validator.addMethod("regex", function (value, element, regexpr) {
                 return this.optional(element) || value.match(typeof regexpr == "string" ? new RegExp(regexpr) : regexpr);
@@ -176,7 +196,7 @@
                     calculatorCreditAmount: {
                         required: "This field is required",
                         regex: "This field must be a real positive number"
-                    }, 
+                    },
                     calculatorPercentageRate: {
                         required: "This field is required",
                         regex: "This field must be a real positive number"
@@ -194,17 +214,17 @@
                     };
 
                     $.ajax({
-                        method: "POST",
-                        url: "/api/credits/loancalculator",
+                        method: "GET",
+                        url: "/api/credits/calculate",
                         data: creditDto,
                         success: function (d) {
-                            console.log(d);
                             $("#creditInfoError").hide();
                             $("#creditInfoSuccess").html("<strong>" + installments + "</strong>" + " installments, " + "<strong>" + (parseFloat(d)).toFixed(2) + "</strong>" + " each. Total amount: " + "<strong>" + (d * installments).toFixed(2) + "</strong>");
                             $("#creditInfoSuccess").slideDown();
                         },
-                        error: function () {
+                        error: function (d) {
                             $("#creditInfoSuccess").hide();
+                            $("#creditInfoError").html("<strong>" + d.responseJSON.message + "</strong>");
                             $("#creditInfoError").slideDown();
                         }
                     });

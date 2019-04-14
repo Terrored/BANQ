@@ -261,7 +261,6 @@
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
     <Content Include="Views\Manage\SetPassword.cshtml" />
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
@@ -282,7 +281,6 @@
     <Content Include="Views\MoneyTransfer\Create.cshtml" />
     <Content Include="Views\Shared\_PartialTransfer.cshtml" />
     <Content Include="Views\Credits\ObtainCredit.cshtml" />
-    <Content Include="Views\Credits\ConfirmationPrompt.cshtml" />
     <Content Include="Views\Loan\Index.cshtml" />
     <Content Include="Views\Credits\Index.cshtml" />
     <Content Include="Views\Loan\Loans.cshtml" />
