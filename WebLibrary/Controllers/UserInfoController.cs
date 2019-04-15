@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Interfaces;
+using System.Linq;
 using System.Web.Mvc;
 using WebLibrary.IdentityExtensions;
 using WebLibrary.Models;
@@ -19,11 +20,13 @@ namespace WebLibrary.Controllers
 
         public ActionResult Index()
         {
-            var currentUserId = User.Identity.GetUserId().Value;
+            var userId = User.Identity.GetUserId().Value;
             var sex = User.Identity.GetUserSex();
             var lastName = User.Identity.GetUserLastName();
+            var loans = _loanService.GetLoans(userId);
+            var lastLoan = loans.Where(l => l.InstallmentsLeft > 0).OrderBy(l => l.DateTaken).FirstOrDefault();
 
-            var bankAccount = _bankAccountService.GetBankAccountDetails(currentUserId);
+            var bankAccount = _bankAccountService.GetBankAccountDetails(userId);
 
             if (bankAccount == null)
             {
@@ -37,7 +40,9 @@ namespace WebLibrary.Controllers
                     UserFirstName = User.Identity.Name,
                     UserLastName = lastName,
                     UserSex = sex,
-                    UnconfirmedCredit = _bankAccountService.HasUnconfirmedCredit(currentUserId)
+                    UnconfirmedCredit = _bankAccountService.HasUnconfirmedCredit(userId),
+                    LastLoan = lastLoan,
+                    LoansTaken = loans.Count
                 };
                 return View(userInfo);
             }
