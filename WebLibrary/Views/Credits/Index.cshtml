@@ -1,11 +1,32 @@
-﻿
+﻿@model BusinessLogic.DTOs.CreditDto
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row mx-0 justify-content-center">
-    <div class="col-8 jumbotron py-4 mt-5 visibility3">
+    @if (Model != null)
+    {
+        <div class="col-4 m-0 mt-5 p-0">
+            <div class="jumbotron py-4 visibility3 h-100 mr-3">
+
+                <h2>Your current credit</h2>
+                <hr />
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+                ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
+                in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                mollit anim id est laborum."
+                <hr />
+
+                @Html.ActionLink("Show details", "InstallmentsPage", "Credits", null, new { @class = "btn btn-primary"})
+            </div>
+        </div>
+    }
+
+    <div class="col-8 jumbotron py-4 mt-5 mb-0 visibility3">
         <h2 class="text-center">The best credits on the market</h2>
         <hr />
         "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium

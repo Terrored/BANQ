@@ -1,0 +1,81 @@
+﻿@model BusinessLogic.DTOs.CreditDto
+@{
+    ViewBag.Title = "InstallmentsPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript" src="~/Scripts/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+<link rel="stylesheet" href="~/Content/dataTables.bootstrap4.min.css" />
+
+<div class="row mx-0 justify-content-center visibility3">
+    <div class="col mt-5 py-4 jumbotron">
+        <h2 class="text-center">Information about your credit</h2>
+        <hr />
+        <p>
+            You have taken out a credit for total amount <strong>@Model.CreditAmount PLN</strong>
+            with the percentage rate equal to <strong>@Model.PercentageRate %</strong>.
+            Payment is spread out on <strong>@Model.InstallmentCount</strong> installments.
+        </p>
+
+        <table id="creditInstallments" class="table table-striped table-bordered w-100 text-center">
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Paid on</th>
+                    <th>Payment deadline</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+
+
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#creditInstallments").DataTable({
+                ajax: {
+                    url: "/api/credits/installments/" + @Model.Id,
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "installmentAmount",
+                        render: function (data) {
+                            return data + " PLN";
+                        }
+                    },
+                    {
+                        data: "paidOn",
+                        render: function (data) {
+                            if (data == null)
+                                return "This installment hasn't been paid yet"
+                            else
+                                return data.substring(8);
+                        }
+                    },
+                    {
+                        data: "paymentDeadline",
+                        render: function (data) {
+                            return data.substring(0,10);
+                        }
+                    },
+                    {
+                        data: "id"
+                    }
+                ],
+                rowCallback: function (row, data) {
+                    if (data.paidOn == null)
+                        $(row).children().eq(3).html("<button class = 'btn btn-primary btn-block' data-installment-id = " + data.id + ">Pay</button>");
+                    else
+                        $(row).children().eq(3).html("No actions available");
+                },
+                ordering: false,
+                searching: false
+            });
+        });
+    </script>
+}

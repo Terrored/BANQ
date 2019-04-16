@@ -1,8 +1,10 @@
-﻿using BusinessLogic.DTOs;
+﻿using AutoMapper;
+using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.RepositoryInterfaces;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -14,13 +16,19 @@ namespace BusinessLogic
         private readonly IEntityRepository<Credit> _creditRepository;
         private readonly IApplicationUserManager _applicationUserManager;
         private readonly IBankAccountService _bankAccountService;
+        private readonly IEntityRepository<CreditInstallment> _creditInstallmentsRepository;
 
-        public CreditService(IEntityRepository<BankAccount> bankAccountRepository, IEntityRepository<Credit> creditRepository, IApplicationUserManager applicationUserManager, IBankAccountService bankAccountService)
+        public CreditService(IEntityRepository<BankAccount> bankAccountRepository,
+            IEntityRepository<Credit> creditRepository,
+            IApplicationUserManager applicationUserManager,
+            IBankAccountService bankAccountService,
+            IEntityRepository<CreditInstallment> creditInstallmentsRepository)
         {
             _bankAccountRepository = bankAccountRepository;
             _creditRepository = creditRepository;
             _applicationUserManager = applicationUserManager;
             _bankAccountService = bankAccountService;
+            _creditInstallmentsRepository = creditInstallmentsRepository;
         }
 
         public ResultDto CreateCredit(CreditDto creditDto)
@@ -114,11 +122,82 @@ namespace BusinessLogic
         public void ConfirmCredit(int userId)
         {
             var credit = _creditRepository.GetAll().SingleOrDefault(c => c.BankAccountId == userId && c.Confirmed == false && c.PaidInFull == false);
+
+            if (credit == null)
+                return;
+
             credit.Confirmed = true;
             credit.ConfirmationDate = DateTime.Now;
+            credit.NextInstallmentDate = (DateTime.Now + TimeSpan.FromDays(1)).Date;
+
+            var firstInstallment = new CreditInstallment()
+            {
+                CreditId = credit.Id,
+                InstallmentAmount = credit.InstallmentAmount,
+                PaymentDeadline = credit.NextInstallmentDate.Value
+            };
+
+            _creditInstallmentsRepository.Create(firstInstallment);
             _creditRepository.Update(credit);
 
             _bankAccountService.GiveCash(credit.CreditAmount, userId);
+        }
+
+        public CreditDto GetCurrentCreditInfo(int userId)
+        {
+            var currentCredit = _creditRepository.GetAll().SingleOrDefault(c => c.PaidInFull == false && c.BankAccountId == userId && c.Confirmed == true);
+            if (currentCredit != null)
+                return Mapper.Map<CreditDto>(currentCredit);
+            else
+                return null;
+        }
+
+        public IEnumerable<CreditInstallmentDto> GetInstallmentsForCredit(int userId, int creditId)
+        {
+            var credit = _creditRepository.GetSingle(creditId, c => c.Installments);
+
+            if (credit == null || credit.BankAccountId != userId)
+                return null;
+
+            return Mapper.Map<IEnumerable<CreditInstallmentDto>>(credit.Installments);
+        }
+
+        public ResultDto PayInstallment(int userId, CreditInstallmentDto installmentDto)
+        {
+            var credit = _creditRepository.GetAll(c => c.Installments).FirstOrDefault(c => c.BankAccountId == userId && c.PaidInFull == false);
+            if (credit == null)
+                return new ResultDto() { Success = false, Message = "Cannot find the credit" };
+
+            var installment = credit.Installments.SingleOrDefault(ci => ci.Id == installmentDto.Id);
+            if (installment == null)
+                return new ResultDto() { Success = false, Message = "Cannot find the installment" };
+
+            var result = _bankAccountService.TakeCash(installmentDto.InstallmentAmount, userId);
+
+            if (!result)
+                return new ResultDto() { Success = false, Message = "Cannot finish transaction" };
+
+            credit.InstallmentsAlreadyPaid++;
+
+            installment.PaidOn = DateTime.Now;
+            _creditInstallmentsRepository.Update(installment);
+
+            if (credit.InstallmentsAlreadyPaid == credit.TotalInstallments)
+                credit.PaidInFull = true;
+            else
+            {
+                credit.NextInstallmentDate += TimeSpan.FromDays(1);
+                var nextInstallment = new CreditInstallment()
+                {
+                    CreditId = credit.Id,
+                    InstallmentAmount = credit.InstallmentAmount,
+                    PaymentDeadline = credit.NextInstallmentDate.Value
+                };
+                _creditInstallmentsRepository.Create(nextInstallment);
+            }
+
+            _creditRepository.Update(credit);
+            return new ResultDto() { Success = true, Message = "You have successfully paid an installment" };
         }
 
         #region Private helpers
