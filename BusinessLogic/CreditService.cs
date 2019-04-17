@@ -159,7 +159,7 @@ namespace BusinessLogic
             if (credit == null || credit.BankAccountId != userId)
                 return null;
 
-            return Mapper.Map<IEnumerable<CreditInstallmentDto>>(credit.Installments);
+            return Mapper.Map<IEnumerable<CreditInstallmentDto>>(credit.Installments.OrderByDescending(ci => ci.PaymentDeadline));
         }
 
         public ResultDto PayInstallment(int userId, CreditInstallmentDto installmentDto)

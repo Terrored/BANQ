@@ -73,6 +73,7 @@ namespace WebLibrary.Controllers.Api
                 return Ok(installments);
         }
 
+        [HttpPost]
         public IHttpActionResult PayInstallment(CreditInstallmentDto creditInstallmentDto)
         {
             var userId = User.Identity.GetUserId().Value;
