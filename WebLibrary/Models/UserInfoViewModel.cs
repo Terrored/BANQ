@@ -9,6 +9,8 @@ namespace WebLibrary.Models
         public string UserSex { get; set; }
         public string UserLastName { get; set; }
         public bool UnconfirmedCredit { get; set; }
+        public LoanDto LastLoan { get; set; }
+        public int? LoansTaken { get; set; }
 
         public string IconClass
         {
