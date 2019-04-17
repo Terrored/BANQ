@@ -153,7 +153,6 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\BankAccountViewModel.cs" />
-    <Compile Include="Models\CreditViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\UserInfoViewModel.cs" />
     <Compile Include="Models\ViewModels\MoneyTransferViewModel.cs" />
@@ -166,6 +165,8 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\dataTables.bootstrap4.css" />
+    <Content Include="Content\dataTables.bootstrap4.min.css" />
     <Content Include="Content\fonts\slick.svg" />
     <Content Include="Content\Images\coins-in-soil-with-young-plants.jpg&amp;size=1024.jpg" />
     <Content Include="Content\Images\data-protection.jpg&amp;size=1024.jpg" />
@@ -197,6 +198,8 @@
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Chart.min.js" />
+    <Content Include="Scripts\dataTables.bootstrap4.js" />
+    <Content Include="Scripts\dataTables.bootstrap4.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -215,6 +218,8 @@
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-validate.bootstrap-tooltip.min.js" />
+    <Content Include="Scripts\jquery.dataTables.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -284,6 +289,7 @@
     <Content Include="Views\Loan\Index.cshtml" />
     <Content Include="Views\Credits\Index.cshtml" />
     <Content Include="Views\Loan\Loans.cshtml" />
+    <Content Include="Views\Credits\InstallmentsPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

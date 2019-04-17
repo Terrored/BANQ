@@ -38,7 +38,7 @@ namespace DataAccess
 
             modelBuilder.Entity<Credit>().HasRequired(c => c.BankAccount).WithMany(ba => ba.Credits).WillCascadeOnDelete(false);
             modelBuilder.Entity<CreditInstallment>().HasRequired(ci => ci.Credit).WithMany(c => c.Installments).WillCascadeOnDelete(false);
-            modelBuilder.Entity<Credit>().Ignore(c => c.Installments);
+            //modelBuilder.Entity<Credit>().Ignore(c => c.Installments);
 
             modelBuilder.Entity<Loan>().HasRequired(l => l.BankAccount).WithMany(l => l.Loans).WillCascadeOnDelete(false);
             modelBuilder.Entity<LoanInstallment>().HasRequired(l => l.Loan).WithMany(l => l.Installments).WillCascadeOnDelete(false);
