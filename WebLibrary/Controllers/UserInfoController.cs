@@ -42,14 +42,5 @@ namespace WebLibrary.Controllers
                 return View(userInfo);
             }
         }
-
-        public ActionResult Loan()
-        {
-            var userId = HttpContext.User.Identity.GetUserId();
-            //_loanService.TakeLoan(userId.Value);
-
-            return View("Index");
-
-        }
     }
 }
