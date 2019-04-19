@@ -85,5 +85,30 @@ namespace WebLibrary.Controllers.Api
             else
                 return Ok(result.Message);
         }
+
+        [HttpGet]
+        public IHttpActionResult IsFullyPaid(int id)
+        {
+            var userId = User.Identity.GetUserId().Value;
+
+            var result = _creditService.IsFullyPaid(id, userId);
+
+            if (result.Success)
+                return Ok(result.Message);
+            else
+                return BadRequest();
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetPenalty([FromUri]CreditInstallmentDto creditInstallmentDto)
+        {
+            var userId = User.Identity.GetUserId().Value;
+            var result = _creditService.GetInstallmentWithPenalty(creditInstallmentDto, userId);
+
+            if (result == null)
+                return BadRequest();
+            else
+                return Ok(result);
+        }
     }
 }

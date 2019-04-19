@@ -44,14 +44,14 @@
     </div>
 </div>
 
-@if(Model.UnconfirmedCredit)
+@if (Model.UnconfirmedCredit)
 {
-<div class="alert alert-info text-center mt-2" role="alert">
-    <strong>We have received your credit request and it's currently being processed.</strong>
-    <form method="post" action="@Url.Action("ConfirmCredit", "Credits")">
-        <button class="btn btn-primary btn-sm" type="submit"></button>
-    </form>
-</div>
+    <div class="alert alert-info text-center mt-2" role="alert">
+        <strong>We have received your credit request and it's currently being processed.</strong>
+        <form method="post" action="@Url.Action("ConfirmCredit", "Credits")">
+            <button class="btn btn-primary btn-sm" type="submit"></button>
+        </form>
+    </div>
 }
 
 <div class="row mt-5">
@@ -127,23 +127,34 @@
     <div class="col-8 px-0">
         <div class="container d-flex h-100 flex-column mb-0 pb-0">
             <div class="container jumbotron px-4 pb-3 mb-3 mt-auto visibility3 flex-grow-1">
-                <h2>Your last loan!</h2>
-                <hr />
-                <div class="row my-3 mx-0">
-                    <div class="col px-0">
-                        <span class="float-left"><strong>Credit amount:</strong> @Model.LastLoan.LoanAmount</span>
-                        
-                        <span class="float-left"><strong>Amount left:</strong> @Model.LastLoan.LoanAmountLeft</span>
+
+                @if (Model.LastLoan == null)
+                {
+                    <h2>You don't have any active loan right now</h2>
+                    <hr />
+                    <p>You will see info about it here</p>
+                }
+                else
+                {
+                    <h2>Your last loan!</h2>
+                    <hr />
+                    <div class="row my-3 mx-0">
+                        <div class="col px-0">
+                            <span class="float-left"><strong>Credit amount:</strong> @Model.LastLoan.LoanAmount</span>
+
+                            <span class="float-left"><strong>Amount left:</strong> @Model.LastLoan.LoanAmountLeft</span>
+                        </div>
+                        <div class="col px-0">
+                            <span class="float-right">Installments left: @Model.LastLoan.InstallmentsLeft</span>
+                        </div>
                     </div>
-                    <div class="col px-0">
-                        <span class="float-right">Installments left: @Model.LastLoan.InstallmentsLeft</span>
+                    <div class="row">
+                        <div class="col progress">
+                            <div class="progress-bar bg-success h-25" style="width: 100%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col progress">
-                        <div class="progress-bar bg-success h-25" style="width: 100%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
+                }
+
                 <hr />
                 <div class="row mx-0 justify-content-end"><a href="#">See more...</a></div>
             </div>
