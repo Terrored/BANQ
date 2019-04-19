@@ -16,12 +16,26 @@ namespace WebLibrary.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var userId = User.Identity.GetUserId().Value;
+            var currentCredit = _creditService.GetCurrentCreditInfo(userId);
+
+            return View(currentCredit);
         }
 
         public ActionResult ObtainCredit()
         {
             return View();
+        }
+
+        public ActionResult InstallmentsPage()
+        {
+            var userId = User.Identity.GetUserId().Value;
+            var currentCredit = _creditService.GetCurrentCreditInfo(userId);
+
+            if (currentCredit == null)
+                return RedirectToAction("Index", "UserInfo");
+            else
+                return View(currentCredit);
         }
 
         [HttpPost]

@@ -17,8 +17,8 @@ namespace DataAccess
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
             EfConfig.ConfigureEf(modelBuilder);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

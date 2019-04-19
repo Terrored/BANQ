@@ -2,6 +2,7 @@
 {
     public class CreditDto
     {
+        public int Id { get; set; }
         public decimal CreditAmount { get; set; }
         public decimal PercentageRate { get; set; }
         public int InstallmentCount { get; set; }

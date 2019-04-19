@@ -60,5 +60,30 @@ namespace WebLibrary.Controllers.Api
             else
                 return Ok(result.Message);
         }
+
+        [HttpGet]
+        public IHttpActionResult Installments(int id)
+        {
+            var userId = User.Identity.GetUserId().Value;
+            var installments = _creditService.GetInstallmentsForCredit(userId, id);
+
+            if (installments == null)
+                return BadRequest("The credit does not exist or you don't have permission to access it");
+            else
+                return Ok(installments);
+        }
+
+        [HttpPost]
+        public IHttpActionResult PayInstallment(CreditInstallmentDto creditInstallmentDto)
+        {
+            var userId = User.Identity.GetUserId().Value;
+
+            var result = _creditService.PayInstallment(userId, creditInstallmentDto);
+
+            if (!result.Success)
+                return BadRequest(result.Message);
+            else
+                return Ok(result.Message);
+        }
     }
 }

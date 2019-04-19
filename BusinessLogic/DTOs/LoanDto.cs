@@ -11,6 +11,7 @@ namespace BusinessLogic.DTOs
         public decimal InstallmentAmount { get; set; }
         public decimal InstallmentsLeft { get; set; }
         public decimal PercentageRate { get; set; }
+        public DateTime DateTaken { get; set; }
         public DateTime? NextInstallmentDate { get; set; }
         public int TotalInstallments { get; set; }
 
