@@ -237,6 +237,12 @@ namespace BusinessLogic
             return installmentPenalty;
         }
 
+        public IEnumerable<CreditDto> GetCredits(int userId)
+        {
+            var credits = _creditRepository.GetAll().Where(c => c.BankAccountId == userId).OrderByDescending(c => c.DateTaken);
+            return Mapper.Map<IEnumerable<CreditDto>>(credits);
+        }
+
         #region Private helpers
 
         private decimal GetInstallmentAmount(CreditDto creditDto)

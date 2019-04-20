@@ -1,0 +1,48 @@
+﻿@model IEnumerable<BusinessLogic.DTOs.CreditDto>
+@{
+    ViewBag.Title = "CreditHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mx-0 justify-content-center visibility3">
+    <div class="col mt-5 py-4 jumbotron">
+        <h2 class="text-center">Your credit history</h2>
+        <hr />
+        @if (Model.Count() == 0)
+        {
+            <p>You haven't taken any credits yet.</p>
+        }
+        else
+        {
+            <table class="table table-striped table-bordered w-100 text-center">
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Percentage rate</th>
+                        <th>Credit period</th>
+                        <th>Fully repaid</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var credit in Model)
+                    {
+                        <tr>
+                            <th>@credit.CreditAmount</th>
+                            <th>@credit.PercentageRate</th>
+                            <th>@credit.InstallmentCount  months</th>
+                            <th>@(credit.PaidInFull ? "Yes" : "No")</th>
+                            <th>
+                                <button type="button" class="details btn btn-primary" data-credit-id="@credit.Id">
+                                    See details
+                                </button>
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+

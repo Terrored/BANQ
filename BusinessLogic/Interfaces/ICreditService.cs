@@ -15,5 +15,6 @@ namespace BusinessLogic.Interfaces
         ResultDto PayInstallment(int userId, CreditInstallmentDto installmentDto);
         ResultDto IsFullyPaid(int creditId, int userId);
         InstallmentPenaltyDto GetInstallmentWithPenalty(CreditInstallmentDto creditInstallmentDto, int userId);
+        IEnumerable<CreditDto> GetCredits(int userId);
     }
 }

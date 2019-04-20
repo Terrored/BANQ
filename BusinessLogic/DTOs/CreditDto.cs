@@ -7,6 +7,7 @@
         public decimal PercentageRate { get; set; }
         public int InstallmentCount { get; set; }
         public bool Confirmed { get; set; }
+        public bool PaidInFull { get; set; }
         public int UserId { get; set; }
     }
 }
