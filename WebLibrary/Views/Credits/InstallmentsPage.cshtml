@@ -6,6 +6,7 @@
 <script type="text/javascript" src="~/Scripts/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="~/Scripts/dataTables.bootstrap4.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript" src="~/Scripts/moment.min.js"></script>
 <link rel="stylesheet" href="~/Content/dataTables.bootstrap4.min.css" />
 
 <div class="row mx-0 justify-content-center visibility3">
@@ -54,14 +55,16 @@
                         render: function (data) {
                             if (data == null)
                                 return "This installment hasn't been paid yet"
-                            else
-                                return data.substring(0,10);
+                            else {
+                                return moment(data).format("Do MMMM YYYY");
+                            }
+
                         }
                     },
                     {
                         data: "paymentDeadline",
                         render: function (data) {
-                            return data.substring(0,10);
+                            return moment(data).format("Do MMMM YYYY");
                         }
                     },
                     {
@@ -78,12 +81,7 @@
                 searching: false
             });
 
-            $("#creditInstallments").on("click", "#payInstallment", function () {
-                var installmentDto = {
-                    id: $(this).attr("data-installment-id"),
-                    creditId: @Model.Id
-                };
-
+            var callAjaxForInstallmentPaying = function (installmentDto) {
                 $.ajax({
                     url: "/api/credits/payinstallment",
                     data: installmentDto,
@@ -93,6 +91,19 @@
                             title: "Good job!",
                             text: d,
                             icon: "success"
+                        }).then(function () {
+                            $.ajax({
+                                url: "/api/credits/isfullypaid/" + @Model.Id,
+                                method: "GET",
+                                success: function (d) {
+                                    swal({
+                                        title: "Congratulations",
+                                        text: d,
+                                        icon: "success"
+                                    });
+                                },
+                                error: function () { }
+                            });
                         });
                         var table = $("#creditInstallments").DataTable();
                         table.ajax.reload();
@@ -104,7 +115,47 @@
                             icon: "error"
                         });
                     }
-                })
+                });
+            };
+
+            $("#creditInstallments").on("click", "#payInstallment", function () {
+                var button = $(this);
+
+                var deadlineString = $(this).parent().prev().html();
+                var deadline = moment(deadlineString, "Do MMMM YYYY");
+                var now = moment();
+                var days = moment.duration(deadline.diff(now)).days();
+
+                var installmentDto = {
+                    id: button.attr("data-installment-id"),
+                    creditId: "@Model.Id"
+                };
+
+                if (days < 0) {
+                    days = Math.abs(days);
+
+                    $.ajax({
+                        url: "/api/credits/getpenalty",
+                        data: installmentDto,
+                        method: "GET",
+                        success: function (data) {
+                            swal({
+                                title: "Warning",
+                                icon: "warning",
+                                text: "Because you are " + days + " day(s) late, you have to pay " + data.penaltyPercentage + "% extra as a penalty - " + data.amount + " PLN in total.",
+                                buttons: true,
+                                dangerMode: true
+                            }).then(function (clicked) {
+                                if (clicked) {
+                                    callAjaxForInstallmentPaying(installmentDto);
+                                }
+                            });
+                        }
+                    });
+                }
+                else {
+                    callAjaxForInstallmentPaying(installmentDto);
+                }
             });
         });
     </script>

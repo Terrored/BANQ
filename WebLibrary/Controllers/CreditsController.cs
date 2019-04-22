@@ -47,5 +47,14 @@ namespace WebLibrary.Controllers
 
             return RedirectToAction("Index", "UserInfo");
         }
+
+        public ActionResult CreditHistory()
+        {
+            var userId = User.Identity.GetUserId().Value;
+
+            var credits = _creditService.GetCredits(userId);
+
+            return View(credits);
+        }
     }
 }

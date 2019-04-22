@@ -85,9 +85,9 @@ namespace BusinessLogic
         public bool HasUnconfirmedCredit(int userId)
         {
             var bankAccountId = userId;
-            var credit = _creditRepository.GetAll().Where(c => c.BankAccountId == bankAccountId).SingleOrDefault();
+            var credit = _creditRepository.GetAll().SingleOrDefault(c => c.BankAccountId == bankAccountId && c.Confirmed == false);
 
-            if (credit == null || credit.Confirmed == true)
+            if (credit == null)
                 return false;
             else
                 return true;

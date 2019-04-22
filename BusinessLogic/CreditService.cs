@@ -164,15 +164,18 @@ namespace BusinessLogic
 
         public ResultDto PayInstallment(int userId, CreditInstallmentDto installmentDto)
         {
-            var credit = _creditRepository.GetAll(c => c.Installments).FirstOrDefault(c => c.BankAccountId == userId && c.PaidInFull == false);
-            if (credit == null)
-                return new ResultDto() { Success = false, Message = "Cannot find the credit" };
+            var credit = _creditRepository.GetSingle(installmentDto.CreditId, c => c.Installments);
+            if (credit == null || credit.BankAccountId != userId)
+                return new ResultDto() { Success = false, Message = "The credit does not exist or you don't have access to it" };
 
             var installment = credit.Installments.SingleOrDefault(ci => ci.Id == installmentDto.Id);
             if (installment == null)
                 return new ResultDto() { Success = false, Message = "Cannot find the installment" };
 
-            var result = _bankAccountService.TakeCash(installmentDto.InstallmentAmount, userId);
+            var penaltyPercentage = CalculatePenalty(installment.PaymentDeadline);
+            installment.InstallmentAmount += installment.InstallmentAmount * (penaltyPercentage / 100m);
+
+            var result = _bankAccountService.TakeCash(installment.InstallmentAmount, userId);
 
             if (!result)
                 return new ResultDto() { Success = false, Message = "Cannot finish transaction" };
@@ -198,6 +201,46 @@ namespace BusinessLogic
 
             _creditRepository.Update(credit);
             return new ResultDto() { Success = true, Message = "You have successfully paid an installment" };
+        }
+
+        public ResultDto IsFullyPaid(int creditId, int userId)
+        {
+            var credit = _creditRepository.GetSingle(creditId);
+
+            if (credit == null || credit.BankAccountId != userId)
+                return new ResultDto() { Success = false };
+
+            if (credit.PaidInFull)
+                return new ResultDto() { Success = true, Message = "Congratulations, you have successfully repaid whole credit. It will be now moved to credit history. You can still access it there." };
+            else
+                return new ResultDto() { Success = false };
+        }
+
+        public InstallmentPenaltyDto GetInstallmentWithPenalty(CreditInstallmentDto creditInstallmentDto, int userId)
+        {
+            var credit = _creditRepository.GetSingle(creditInstallmentDto.CreditId, c => c.Installments);
+
+            if (credit == null || credit.BankAccountId != userId)
+                return null;
+
+            var installment = credit.Installments.SingleOrDefault(i => i.Id == creditInstallmentDto.Id);
+
+            if (installment == null)
+                return null;
+
+            var penalty = CalculatePenalty(installment.PaymentDeadline);
+            var installmentPenalty = new InstallmentPenaltyDto()
+            {
+                Amount = installment.InstallmentAmount + (installment.InstallmentAmount * penalty / 100m),
+                PenaltyPercentage = penalty
+            };
+            return installmentPenalty;
+        }
+
+        public IEnumerable<CreditDto> GetCredits(int userId)
+        {
+            var credits = _creditRepository.GetAll().Where(c => c.BankAccountId == userId).OrderByDescending(c => c.DateTaken);
+            return Mapper.Map<IEnumerable<CreditDto>>(credits);
         }
 
         #region Private helpers
@@ -268,6 +311,15 @@ namespace BusinessLogic
                 return false;
             else
                 return true;
+        }
+
+        private decimal CalculatePenalty(DateTime deadline)
+        {
+            var comparison = DateTimeOffset.Compare(DateTime.Now, deadline + TimeSpan.FromDays(1));
+            if (comparison <= 0)
+                return 0;
+            var timeInterval = (DateTime.Now - deadline).Days;
+            return timeInterval * 5;
         }
 
         #endregion

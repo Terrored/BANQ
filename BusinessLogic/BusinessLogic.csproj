@@ -76,6 +76,7 @@
     <Compile Include="DTOs\BankAccountDto.cs" />
     <Compile Include="DTOs\CreditDto.cs" />
     <Compile Include="DTOs\CreditInstallmentDto.cs" />
+    <Compile Include="DTOs\InstallmentPenaltyDto.cs" />
     <Compile Include="DTOs\LoanDto.cs" />
     <Compile Include="DTOs\LoanInstallmentDto.cs" />
     <Compile Include="DTOs\MoneyTransferDto.cs" />
