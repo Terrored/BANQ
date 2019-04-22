@@ -1,11 +1,11 @@
-﻿using BusinessLogic.DTOs;
+﻿using System.Collections.Generic;
+using System.Linq;
+using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.RepositoryInterfaces;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace BusinessLogic
+namespace BusinessLogic.Services
 {
     public class BankAccountTypeService : IBankAccountTypeService
     {
