@@ -243,6 +243,16 @@ namespace BusinessLogic.Services
             return Mapper.Map<IEnumerable<CreditDto>>(credits);
         }
 
+        public ResultDto<CreditDto> HasActiveCredit(int userId)
+        {
+            var credit = _creditRepository.GetAll().SingleOrDefault(c => c.BankAccountId == userId && c.PaidInFull == false);
+
+            if (credit == null)
+                return new ResultDto<CreditDto>() { Success = false, Message = "Couldn't find the requested credit" };
+            else
+                return new ResultDto<CreditDto>() { Success = true, Data = Mapper.Map<CreditDto>(credit) };
+        }
+
         #region Private helpers
 
         private decimal GetInstallmentAmount(CreditDto creditDto)

@@ -10,7 +10,7 @@ namespace BusinessLogic.Interfaces
         ResultDto<decimal> GetCalculatedPercentageRate(CreditDto creditDto);
         void ConfirmCredit(int userId);
         ResultDto<CreditDto> GetCreditInfo(int userId, int creditId);
-
+        ResultDto<CreditDto> HasActiveCredit(int userId);
         IEnumerable<CreditInstallmentDto> GetInstallmentsForCredit(int userId, int creditId);
         ResultDto PayInstallment(int userId, CreditInstallmentDto installmentDto);
         ResultDto IsFullyPaid(int creditId, int userId);

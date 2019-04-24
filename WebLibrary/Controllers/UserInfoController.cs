@@ -11,11 +11,13 @@ namespace WebLibrary.Controllers
     {
         private readonly IBankAccountService _bankAccountService;
         private readonly ILoanService _loanService;
+        private readonly ICreditService _creditService;
 
-        public UserInfoController(IBankAccountService bankAccountService, ILoanService loanService)
+        public UserInfoController(IBankAccountService bankAccountService, ILoanService loanService, ICreditService creditService)
         {
             _bankAccountService = bankAccountService;
             _loanService = loanService;
+            _creditService = creditService;
         }
 
         public ActionResult Index()
@@ -32,6 +34,7 @@ namespace WebLibrary.Controllers
             var lastName = User.Identity.GetUserLastName();
             var loans = _loanService.GetLoans(userId);
             var lastLoan = loans.Where(l => l.InstallmentsLeft > 0).OrderBy(l => l.DateTaken).FirstOrDefault();
+            var activeCredit = _creditService.HasActiveCredit(userId);
 
             var userInfo = new UserInfoViewModel()
             {
@@ -41,10 +44,10 @@ namespace WebLibrary.Controllers
                 UserSex = sex,
                 UnconfirmedCredit = _bankAccountService.HasUnconfirmedCredit(userId),
                 LastLoan = lastLoan,
-                LoansTaken = loans.Count
+                LoansTaken = loans.Count,
+                ActiveCredit = activeCredit.Success ? activeCredit.Data : null
             };
             return View(userInfo);
-
         }
     }
 }
