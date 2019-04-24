@@ -1,14 +1,14 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.Models.Enums;
 using Model.RepositoryInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace BusinessLogic
+namespace BusinessLogic.Services
 {
     public class LoanService : ILoanService
     {
@@ -37,7 +37,6 @@ namespace BusinessLogic
 
             var bankAccount = _bankAccountRepository.GetSingle(loanDto.UserId, u => u.ApplicationIdentityUser, t => t.BankAccountType);
             int activeLoans = _loanRepository.GetAll().Where(l => l.BankAccountId == bankAccount.Id).ToList().Count;
-
             var isValid = CanTakeLoan(activeLoans, bankAccount.BankAccountType);
 
             if (isValid)
@@ -49,15 +48,11 @@ namespace BusinessLogic
                     result.Success = true;
                     result.Message = "Money has been added to your account!";
                 }
-
-
             }
             else
             {
                 result.Message = "You cannot take more loans - upgrade your bank account or contact support";
             }
-
-
             return result;
 
         }
