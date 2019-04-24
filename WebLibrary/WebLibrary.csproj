@@ -168,6 +168,7 @@
     <Content Include="Content\dataTables.bootstrap4.css" />
     <Content Include="Content\dataTables.bootstrap4.min.css" />
     <Content Include="Content\fonts\slick.svg" />
+    <Content Include="Content\Images\city-at-night-city-night-cityscape-514895_1.jpg" />
     <Content Include="Content\Images\coins-in-soil-with-young-plants.jpg&amp;size=1024.jpg" />
     <Content Include="Content\Images\data-protection.jpg&amp;size=1024.jpg" />
     <Content Include="Content\Images\e-money.jpg&amp;size=1024.jpg" />

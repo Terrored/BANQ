@@ -1,13 +1,14 @@
 ﻿html{
-    background: url("../Content/Images/seattle.jpg") no-repeat center center fixed;
+    background: url("Images/seattle.jpg") no-repeat center center fixed;
     background-size: cover;
     min-height:100vh;
     position:relative;
 }
 
 body {
-    background-color:transparent;
-    margin-bottom:60px;
+    background-color: transparent;
+    margin-bottom: 60px;
+    /*color: #89b4df;*/
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -89,3 +90,13 @@ input.error{
     border-color:red;
     border-width:medium;
 }
+
+/*.jumbotron {
+    background-color: #324359;
+    border: 2px solid #8c4130;
+}
+
+.form-control {
+    background-color: #324359;
+    border: 2px solid #d9653b;
+}*/
