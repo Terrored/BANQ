@@ -21,31 +21,30 @@ namespace WebLibrary.Controllers
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId().Value;
-            var sex = User.Identity.GetUserSex();
-            var lastName = User.Identity.GetUserLastName();
-            var loans = _loanService.GetLoans(userId);
-            var lastLoan = loans.Where(l => l.InstallmentsLeft > 0).OrderBy(l => l.DateTaken).FirstOrDefault();
-
             var bankAccount = _bankAccountService.GetBankAccountDetails(userId);
 
             if (bankAccount == null)
             {
                 return RedirectToAction("Create", "BankAccount");
             }
-            else
+
+            var sex = User.Identity.GetUserSex();
+            var lastName = User.Identity.GetUserLastName();
+            var loans = _loanService.GetLoans(userId);
+            var lastLoan = loans.Where(l => l.InstallmentsLeft > 0).OrderBy(l => l.DateTaken).FirstOrDefault();
+
+            var userInfo = new UserInfoViewModel()
             {
-                var userInfo = new UserInfoViewModel()
-                {
-                    BankAccount = bankAccount,
-                    UserFirstName = User.Identity.Name,
-                    UserLastName = lastName,
-                    UserSex = sex,
-                    UnconfirmedCredit = _bankAccountService.HasUnconfirmedCredit(userId),
-                    LastLoan = lastLoan,
-                    LoansTaken = loans.Count
-                };
-                return View(userInfo);
-            }
+                BankAccount = bankAccount,
+                UserFirstName = User.Identity.Name,
+                UserLastName = lastName,
+                UserSex = sex,
+                UnconfirmedCredit = _bankAccountService.HasUnconfirmedCredit(userId),
+                LastLoan = lastLoan,
+                LoansTaken = loans.Count
+            };
+            return View(userInfo);
+
         }
     }
 }

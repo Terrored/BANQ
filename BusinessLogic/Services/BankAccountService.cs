@@ -1,12 +1,12 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Linq;
+using AutoMapper;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.RepositoryInterfaces;
-using System;
-using System.Linq;
 
-namespace BusinessLogic
+namespace BusinessLogic.Services
 {
     public class BankAccountService : IBankAccountService
     {
@@ -88,9 +88,13 @@ namespace BusinessLogic
             var credit = _creditRepository.GetAll().SingleOrDefault(c => c.BankAccountId == bankAccountId && c.Confirmed == false);
 
             if (credit == null)
+            {
                 return false;
+            }
             else
+            {
                 return true;
+            }
         }
     }
 }

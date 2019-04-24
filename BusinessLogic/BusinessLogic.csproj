@@ -70,8 +70,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BankAccountTypeService.cs" />
-    <Compile Include="CreditService.cs" />
     <Compile Include="DTOs\BankAccountTypeDto.cs" />
     <Compile Include="DTOs\BankAccountDto.cs" />
     <Compile Include="DTOs\CreditDto.cs" />
@@ -88,10 +86,12 @@
     <Compile Include="Interfaces\ICreditService.cs" />
     <Compile Include="Interfaces\ILoanService.cs" />
     <Compile Include="Interfaces\IMoneyTransferService.cs" />
-    <Compile Include="LoanService.cs" />
-    <Compile Include="MoneyTransferService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BankAccountService.cs" />
+    <Compile Include="Services\BankAccountService.cs" />
+    <Compile Include="Services\BankAccountTypeService.cs" />
+    <Compile Include="Services\CreditService.cs" />
+    <Compile Include="Services\LoanService.cs" />
+    <Compile Include="Services\MoneyTransferService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
