@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.RepositoryInterfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BusinessLogic.Services
 {
@@ -79,44 +78,44 @@ namespace BusinessLogic.Services
             };
         }
 
-        public ResultDto GetCalculatedInstallment(CreditDto creditDto)
+        public ResultDto<decimal> GetCalculatedInstallment(CreditDto creditDto)
         {
             if (creditDto.CreditAmount <= 0)
             {
-                return new ResultDto() { Success = false, Message = "The entered amount has to be greater than 0" };
+                return new ResultDto<decimal>() { Success = false, Message = "The entered amount has to be greater than 0" };
             }
 
             if (creditDto.CreditAmount >= 10000000m)
             {
-                return new ResultDto { Success = false, Message = "The entered amount has to be less than 10 million" };
+                return new ResultDto<decimal>() { Success = false, Message = "The entered amount has to be less than 10 million" };
             }
 
             if (creditDto.PercentageRate <= 0 || creditDto.PercentageRate > 100)
             {
-                return new ResultDto() { Success = false, Message = "Percentage rate has to be between 0 and 100%" };
+                return new ResultDto<decimal>() { Success = false, Message = "Percentage rate has to be between 0 and 100%" };
             }
 
             if (creditDto.InstallmentCount <= 0 || creditDto.InstallmentCount > 120 || creditDto.InstallmentCount % 12 != 0)
             {
-                return new ResultDto() { Success = false, Message = "We do not support credits for such periods" };
+                return new ResultDto<decimal>() { Success = false, Message = "We do not support credits for such periods" };
             }
 
             decimal installment = GetInstallmentAmount(creditDto);
-            return new ResultDto() { Success = true, Message = installment.ToString("0.00", CultureInfo.InvariantCulture) };
+            return new ResultDto<decimal>() { Success = true, Message = "We have successfully calculated installment", Data = installment };
         }
 
-        public ResultDto GetCalculatedPercentageRate(CreditDto creditDto)
+        public ResultDto<decimal> GetCalculatedPercentageRate(CreditDto creditDto)
         {
             if (creditDto.CreditAmount <= 0 || creditDto.CreditAmount > 10000000m)
             {
-                return new ResultDto() { Success = false, Message = "Unsupported credit amount" };
+                return new ResultDto<decimal>() { Success = false, Message = "Unsupported credit amount" };
             }
 
             var bankAccount = _bankAccountRepository.GetSingle(creditDto.UserId, ba => ba.BankAccountType);
             var bankAccountType = bankAccount.BankAccountType.Name;
 
             var rate = GetPercentageRate(creditDto, bankAccountType);
-            return new ResultDto() { Success = true, Message = rate.ToString("0.00", CultureInfo.InvariantCulture) };
+            return new ResultDto<decimal>() { Success = true, Message = "We have successfully calculated percentage rate", Data = rate };
         }
 
         public void ConfirmCredit(int userId)
@@ -143,13 +142,14 @@ namespace BusinessLogic.Services
             _bankAccountService.GiveCash(credit.CreditAmount, userId);
         }
 
-        public CreditDto GetCurrentCreditInfo(int userId)
+        public ResultDto<CreditDto> GetCreditInfo(int userId, int creditId)
         {
-            var currentCredit = _creditRepository.GetAll().SingleOrDefault(c => c.PaidInFull == false && c.BankAccountId == userId && c.Confirmed == true);
-            if (currentCredit != null)
-                return Mapper.Map<CreditDto>(currentCredit);
+            var credit = _creditRepository.GetSingle(creditId);
+
+            if (credit == null || credit.BankAccountId != userId)
+                return new ResultDto<CreditDto>() { Success = false, Message = "The credit does not exist or you don't have permission to access it" };
             else
-                return null;
+                return new ResultDto<CreditDto>() { Success = true, Data = Mapper.Map<CreditDto>(credit) };
         }
 
         public IEnumerable<CreditInstallmentDto> GetInstallmentsForCredit(int userId, int creditId)
@@ -216,17 +216,17 @@ namespace BusinessLogic.Services
                 return new ResultDto() { Success = false };
         }
 
-        public InstallmentPenaltyDto GetInstallmentWithPenalty(CreditInstallmentDto creditInstallmentDto, int userId)
+        public ResultDto<InstallmentPenaltyDto> GetInstallmentWithPenalty(CreditInstallmentDto creditInstallmentDto, int userId)
         {
             var credit = _creditRepository.GetSingle(creditInstallmentDto.CreditId, c => c.Installments);
 
             if (credit == null || credit.BankAccountId != userId)
-                return null;
+                return new ResultDto<InstallmentPenaltyDto>() { Success = false, Message = "The credit does not exist or you don't have permission to access it" };
 
             var installment = credit.Installments.SingleOrDefault(i => i.Id == creditInstallmentDto.Id);
 
             if (installment == null)
-                return null;
+                return new ResultDto<InstallmentPenaltyDto>() { Success = false, Message = "Specified installment does not exist" };
 
             var penalty = CalculatePenalty(installment.PaymentDeadline);
             var installmentPenalty = new InstallmentPenaltyDto()
@@ -234,7 +234,7 @@ namespace BusinessLogic.Services
                 Amount = installment.InstallmentAmount + (installment.InstallmentAmount * penalty / 100m),
                 PenaltyPercentage = penalty
             };
-            return installmentPenalty;
+            return new ResultDto<InstallmentPenaltyDto>() { Success = true, Message = "Successfully calculated penalty", Data = installmentPenalty };
         }
 
         public IEnumerable<CreditDto> GetCredits(int userId)

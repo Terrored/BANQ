@@ -6,15 +6,15 @@ namespace BusinessLogic.Interfaces
     public interface ICreditService
     {
         ResultDto CreateCredit(CreditDto creditDto);
-        ResultDto GetCalculatedInstallment(CreditDto creditDto);
-        ResultDto GetCalculatedPercentageRate(CreditDto creditDto);
+        ResultDto<decimal> GetCalculatedInstallment(CreditDto creditDto);
+        ResultDto<decimal> GetCalculatedPercentageRate(CreditDto creditDto);
         void ConfirmCredit(int userId);
-        CreditDto GetCurrentCreditInfo(int userId);
+        ResultDto<CreditDto> GetCreditInfo(int userId, int creditId);
 
         IEnumerable<CreditInstallmentDto> GetInstallmentsForCredit(int userId, int creditId);
         ResultDto PayInstallment(int userId, CreditInstallmentDto installmentDto);
         ResultDto IsFullyPaid(int creditId, int userId);
-        InstallmentPenaltyDto GetInstallmentWithPenalty(CreditInstallmentDto creditInstallmentDto, int userId);
+        ResultDto<InstallmentPenaltyDto> GetInstallmentWithPenalty(CreditInstallmentDto creditInstallmentDto, int userId);
         IEnumerable<CreditDto> GetCredits(int userId);
     }
 }

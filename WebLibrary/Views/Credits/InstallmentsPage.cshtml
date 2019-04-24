@@ -138,11 +138,11 @@
                         url: "/api/credits/getpenalty",
                         data: installmentDto,
                         method: "GET",
-                        success: function (data) {
+                        success: function (d) {
                             swal({
                                 title: "Warning",
                                 icon: "warning",
-                                text: "Because you are " + days + " day(s) late, you have to pay " + data.penaltyPercentage + "% extra as a penalty - " + data.amount + " PLN in total.",
+                                text: "Because you are " + days + " day(s) late, you have to pay " + d.data.penaltyPercentage + "% extra as a penalty - " + d.data.amount + " PLN in total.",
                                 buttons: true,
                                 dangerMode: true
                             }).then(function (clicked) {

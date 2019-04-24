@@ -17,9 +17,9 @@ namespace WebLibrary.Controllers
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId().Value;
-            var currentCredit = _creditService.GetCurrentCreditInfo(userId);
+            var credits = _creditService.GetCredits(userId);
 
-            return View(currentCredit);
+            return View(credits);
         }
 
         public ActionResult ObtainCredit()
@@ -27,15 +27,15 @@ namespace WebLibrary.Controllers
             return View();
         }
 
-        public ActionResult InstallmentsPage()
+        public ActionResult InstallmentsPage(int Id)
         {
             var userId = User.Identity.GetUserId().Value;
-            var currentCredit = _creditService.GetCurrentCreditInfo(userId);
+            var creditInfo = _creditService.GetCreditInfo(userId, Id);
 
-            if (currentCredit == null)
+            if (!creditInfo.Success)
                 return RedirectToAction("Index", "UserInfo");
             else
-                return View(currentCredit);
+                return View(creditInfo.Data);
         }
 
         [HttpPost]

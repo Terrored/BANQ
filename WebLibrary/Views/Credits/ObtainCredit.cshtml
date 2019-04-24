@@ -123,10 +123,10 @@
                     method: "GET",
                     data: creditDto,
                     success: function (d) {
-                        $("#displayPercentageRate").html(d + " %");
+                        $("#displayPercentageRate").html(d.data + " %");
                     },
-                    error: function () {
-                        $("#displayPercentageRate").html("Invalid input");
+                    error: function (d) {
+                        $("#displayPercentageRate").html(d.responseJSON.message);
                     }
                 });
             });
@@ -219,7 +219,7 @@
                         data: creditDto,
                         success: function (d) {
                             $("#creditInfoError").hide();
-                            $("#creditInfoSuccess").html("<strong>" + installments + "</strong>" + " installments, " + "<strong>" + (parseFloat(d)).toFixed(2) + "</strong>" + " each. Total amount: " + "<strong>" + (d * installments).toFixed(2) + "</strong>");
+                            $("#creditInfoSuccess").html("<strong>" + installments + "</strong>" + " installments, " + "<strong>" + (parseFloat(d.data)).toFixed(2) + "</strong>" + " each. Total amount: " + "<strong>" + (d.data * installments).toFixed(2) + "</strong>");
                             $("#creditInfoSuccess").slideDown();
                         },
                         error: function (d) {
