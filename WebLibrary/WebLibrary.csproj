@@ -168,13 +168,16 @@
     <Content Include="Content\dataTables.bootstrap4.css" />
     <Content Include="Content\dataTables.bootstrap4.min.css" />
     <Content Include="Content\fonts\slick.svg" />
-    <Content Include="Content\Images\city-at-night-city-night-cityscape-514895_1.jpg" />
     <Content Include="Content\Images\coins-in-soil-with-young-plants.jpg&amp;size=1024.jpg" />
     <Content Include="Content\Images\data-protection.jpg&amp;size=1024.jpg" />
     <Content Include="Content\Images\e-money.jpg&amp;size=1024.jpg" />
     <Content Include="Content\Images\female icon.png" />
     <Content Include="Content\Images\ImagesMetaData.xml" />
     <Content Include="Content\Images\male icon.png" />
+    <Content Include="Content\Images\night-city-blur10.png" />
+    <Content Include="Content\Images\night-city-blur20.png" />
+    <Content Include="Content\Images\night-city-blur25.png" />
+    <Content Include="Content\Images\night-city-blur30.png" />
     <Content Include="Content\Images\pexels-photo-886465.jpeg" />
     <Content Include="Content\Images\seattle.jpg" />
     <Content Include="Content\slick-theme.css" />

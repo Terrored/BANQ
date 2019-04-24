@@ -1,5 +1,5 @@
 ﻿html{
-    background: url("Images/seattle.jpg") no-repeat center center fixed;
+    background: url("Images/night-city-blur25.png") no-repeat center center fixed;
     background-size: cover;
     min-height:100vh;
     position:relative;
@@ -8,7 +8,7 @@
 body {
     background-color: transparent;
     margin-bottom: 60px;
-    /*color: #89b4df;*/
+    color: #f29441
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -33,7 +33,7 @@ body {
 }
 
 .visibility3 {
-    opacity: 0.9;
+    opacity: 0.95;
 }
 
 .visibility4 {
@@ -91,12 +91,166 @@ input.error{
     border-width:medium;
 }
 
-/*.jumbotron {
-    background-color: #324359;
-    border: 2px solid #8c4130;
+
+/*Range override*/
+
+
+input[type=range].custom-range {
+    -webkit-appearance: none;
+    width: 100%;
+    margin: 5.5px 0;
 }
 
-.form-control {
+    input[type=range].custom-range:focus {
+        outline: none;
+    }
+
+    input[type=range].custom-range::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 4px;
+        cursor: pointer;
+        box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+        background: #324359;
+        border-radius: 10px;
+        border: 1px solid #f26938;
+    }
+
+    input[type=range].custom-range::-webkit-slider-thumb {
+        box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+        border: 0px solid #f29441;
+        height: 15px;
+        width: 15px;
+        border-radius: 10px;
+        background: #f29441;
+        cursor: pointer;
+        -webkit-appearance: none;
+        margin-top: -6.5px;
+    }
+
+    input[type=range].custom-range:focus::-webkit-slider-runnable-track {
+        background: #324359;
+    }
+
+    input[type=range].custom-range::-moz-range-track {
+        width: 100%;
+        height: 4px;
+        cursor: pointer;
+        box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+        background: #324359;
+        border-radius: 10px;
+        border: 1px solid #f26938;
+    }
+
+    input[type=range].custom-range::-moz-range-thumb {
+        box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+        border: 0px solid #f29441;
+        height: 15px;
+        width: 15px;
+        border-radius: 10px;
+        background: #f29441;
+        cursor: pointer;
+    }
+
+    input[type=range].custom-range::-ms-track {
+        width: 100%;
+        height: 4px;
+        cursor: pointer;
+        background: transparent;
+        border-color: transparent;
+        color: transparent;
+    }
+
+    input[type=range].custom-range::-ms-fill-lower {
+        background: #324359;
+        border: 1px solid #f26938;
+        border-radius: 20px;
+        box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    }
+
+    input[type=range].custom-range::-ms-fill-upper {
+        background: #324359;
+        border: 1px solid #f26938;
+        border-radius: 20px;
+        box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    }
+
+    input[type=range].custom-range::-ms-thumb {
+        box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+        border: 0px solid #f29441;
+        height: 15px;
+        width: 15px;
+        border-radius: 10px;
+        background: #f29441;
+        cursor: pointer;
+        height: 4px;
+    }
+
+    input[type=range].custom-range:focus::-ms-fill-lower {
+        background: #324359;
+    }
+
+    input[type=range].custom-range:focus::-ms-fill-upper {
+        background: #324359;
+    }
+
+
+
+/*Bootstrap overrides*/
+
+.jumbotron {
     background-color: #324359;
-    border: 2px solid #d9653b;
-}*/
+    border: 2px solid #bf4a30
+}
+
+.form-control, .input-group-text, .form-control:focus {
+    background-color: #324359;
+    border: 1px solid #f26938;
+    color: #f26938;
+}
+
+    .form-control:focus {
+        box-shadow: 0 0 5px 0.2rem #f29441;
+    }
+
+    .form-control::placeholder {
+        color: rgba(217,101,59,0.5);
+    }
+
+.navbar-brand {
+    color: #f29441;
+}
+
+a:hover {
+    color: #f39e54;
+}
+
+.footer{
+    background-color: transparent;
+}
+
+.btn-primary {
+    background-color: #bf4a30;
+    border-color: #f26938;
+}
+
+    .btn-primary:hover {
+        background-color: #f26938;
+        border-color: #f26938;
+    }
+
+.modal-content {
+    background-color: #324359;
+    border: 2px solid #bf4a30;
+}
+
+.modal-header {
+    border-bottom: 1px solid #bf4a30;
+}
+
+.modal-footer {
+    border-top: 1px solid #bf4a30;
+}
+
+.close{
+    text-shadow:none;
+}
