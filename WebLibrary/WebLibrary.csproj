@@ -174,6 +174,10 @@
     <Content Include="Content\Images\female icon.png" />
     <Content Include="Content\Images\ImagesMetaData.xml" />
     <Content Include="Content\Images\male icon.png" />
+    <Content Include="Content\Images\night-city-blur10.png" />
+    <Content Include="Content\Images\night-city-blur20.png" />
+    <Content Include="Content\Images\night-city-blur25.png" />
+    <Content Include="Content\Images\night-city-blur30.png" />
     <Content Include="Content\Images\pexels-photo-886465.jpeg" />
     <Content Include="Content\Images\seattle.jpg" />
     <Content Include="Content\slick-theme.css" />

@@ -23,7 +23,7 @@ namespace WebLibrary.Controllers.Api
             if (!result.Success)
                 return BadRequest(result.Message);
             else
-                return Ok(result.Message);
+                return Ok(result);
         }
 
         [HttpGet]
@@ -36,11 +36,11 @@ namespace WebLibrary.Controllers.Api
 
             if (!result.Success)
             {
-                return BadRequest();
+                return BadRequest(result.Message);
             }
             else
             {
-                return Ok(result.Message);
+                return Ok(result);
             }
         }
 
@@ -105,10 +105,22 @@ namespace WebLibrary.Controllers.Api
             var userId = User.Identity.GetUserId().Value;
             var result = _creditService.GetInstallmentWithPenalty(creditInstallmentDto, userId);
 
-            if (result == null)
-                return BadRequest();
+            if (!result.Success)
+                return BadRequest(result.Message);
             else
                 return Ok(result);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetCreditInfo(int id)
+        {
+            var userId = User.Identity.GetUserId().Value;
+            var creditInfo = _creditService.GetCreditInfo(userId, id);
+
+            if (!creditInfo.Success)
+                return BadRequest(creditInfo.Message);
+            else
+                return Ok(creditInfo);
         }
     }
 }

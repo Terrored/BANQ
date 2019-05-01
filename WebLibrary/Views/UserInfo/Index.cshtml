@@ -141,16 +141,19 @@
                     <div class="row my-3 mx-0">
                         <div class="col px-0">
                             <span class="float-left"><strong>Credit amount:</strong> @Model.LastLoan.LoanAmount</span>
+                        </div>
 
+                        <div class="col px-0">
                             <span class="float-left"><strong>Amount left:</strong> @Model.LastLoan.LoanAmountLeft</span>
                         </div>
+
                         <div class="col px-0">
-                            <span class="float-right">Installments left: @Model.LastLoan.InstallmentsLeft</span>
+                            <span class="float-right"><strong>Installments left:</strong> @Model.LastLoan.InstallmentsLeft</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col progress">
-                            <div class="progress-bar bg-success h-25" style="width: 100%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-success h-25" style="width: @(100*(Model.LastLoan.TotalInstallments - Model.LastLoan.InstallmentsLeft)/Model.LastLoan.TotalInstallments)%" role="progressbar" aria-valuemin="0" aria-valuemax="@Model.LastLoan.TotalInstallments"></div>
                         </div>
                     </div>
                 }
@@ -159,29 +162,42 @@
                 <div class="row mx-0 justify-content-end"><a href="#">See more...</a></div>
             </div>
 
-            @*Investments info*@
+            @*Credits info*@
+
             <div class="container jumbotron px-4 pb-3 mt-2 mb-auto visibility3 flex-grow-1">
-                <h2>Your investments</h2>
-                <hr />
-                <div class="row my-3 mx-0">
-                    <div class="col px-0">
-                        <span class="float-left">Name of the investment fund</span>
+                @if (Model.ActiveCredit == null)
+                {
+                    <h2>You don't have an active credit right now</h2>
+                    <hr />
+                    <p>You will see info about it here</p>
+                }
+                else
+                {
+                    <h2>Your active credit</h2>
+                    <hr />
+                    <div class="row justify-content-center my-3 mx-0">
+                        <div class="col px-0">
+                            <span class="float-left"><strong>Credit amount:</strong> @Model.ActiveCredit.CreditAmount PLN</span>
+                        </div>
+                        <div class="col px-0">
+                            <span class="float-left"><strong>Percentage rate:</strong> @Model.ActiveCredit.PercentageRate%</span>
+                        </div>
+                        <div class="col px-0">
+                            <span class="float-right"><strong>Credit period:</strong> @(Model.ActiveCredit.InstallmentCount / 12) year(s)</span>
+                        </div>
                     </div>
-                    <div class="col px-0">
-                        <span class="float-right">Current value: 7312 PLN</span>
+                    <div class="row">
+                        <div class="col progress">
+                            <div class="progress-bar bg-success h-25" style="width: @(100*Model.ActiveCredit.InstallmentsAlreadyPaid/Model.ActiveCredit.InstallmentCount)%" role="progressbar" aria-valuemin="0" aria-valuemax="@Model.ActiveCredit.InstallmentCount"></div>
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <span>@Model.ActiveCredit.InstallmentsAlreadyPaid out of @Model.ActiveCredit.InstallmentCount installments already paid</span>
+                        </div>
+                    </div>
+                }
 
-
-                </div>
-
-                <div class="row my-3 mx-0">
-                    <div class="col px-0">
-                        <span class="float-left">Name of the another investment fund</span>
-                    </div>
-                    <div class="col px-0">
-                        <span class="float-right">Current value: 5075 PLN</span>
-                    </div>
-                </div>
 
                 <hr />
                 <div class="row mx-0 justify-content-end"><a href="#">See more...</a></div>

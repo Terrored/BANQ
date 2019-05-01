@@ -11,6 +11,7 @@ namespace WebLibrary.Models
         public bool UnconfirmedCredit { get; set; }
         public LoanDto LastLoan { get; set; }
         public int? LoansTaken { get; set; }
+        public CreditDto ActiveCredit { get; set; }
 
         public string IconClass
         {
