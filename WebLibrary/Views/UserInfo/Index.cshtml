@@ -153,7 +153,7 @@
                     </div>
                     <div class="row">
                         <div class="col progress">
-                            <div class="progress-bar bg-success h-25" style="width: @(100*(Model.LastLoan.TotalInstallments - Model.LastLoan.InstallmentsLeft)/Model.LastLoan.TotalInstallments)%" role="progressbar" aria-valuemin="0" aria-valuemax="@Model.LastLoan.TotalInstallments"></div>
+                            <div class="progress-bar bg-success h-25" style="width: @(Model.LoanProgressBar)%" role="progressbar" aria-valuemin="0" aria-valuemax="@Model.LastLoan.TotalInstallments"></div>
                         </div>
                     </div>
                 }
@@ -188,7 +188,7 @@
                     </div>
                     <div class="row">
                         <div class="col progress">
-                            <div class="progress-bar bg-success h-25" style="width: @(100*Model.ActiveCredit.InstallmentsAlreadyPaid/Model.ActiveCredit.InstallmentCount)%" role="progressbar" aria-valuemin="0" aria-valuemax="@Model.ActiveCredit.InstallmentCount"></div>
+                            <div class="progress-bar bg-success h-25" style="width: @(Model.CreditProgressBar)%" role="progressbar" aria-valuemin="0" aria-valuemax="@Model.ActiveCredit.InstallmentCount"></div>
                         </div>
                     </div>
                     <div class="row">

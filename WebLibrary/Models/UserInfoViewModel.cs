@@ -23,5 +23,27 @@ namespace WebLibrary.Models
                     return "icon-man";
             }
         }
+
+        public int LoanProgressBar
+        {
+            get
+            {
+                if (LastLoan == null)
+                    return 0;
+                else
+                    return (int)(100 * (LastLoan.TotalInstallments - LastLoan.InstallmentsLeft) / LastLoan.TotalInstallments);
+            }
+        }
+
+        public int CreditProgressBar
+        {
+            get
+            {
+                if (ActiveCredit == null)
+                    return 0;
+                else
+                    return 100 * ActiveCredit.InstallmentsAlreadyPaid / ActiveCredit.InstallmentCount;
+            }
+        }
     }
 }
