@@ -285,3 +285,20 @@ a {
 h1, h2, h3, h4, h5, h6 {
     color: #f29441;
 }
+.table {
+    color: #f29441;
+}
+.table thead th {
+    vertical-align: bottom;
+    border-bottom:2px solid #d76137;
+}
+.table-bordered th, .table-bordered td {
+    border: 2px solid #d76137;
+}
+
+table.dataTable tbody td {
+    background-color: #314256;
+}
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate {
+    color: #f29441;
+}

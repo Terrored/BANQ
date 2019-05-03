@@ -296,6 +296,7 @@
     <Content Include="Views\Loan\Loans.cshtml" />
     <Content Include="Views\Credits\InstallmentsPage.cshtml" />
     <Content Include="Views\Credits\CreditHistory.cshtml" />
+    <Content Include="Views\MoneyTransfer\Transfers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
