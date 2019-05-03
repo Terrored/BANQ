@@ -8,7 +8,7 @@
 body {
     background-color: transparent;
     margin-bottom: 60px;
-    color: #f29441
+    color: #f8c9a0;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -216,13 +216,23 @@ input[type=range].custom-range {
         color: rgba(217,101,59,0.5);
     }
 
+    .form-control[disabled], .form-control[readonly], fieldset[disabled] {
+        background: none;
+        background-color: #324359;
+        opacity: 1;
+    }
+
 .navbar-brand {
     color: #f29441;
 }
 
-a:hover {
-    color: #f39e54;
+a {
+    color: #f26938
 }
+
+    a:hover {
+        color: #f29441;
+    }
 
 .footer{
     background-color: transparent;
@@ -236,6 +246,19 @@ a:hover {
     .btn-primary:hover {
         background-color: #f26938;
         border-color: #f26938;
+    }
+
+    .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
+        background-color: #f26938;
+        border-color: #f26938;
+    }
+
+    .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus, .show > .btn-primary.dropdown-toggle:focus {
+        box-shadow: 0 0 5px 0.2rem #f29441;
+    }
+
+    .btn-primary:focus {
+        box-shadow: 0 0 5px 0.2rem #f29441;
     }
 
 .modal-content {
@@ -253,4 +276,12 @@ a:hover {
 
 .close{
     text-shadow:none;
+}
+
+.progress{
+    background-color:transparent;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #f29441;
 }
