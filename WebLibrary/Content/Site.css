@@ -213,7 +213,7 @@ input[type=range].custom-range {
     }
 
     .form-control::placeholder {
-        color: rgba(217,101,59,0.5);
+        color: rgba(242,148,65,0.9);
     }
 
     .form-control[disabled], .form-control[readonly], fieldset[disabled] {
@@ -284,4 +284,45 @@ a {
 
 h1, h2, h3, h4, h5, h6 {
     color: #f29441;
+}
+.table {
+    color: #f29441;
+}
+.table thead th {
+    vertical-align: bottom;
+    border-bottom:2px solid #d76137;
+}
+.table-bordered {
+    border: 2px solid #d76137;
+}
+.table-bordered th, .table-bordered td {
+    border: 2px solid #d76137;
+}
+
+table.dataTable tbody td {
+    background-color: #314256;
+}
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate {
+    color: #f29441;
+}
+
+.page-item.disabled .page-link {
+    color: #f29441;
+    background-color: #bf4a30;
+    border: 1px solid #d76137;
+}
+.page-item.active .page-link {
+    color: #bf4a30;
+    background-color: #e59441;
+    border: 1px solid #d76137;
+}
+
+.slick-prev:before, .slick-next:before {
+    color: #d76137 !important;
+}
+.slick-dots li button:before {
+    color: #d76137 !important;
+}
+.slick-dots li.slick-active button:before {
+    color: #bf4a30 !important;
 }
