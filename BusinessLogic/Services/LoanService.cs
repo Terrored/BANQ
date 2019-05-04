@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.Models.Enums;
 using Model.RepositoryInterfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BusinessLogic.Services
 {
@@ -139,7 +139,8 @@ namespace BusinessLogic.Services
                 Installments = new List<LoanInstallment>()
 
             };
-            return _loanRepository.CreateAndReturnId(loan);
+            var id = _loanRepository.CreateAndReturnId(loan);
+            return id;
         }
 
         private bool CanTakeLoan(int numberOfActiveLoans, BankAccountType bankAccountType)
