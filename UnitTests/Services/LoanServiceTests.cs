@@ -10,17 +10,6 @@ using System.Linq;
 
 namespace UnitTests.Services
 {
-    public static class MockExtensions
-    {
-        public static void SetupIQueryable<TRepository, TEntity>(this Mock<TRepository> mock, IQueryable<TEntity> queryable)
-            where TRepository : class, IQueryable<TEntity>
-        {
-            mock.Setup(r => r.GetEnumerator()).Returns(queryable.GetEnumerator());
-            mock.Setup(r => r.Provider).Returns(queryable.Provider);
-            mock.Setup(r => r.ElementType).Returns(queryable.ElementType);
-            mock.Setup(r => r.Expression).Returns(queryable.Expression);
-        }
-    }
 
     [TestFixture]
     public class LoanServiceTests
@@ -41,11 +30,12 @@ namespace UnitTests.Services
 
 
         [Test]
-        public void Can_Student_Take_Loan()
+        public void Can_Student_Take_Loan_When_Has_Loan_Already()
         {
             //Arrange
 
             LoanDto loanDto = new LoanDto { LoanAmount = 600, UserId = 1 };
+
             bankAccountRepositoryMock.Setup(x => x.GetSingle(It.Is<int>(y => y.Equals(loanDto.UserId)), u => u.ApplicationIdentityUser, t => t.BankAccountType)).Returns(new BankAccount() { Id = 4, BankAccountType = new BankAccountType { Name = BankAccountTypeEnum.Student.ToString("G") } });
             loanRepositoryMock.Setup(x => x.GetAll()).Returns(new Loan[] { new Loan { BankAccountId = 4 } }.AsQueryable);
             //Act
@@ -54,24 +44,59 @@ namespace UnitTests.Services
             //Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(false, result.Success);
+            Assert.AreEqual("You cannot take more loans - upgrade your bank account or contact support", result.Message);
 
         }
         [Test]
-        public void Can_Corporate_Take_Loan()
+        public void Can_Corporate_Take_Loan_When_Has_Loan_Already()
         {
             //Arrange
 
             LoanDto loanDto = new LoanDto { LoanAmount = 600, UserId = 1 };
+
             bankAccountRepositoryMock.Setup(x => x.GetSingle(It.Is<int>(y => y.Equals(loanDto.UserId)), u => u.ApplicationIdentityUser, t => t.BankAccountType)).Returns(new BankAccount() { Id = 4, BankAccountType = new BankAccountType { Name = BankAccountTypeEnum.Corporate.ToString("G") } });
             loanRepositoryMock.Setup(x => x.GetAll()).Returns(new Loan[] { new Loan { BankAccountId = 4 }, new Loan { BankAccountId = 4 } }.AsQueryable);
             loanRepositoryMock.Setup(x => x.CreateAndReturnId(It.IsAny<Loan>())).Returns(222);
-
+            bankAccountServiceMock.Setup(x => x.GiveCash(It.Is<decimal>(c => c.Equals(loanDto.LoanAmount)), It.Is<int>(y => y.Equals(loanDto.UserId)))).Returns(true);
             //Act
             var obj = new LoanService(loanRepositoryMock.Object, bankAccountRepositoryMock.Object, loanInstallmentRepositoryMock.Object, bankAccountServiceMock.Object);
             var result = obj.TakeLoan(loanDto);
             //Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(true, result.Success);
+
+        }
+
+        [Test]
+        public void Cannot_Transfer_Cash_When_Taking_Loan()
+        {
+            //Arrange
+            LoanDto loanDto = new LoanDto { LoanAmount = 600, UserId = 1 };
+            bankAccountRepositoryMock.Setup(x => x.GetSingle(It.Is<int>(y => y.Equals(loanDto.UserId)), u => u.ApplicationIdentityUser, t => t.BankAccountType)).Returns(new BankAccount() { Id = 4, BankAccountType = new BankAccountType { Name = BankAccountTypeEnum.Corporate.ToString("G") } });
+            loanRepositoryMock.Setup(x => x.GetAll()).Returns(new Loan[] { new Loan { BankAccountId = 4 }, new Loan { BankAccountId = 4 } }.AsQueryable);
+            loanRepositoryMock.Setup(x => x.CreateAndReturnId(It.IsAny<Loan>())).Returns(222);
+            bankAccountServiceMock.Setup(x => x.GiveCash(It.Is<decimal>(c => c.Equals(loanDto.LoanAmount)), It.Is<int>(y => y.Equals(loanDto.UserId)))).Returns(false);
+            //Act
+            var obj = new LoanService(loanRepositoryMock.Object, bankAccountRepositoryMock.Object, loanInstallmentRepositoryMock.Object, bankAccountServiceMock.Object);
+            var result = obj.TakeLoan(loanDto);
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(false, result.Success);
+            Assert.AreEqual("There was a problem with money transfer. Contact support", result.Message);
+        }
+
+        [Test]
+        public void Cannot_Take_Loan_With_Wrong_LoanAmount([Values(100, 100000)] decimal loanAmount)
+        {
+            //Arrange
+            LoanDto loanDto = new LoanDto { LoanAmount = loanAmount, UserId = 1 };
+            //Act
+            var obj = new LoanService(loanRepositoryMock.Object, bankAccountRepositoryMock.Object, loanInstallmentRepositoryMock.Object, bankAccountServiceMock.Object);
+            var result = obj.TakeLoan(loanDto);
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(false, result.Success);
+            Assert.AreEqual("Invalid loan amount! MIN is 500 PLN and MAX is 10000 PLN", result.Message);
 
         }
     }
