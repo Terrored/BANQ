@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.Models.Enums;
 using Model.RepositoryInterfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BusinessLogic.Services
 {
@@ -27,7 +27,7 @@ namespace BusinessLogic.Services
 
         public ResultDto TakeLoan(LoanDto loanDto)
         {
-            var result = new ResultDto() { Success = false };
+            var result = new ResultDto() { Success = false, Message = "Oops something went wrong!" };
 
             if (loanDto.LoanAmount < 500 || loanDto.LoanAmount > 10000)
             {
@@ -44,9 +44,17 @@ namespace BusinessLogic.Services
                 var id = CreateLoan(loanDto, bankAccount);
                 if (id > 0)
                 {
-                    _bankAccountService.GiveCash(loanDto.LoanAmount, loanDto.UserId);
-                    result.Success = true;
-                    result.Message = "Money has been added to your account!";
+                    var success = _bankAccountService.GiveCash(loanDto.LoanAmount, loanDto.UserId);
+                    if (success)
+                    {
+                        result.Success = true;
+                        result.Message = "Money has been added to your account!";
+                    }
+                    else
+                    {
+                        result.Message = "There was a problem with money transfer. Contact support";
+                    }
+
                 }
             }
             else
@@ -139,7 +147,8 @@ namespace BusinessLogic.Services
                 Installments = new List<LoanInstallment>()
 
             };
-            return _loanRepository.CreateAndReturnId(loan);
+            var id = _loanRepository.CreateAndReturnId(loan);
+            return id;
         }
 
         private bool CanTakeLoan(int numberOfActiveLoans, BankAccountType bankAccountType)

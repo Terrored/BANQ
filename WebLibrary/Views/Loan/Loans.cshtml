@@ -68,7 +68,7 @@
                         if (row.installmentsLeft == 0) {
                             return null;
                         }
-                        return "<button type='button' class='btn btn-warning btn-block payInstallment' data-toggle='tooltip' data-placement='right' value='" + data + "'>Pay!</button>";
+                        return "<button type='button' class='btn btn-primary btn-block payInstallment' data-toggle='tooltip' data-placement='right' value='" + data + "'>Pay!</button>";
                     }
                 }
 
@@ -76,9 +76,9 @@
             "rowCallback": function (row, data, index) {
                 var date = new Date().format('Y-m-d');
                 if (data.installmentsLeft == 0) {
-                    $('td', row).css('background-color', '#50C878');
+                    $('td', row).css('background-color', '#006b24');
                 } else if (data.nextInstallmentDate < date) {
-                    $('td', row).css('background-color', '#e22343');
+                    $('td', row).css('background-color', '#a01930');
                     $('button', row).attr('title', "You're late!");
                     $('button', row).attr('data-late', 'true');
                     $(function () {
