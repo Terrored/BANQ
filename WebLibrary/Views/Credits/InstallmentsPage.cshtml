@@ -3,10 +3,7 @@
     ViewBag.Title = "InstallmentsPage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script type="text/javascript" src="~/Scripts/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="~/Scripts/dataTables.bootstrap4.min.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script type="text/javascript" src="~/Scripts/moment.min.js"></script>
+
 <link rel="stylesheet" href="~/Content/dataTables.bootstrap4.min.css" />
 
 <div class="row mx-0 justify-content-center visibility3">
@@ -36,6 +33,10 @@
 
 @section scripts
 {
+    <script type="text/javascript" src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/moment.min.js"></script>
     <script>
         $(document).ready(function () {
             $("#creditInstallments").DataTable({
@@ -87,19 +88,19 @@
                     data: installmentDto,
                     method: "POST",
                     success: function (d) {
-                        swal({
+                        Swal.fire({
                             title: "Good job!",
                             text: d,
-                            icon: "success"
+                            type: "success"
                         }).then(function () {
                             $.ajax({
                                 url: "/api/credits/isfullypaid/" + @Model.Id,
                                 method: "GET",
                                 success: function (d) {
-                                    swal({
+                                    Swal.fire({
                                         title: "Congratulations",
                                         text: d,
-                                        icon: "success"
+                                        type: "success"
                                     });
                                 },
                                 error: function () { }
@@ -109,10 +110,10 @@
                         table.ajax.reload();
                     },
                     error: function (d) {
-                        swal({
+                        Swal.fire({
                             title: "Error",
                             text: d.responseJSON.message,
-                            icon: "error"
+                            type: "error"
                         });
                     }
                 });
@@ -139,9 +140,9 @@
                         data: installmentDto,
                         method: "GET",
                         success: function (d) {
-                            swal({
+                            Swal.fire({
                                 title: "Warning",
-                                icon: "warning",
+                                type: "warning",
                                 text: "Because you are " + days + " day(s) late, you have to pay " + d.data.penaltyPercentage + "% extra as a penalty - " + d.data.amount + " PLN in total.",
                                 buttons: true,
                                 dangerMode: true

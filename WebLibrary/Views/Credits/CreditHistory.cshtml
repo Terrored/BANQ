@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <div class="row mx-0 justify-content-center visibility3">
     <div class="col mt-5 py-4 jumbotron">
         <h2 class="text-center">Your credit history</h2>
@@ -49,6 +48,7 @@
 
 @section scripts
 {
+    <script type="text/javascript" src="~/Scripts/sweetalert2.all.min.js"></script>
     <script>
         $(document).ready(function () {
             $("#credits").on("click", ".details", function () {
@@ -64,14 +64,14 @@
                         url: "/api/credits/getcreditinfo/" + creditId,
                         method: "GET",
                         success: function (d) {
-                            swal.fire({
+                            Swal.fire({
                                 title: "Your credit info",
                                 type: "info",
                                 html: "Credit amount: <strong>" + d.data.creditAmount + "</strong> PLN with <strong>" + d.data.percentageRate + "</strong>% rate." + "Payment was spread into <strong>" + d.data.installmentCount + "</strong> installments."
                             });
                         },
                         error: function (d) {
-                            swal.fire({
+                            Swal.fire({
                                 title: "Error",
                                 type: "error",
                                 text: d.responseJSON.message
