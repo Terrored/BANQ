@@ -65,12 +65,12 @@ namespace WebLibrary.Controllers.Api
         public IHttpActionResult Installments(int id)
         {
             var userId = User.Identity.GetUserId().Value;
-            var installments = _creditService.GetInstallmentsForCredit(userId, id);
+            var result = _creditService.GetInstallmentsForCredit(userId, id);
 
-            if (installments == null)
-                return BadRequest("The credit does not exist or you don't have permission to access it");
+            if (!result.Success)
+                return BadRequest(result.Message);
             else
-                return Ok(installments);
+                return Ok(result.Data);
         }
 
         [HttpPost]

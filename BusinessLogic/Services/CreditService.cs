@@ -13,26 +13,23 @@ namespace BusinessLogic.Services
     {
         private readonly IEntityRepository<BankAccount> _bankAccountRepository;
         private readonly IEntityRepository<Credit> _creditRepository;
-        private readonly IApplicationUserManager _applicationUserManager;
         private readonly IBankAccountService _bankAccountService;
         private readonly IEntityRepository<CreditInstallment> _creditInstallmentsRepository;
 
         public CreditService(IEntityRepository<BankAccount> bankAccountRepository,
             IEntityRepository<Credit> creditRepository,
-            IApplicationUserManager applicationUserManager,
             IBankAccountService bankAccountService,
             IEntityRepository<CreditInstallment> creditInstallmentsRepository)
         {
             _bankAccountRepository = bankAccountRepository;
             _creditRepository = creditRepository;
-            _applicationUserManager = applicationUserManager;
             _bankAccountService = bankAccountService;
             _creditInstallmentsRepository = creditInstallmentsRepository;
         }
 
         public ResultDto CreateCredit(CreditDto creditDto)
         {
-            var bankAccount = _bankAccountRepository.GetSingle(creditDto.UserId, ba => ba.ApplicationIdentityUser, ba => ba.BankAccountType, ba => ba.Credits);
+            var bankAccount = _bankAccountRepository.GetSingle(creditDto.UserId, ba => ba.BankAccountType, ba => ba.Credits);
 
             if (bankAccount == null)
                 return new ResultDto() { Success = false, Message = "The referenced bank account does not exist" };
@@ -152,14 +149,19 @@ namespace BusinessLogic.Services
                 return new ResultDto<CreditDto>() { Success = true, Data = Mapper.Map<CreditDto>(credit) };
         }
 
-        public IEnumerable<CreditInstallmentDto> GetInstallmentsForCredit(int userId, int creditId)
+        public ResultDto<IEnumerable<CreditInstallmentDto>> GetInstallmentsForCredit(int userId, int creditId)
         {
             var credit = _creditRepository.GetSingle(creditId, c => c.Installments);
 
             if (credit == null || credit.BankAccountId != userId)
-                return null;
+                return new ResultDto<IEnumerable<CreditInstallmentDto>> { Success = false, Message = "The credit does not exist or you don't have permission to access it" };
 
-            return Mapper.Map<IEnumerable<CreditInstallmentDto>>(credit.Installments.OrderByDescending(ci => ci.PaymentDeadline));
+            return new ResultDto<IEnumerable<CreditInstallmentDto>>
+            {
+                Data = Mapper.Map<IEnumerable<CreditInstallmentDto>>(credit.Installments.OrderByDescending(ci => ci.PaymentDeadline)),
+                Message = "Installments fetched successfully",
+                Success = true
+            };
         }
 
         public ResultDto PayInstallment(int userId, CreditInstallmentDto installmentDto)
@@ -237,10 +239,10 @@ namespace BusinessLogic.Services
             return new ResultDto<InstallmentPenaltyDto>() { Success = true, Message = "Successfully calculated penalty", Data = installmentPenalty };
         }
 
-        public IEnumerable<CreditDto> GetCredits(int userId)
+        public ResultDto<IEnumerable<CreditDto>> GetCredits(int userId)
         {
             var credits = _creditRepository.GetAll().Where(c => c.BankAccountId == userId).OrderByDescending(c => c.DateTaken);
-            return Mapper.Map<IEnumerable<CreditDto>>(credits);
+            return new ResultDto<IEnumerable<CreditDto>> { Data = Mapper.Map<IEnumerable<CreditDto>>(credits) };
         }
 
         public ResultDto<CreditDto> HasActiveCredit(int userId)
@@ -317,7 +319,7 @@ namespace BusinessLogic.Services
 
         private bool ValidateCreditPeriod(CreditDto creditDto)
         {
-            if (creditDto.InstallmentCount < 12 || creditDto.InstallmentCount > 120)
+            if (creditDto.InstallmentCount < 12 || creditDto.InstallmentCount > 120 || creditDto.InstallmentCount % 12 != 0)
                 return false;
             else
                 return true;

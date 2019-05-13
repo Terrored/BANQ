@@ -17,7 +17,7 @@ namespace WebLibrary.Controllers
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId().Value;
-            var credits = _creditService.GetCredits(userId);
+            var credits = _creditService.GetCredits(userId).Data;
 
             return View(credits);
         }
@@ -52,7 +52,7 @@ namespace WebLibrary.Controllers
         {
             var userId = User.Identity.GetUserId().Value;
 
-            var credits = _creditService.GetCredits(userId);
+            var credits = _creditService.GetCredits(userId).Data;
 
             return View(credits);
         }
