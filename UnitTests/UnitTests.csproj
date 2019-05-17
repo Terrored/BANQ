@@ -69,8 +69,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BankAccountServiceTests.cs" />
     <Compile Include="Services\CreditServiceTests.cs" />
     <Compile Include="Services\LoanServiceTests.cs" />
+    <Compile Include="Services\TestsConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

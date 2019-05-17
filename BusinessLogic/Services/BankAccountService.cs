@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.RepositoryInterfaces;
+using System;
+using System.Linq;
 
 namespace BusinessLogic.Services
 {
@@ -12,13 +12,11 @@ namespace BusinessLogic.Services
     {
         private readonly IEntityRepository<BankAccount> _bankAccountRepository;
         private readonly IEntityRepository<Credit> _creditRepository;
-        private readonly IApplicationUserManager _applicationUserManager;
 
-        public BankAccountService(IEntityRepository<BankAccount> bankAccountRepository, IEntityRepository<Credit> creditRepository, IApplicationUserManager applicationUserManager)
+        public BankAccountService(IEntityRepository<BankAccount> bankAccountRepository, IEntityRepository<Credit> creditRepository)
         {
             _bankAccountRepository = bankAccountRepository;
             _creditRepository = creditRepository;
-            _applicationUserManager = applicationUserManager;
         }
 
         public bool UserAlreadyHasAccount(int userId)
@@ -59,7 +57,7 @@ namespace BusinessLogic.Services
         {
             var bankAccount = _bankAccountRepository.GetSingle(userId);
             bool success = false;
-            if (bankAccount != null && amount < bankAccount.Cash)
+            if (bankAccount != null && amount < bankAccount.Cash && amount >= 0)
             {
                 bankAccount.Cash = bankAccount.Cash - amount;
                 _bankAccountRepository.Update(bankAccount);
@@ -72,7 +70,7 @@ namespace BusinessLogic.Services
         {
             var bankAccount = _bankAccountRepository.GetSingle(userId);
             bool success = false;
-            if (bankAccount != null)
+            if (bankAccount != null && amount >= 0)
             {
                 bankAccount.Cash = bankAccount.Cash + amount;
                 _bankAccountRepository.Update(bankAccount);
@@ -87,14 +85,7 @@ namespace BusinessLogic.Services
             var bankAccountId = userId;
             var credit = _creditRepository.GetAll().SingleOrDefault(c => c.BankAccountId == bankAccountId && c.Confirmed == false);
 
-            if (credit == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return credit == null ? false : true;
         }
     }
 }

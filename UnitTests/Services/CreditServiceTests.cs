@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using BusinessLogic.DTOs;
+﻿using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Services;
 using DataAccess.Identity;
@@ -16,34 +15,31 @@ namespace UnitTests.Services
     [TestFixture]
     public class CreditServiceTests
     {
-        private readonly Mock<IEntityRepository<BankAccount>> _bankAccountRepository;
-        private readonly Mock<IEntityRepository<Credit>> _creditRepository;
-        private readonly Mock<IBankAccountService> _bankAccountService;
-        private readonly Mock<IEntityRepository<CreditInstallment>> _creditInstallmentRepository;
+        private Mock<IEntityRepository<BankAccount>> _bankAccountRepository;
+        private Mock<IEntityRepository<Credit>> _creditRepository;
+        private Mock<IBankAccountService> _bankAccountService;
+        private Mock<IEntityRepository<CreditInstallment>> _creditInstallmentRepository;
+        private CreditService InstantiateService()
+        {
+            return new CreditService(_bankAccountRepository.Object, _creditRepository.Object, _bankAccountService.Object, _creditInstallmentRepository.Object);
+        }
 
-        public CreditServiceTests()
+        [SetUp]
+        public void SetupTest()
         {
             _bankAccountRepository = new Mock<IEntityRepository<BankAccount>>();
             _creditInstallmentRepository = new Mock<IEntityRepository<CreditInstallment>>();
             _bankAccountService = new Mock<IBankAccountService>();
             _creditRepository = new Mock<IEntityRepository<Credit>>();
-
-            SetupMapper();
         }
 
-        private CreditService InstantiateService()
+        [TearDown]
+        public void FinalizeTest()
         {
-            return new CreditService(_bankAccountRepository.Object, _creditRepository.Object, _bankAccountService.Object, _creditInstallmentRepository.Object);
-        }
-        private void SetupMapper()
-        {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Credit, CreditDto>().
-                    ForMember(cdto => cdto.UserId, opt => opt.MapFrom(c => c.BankAccountId)).
-                    ForMember(cdto => cdto.InstallmentCount, opt => opt.MapFrom(c => c.TotalInstallments));
-                cfg.CreateMap<CreditInstallment, CreditInstallmentDto>();
-            });
+            _bankAccountRepository = null;
+            _creditRepository = null;
+            _bankAccountService = null;
+            _creditInstallmentRepository = null;
         }
 
         [Test]
