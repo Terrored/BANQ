@@ -3,9 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
+
 
 <div class="row mx-0 mt-5 justify-content-center">
     <div class="col-8 py-4 jumbotron visibility3">
@@ -108,7 +106,9 @@
 
 @section scripts
 {
-
+    <script type="text/javascript" src="~/Scripts/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
     <script>
         $(document).ready(function () {
 
@@ -159,18 +159,18 @@
                         url: "/api/credits/obtaincredit",
                         data: creditDto,
                         success: function (data) {
-                            swal({
+                            Swal.fire({
                                 title: "Success",
                                 text: data,
-                                icon: "success",
+                                type: "success",
                                 button: "OK"
                             });
                         },
                         error: function (data) {
-                            swal({
+                            Swal.fire({
                                 title: "Error",
                                 text: data.responseJSON.message,
-                                icon: "error",
+                                type: "error",
                                 button: "OK"
                             });
                         }

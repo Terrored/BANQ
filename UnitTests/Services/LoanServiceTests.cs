@@ -28,6 +28,15 @@ namespace UnitTests.Services
             bankAccountServiceMock = new Mock<IBankAccountService>();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            bankAccountRepositoryMock = null;
+            loanRepositoryMock = null;
+            loanInstallmentRepositoryMock = null;
+            bankAccountServiceMock = null;
+        }
+
 
         [Test]
         public void Can_Student_Take_Loan_When_Has_Loan_Already()
