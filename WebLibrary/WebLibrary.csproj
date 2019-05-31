@@ -187,11 +187,14 @@
     <Content Include="Content\Site.css" />
     <Content Include="libman.json" />
     <Content Include="Scripts\app\credits\creditHistory.js" />
+    <Content Include="Scripts\app\credits\installmentsPage.js" />
     <Content Include="Scripts\app\credits\obtainCredit.js" />
     <Content Include="Scripts\app\home\index.js" />
     <Content Include="Scripts\app\loans\index.js" />
     <Content Include="Scripts\app\loans\loans.js" />
     <Content Include="Scripts\app\moneyTransfer\create.js" />
+    <Content Include="Scripts\app\moneyTransfer\index.js" />
+    <Content Include="Scripts\app\moneyTransfer\transfers.js" />
     <Content Include="Scripts\app\shared\partialTransfer.js" />
     <Content Include="Scripts\app\userInfo\index.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
