@@ -13,18 +13,20 @@
 @Scripts.Render("~/bundles/bootstrap")
 @RenderSection("scripts", required: false)
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
  <body>
 
-    <nav class="navbar navbar-expand sticky-top">
-        @Html.ActionLink("BANQ", "Index", "Home", null, new { @class = "nav-link navbar-brand ml-5" })
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+     <nav class="navbar navbar-expand sticky-top">
+         <i class="fas fa-coins ml-5"></i>
+         @Html.ActionLink("BANQ", "Index", "Home", null, new { @class = "nav-link navbar-brand" })
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+             <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarNav">
 
-        </div>
-        @Html.Partial("_LoginPartial")
-    </nav>
+         </div>
+         @Html.Partial("_LoginPartial")
+     </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />
