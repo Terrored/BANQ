@@ -52,27 +52,5 @@
 @section scripts
 {
     <script type="text/javascript" src="~/Scripts/slick.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $(".d-none").removeClass("d-none");
-
-            $(".slick-slider").slick({
-                infinite: true,
-                slidesToShow: 3,
-                slidesToScroll: 1,
-                autoplay: true,
-                autoplaySpeed: 5000,
-                dots: true,
-                pauseOnFocus: false,
-                pauseOnHover: false,
-
-            }).
-                on("setPosition", function (event, slick) {
-                    $(this).find('.slide').height('auto');
-                    var slickTrack = $(this).find('.slick-track');
-                    var slickTrackHeight = $(slickTrack).height();
-                    $(this).find('.slide').css('height', slickTrackHeight + 'px');
-                });
-        });
-    </script>
+    <script type="text/javascript" src="~/Scripts/app/home/index.js"></script>
 }

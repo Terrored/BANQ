@@ -326,3 +326,32 @@ table.dataTable tbody td {
 .slick-dots li.slick-active button:before {
     color: #bf4a30 !important;
 }
+
+.alert-success {
+    background-color: #81ca93;
+    border-color: #65be7b;
+}
+
+.alert-danger {
+    background-color: #e9848d;
+    border-color: #e3636e;
+}
+
+.alert-primary {
+    background-color: #91c7ff;
+    border-color: #6ab3ff;
+}
+
+.dropdown-menu {
+    background-color: #324359;
+}
+
+.dropdown-item {
+    color: #f29441;
+}
+
+    .dropdown-item:hover, .dropdown-item:focus {
+        color: #f29441;
+        text-decoration: none;
+        background-color: #5B697A;
+    }

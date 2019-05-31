@@ -27,7 +27,7 @@
 
 <script>
     $(document).ready(function () {
-        var usernameId = @HttpContext.Current.User.Identity.GetUserId().Value;
+        var userId = @ViewBag.Id;
         $('#allTransfers').DataTable({
             "ajax": { url: "/api/MoneyTransfer/GetAllTransfers", dataSrc: "" },
             "paging":   false,
@@ -41,7 +41,7 @@
                 { "data": "to.userName" },
                 {
                     "data": "cashAmount", "render": function (data, type, row, meta) {
-                        if (row.from.id == usernameId) {
+                        if (row.from.id == userId) {
                             data = -data;
                         }
 
@@ -54,7 +54,7 @@
             ],
             "rowCallback": function(row, data, index) {
 
-                if (data.from.id === usernameId) {
+                if (data.from.id === userId) {
                     $('td', row).css('color', '#ff3232');
                     $('td', row).css('font-weight', '500');
                 } else {

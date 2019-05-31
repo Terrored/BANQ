@@ -29,7 +29,7 @@
                     <input type="text" class="form-control" id="accountNumber" />
                 </div>
 
-                <p onclick="submit()" class="btn btn-primary btn-block">Make a transfer!</p>
+                <button id="submitTransfer" class="btn btn-primary btn-block">Make a transfer!</button>
             </form>
 
         </div>
@@ -40,26 +40,6 @@
 
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script>
-    function submit() {
-        var dataForm = {
-            cashAmount: $('#cashAmount').val(),
-            toId: $('#accountNumber').val()
-        };
-        $.ajax({
-            type: "POST",
-            url: "/MoneyTransfer/Transfer",
-            data: dataForm
-        }).done(function (data) {
-            if (data.message == 'Transfer has been successful') {
-                Swal.fire('Great!', data.message, 'success');
-            } else {
-                Swal.fire('Oops!', data.message, 'error');
-            }
-
-        });
-    }
-
-</script>
+<script src="~/Scripts/sweetalert2.all.min.js"></script>
+<script type="text/javascript" src="~/Scripts/app/moneyTransfer/create.js"></script>
 
