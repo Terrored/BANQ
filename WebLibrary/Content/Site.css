@@ -222,8 +222,14 @@ input[type=range].custom-range {
         opacity: 1;
     }
 
+.navbar {
+    background: #241f26;
+    opacity: 0.95;
+}
+
 .navbar-brand {
     color: #f29441;
+    
 }
 
 a {
