@@ -73,6 +73,7 @@
     <Compile Include="Services\BankAccountTypeServiceTests.cs" />
     <Compile Include="Services\CreditServiceTests.cs" />
     <Compile Include="Services\LoanServiceTests.cs" />
+    <Compile Include="Services\MoneyTransferTests.cs" />
     <Compile Include="Services\TestsConfig.cs" />
   </ItemGroup>
   <ItemGroup>
