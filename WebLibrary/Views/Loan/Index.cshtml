@@ -9,142 +9,61 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/bootstrap.bundle.min.js"></script>
 <script src="~/Scripts/jquery-validate.bootstrap-tooltip.min.js"></script>
-<div class="container">
-    <div class="row">
 
-        <div class="col-md-4"  style="display: flex">
-            <div class="jumbotron mt-4 py-5">
+<div class="row mx-0">
+    <div class="col-md-4 px-2 d-flex">
+        <div class="jumbotron mt-5 py-5">
 
-                <form class="ml-1" method="post" id="loanForm">
-                    <h3 class="display-4 mb-5" align="center">New Loan</h3>
-                    <label for="loanAmount">Loan amount</label>
-                    <div class="input-group mb-3">
+            <form class="ml-1" method="post" id="loanForm">
+                <h3 class="display-4 mb-5" align="center">New Loan</h3>
+                <label for="loanAmount">Loan amount</label>
+                <div class="input-group mb-3">
 
-                        <input type="text" class="form-control" name="loanAmount" id="loanAmount" />
-                        <div class="input-group-append">
-                            <span class="input-group-text">PLN</span>
-                        </div>
-
-                    </div>
-                    <div class="input-group my-3">
-                        <label for="totalInstallments">Total installments</label>
-                        <input type="range" class="custom-range" id="totalInstallments" min="6" max="24" step="1" />
-                        <label id="installmentInfo">installment(s)</label>
-                    </div>
-                    <label for="installmentAmount">Installment amount</label>
-                    <div class="input-group mb-3">
-                        <input disabled="disabled" type="text" class="form-control" id="installmentAmount" />
-                        <div class="input-group-append">
-                            <span class="input-group-text">PLN</span>
-                        </div>
+                    <input type="text" class="form-control" name="loanAmount" id="loanAmount" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">PLN</span>
                     </div>
 
-                    <input type="submit" class="btn btn-primary btn-block" value="Take a loan!" />
-                </form>
-
-            </div>
-        </div>
-        <div class="col-md-8"  style="display: flex">
-            <div class="jumbotron mt-4 py-5">
-                <h3 class="display-4 mb-3 text-center">Best loans for you!</h3>
-                <div>
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                    in culpa qui officia deserunt mollit anim id est laborum."
                 </div>
-                <div class="mt-3">
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                    labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                    in culpa qui officia deserunt mollit anim id est laborum."
-                    <strong>Take your loans to another level!</strong>
+                <div class="input-group my-3">
+                    <label for="totalInstallments">Total installments</label>
+                    <input type="range" class="custom-range" id="totalInstallments" min="6" max="24" step="1" />
+                    <label id="installmentInfo">installment(s)</label>
                 </div>
-                @Html.ActionLink("Go to loans", "Loans", "Loan", null, new { @class = "mt-4 btn btn-primary btn-block" })
-            </div>
+                <label for="installmentAmount">Installment amount</label>
+                <div class="input-group mb-3">
+                    <input disabled="disabled" type="text" class="form-control" id="installmentAmount" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">PLN</span>
+                    </div>
+                </div>
+
+                <input type="submit" class="btn btn-primary btn-block" value="Take a loan!" />
+            </form>
+
         </div>
     </div>
-
+    <div class="col-md-8 px-2 d-flex">
+        <div class="jumbotron mt-5 py-5">
+            <h3 class="display-4 mb-3 text-center">Best loans for you!</h3>
+            <div>
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+                esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+                in culpa qui officia deserunt mollit anim id est laborum."
+            </div>
+            <div class="mt-3">
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit
+                esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+                in culpa qui officia deserunt mollit anim id est laborum."
+                <strong>Take your loans to another level!</strong>
+            </div>
+            @Html.ActionLink("Go to loans", "Loans", "Loan", null, new { @class = "mt-4 btn btn-primary btn-block" })
+        </div>
+    </div>
 </div>
 
-<script>
 
-    $(document).ready(function () {
-        
-        $("#loanForm").validate({
-            rules: {
-                loanAmount: {
-                    required: true,
-                    min: 500 + Number.MIN_VALUE,
-                    max: 10000 + Number.MIN_VALUE
-                }
-            },
-            messages: {
-                loanAmount: "Min loan amount is 500 PLN and max is 10000 PLN!"
-            },
-            tooltip_options: {
-
-                loanAmount: { placement: 'right' }
-
-            },
-            submitHandler: function (form) {
-                var dataForm = {
-                    loanAmount: $('#loanAmount').val(),
-                    installmentAmount: $('#installmentAmount').val(),
-                    totalInstallments: $('#totalInstallments').val(),
-                    loanAmountLeft: ($('#totalInstallments').val() * $('#installmentAmount').val()).toFixed(2)
-                };
-                console.log(dataForm);
-                $.ajax({
-                    type: "POST",
-                    url: "/api/Loan/TakeLoan",
-                    data: dataForm
-                }).done(function (data) {
-                    console.log(data);
-                    Swal.fire('Great!', data.message, 'success');
-                    var table = $("#loans").DataTable();
-                    table.ajax.reload();
-                }).fail(function (data) {
-
-                    swal.fire('Oops!', data.responseJSON.message, 'error');
-
-                });
-
-
-
-
-            }
-        });
-
-        
-
-        $("#loanForm").change(function () {
-            calculate();
-            var installmentsNumber = $("#totalInstallments").val();
-            $("#installmentInfo").empty();
-            $("#installmentInfo").append(installmentsNumber + " installment(s)");
-        });
-
-
-
-        function calculate() {
-
-            var loanAmount = $("#loanAmount").val();
-            var totalInstallments = $("#totalInstallments").val();
-
-            var inst = 0;
-
-            for (var i = 1; i <= totalInstallments; i++) {
-
-                inst = inst + (1 / Math.pow((1 + 0.10 / 2), i));
-            }
-            var installmentAmount = loanAmount / inst;
-            $("#installmentAmount").val(installmentAmount.toFixed(2));
-
-        }
-
-        
-    });
-
-</script>
+<script type="text/javascript" src="~/Scripts/app/loans/index.js"></script>

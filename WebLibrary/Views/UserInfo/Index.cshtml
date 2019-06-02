@@ -8,7 +8,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5>Account's statistics</h5>
+                <h5>Account's transfers statistics</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="text-danger">&times;</span>
                 </button>
@@ -209,42 +209,6 @@
 @section scripts
 {
     <script type="text/javascript" src="~/Scripts/Chart.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("#accountInfoModal").on("show.bs.modal", function () {
-                $.ajax({
-                    url: "/api/moneytransfer/metadata",
-                    dataType: "json",
-                    method: "GET",
-                    success: function (metadata) {
-                        $("#js-transfers-sent").html(metadata.transfersSent);
-                        $("#js-transfers-received").html(metadata.transfersReceived);
-                        $("#js-total-money-sent").html(metadata.totalMoneySent);
-                        $("#js-total-money-received").html(metadata.totalMoneyReceived);
-
-
-                        var chartCanvas = $("#js-transfer-chart");
-                        var chart = new Chart(chartCanvas, {
-                            type: "doughnut",
-                            data: {
-                                labels: ["Money sent (PLN)", "Money received (PLN)"],
-                                datasets: [{
-                                    data: [metadata.totalMoneySent, metadata.totalMoneyReceived],
-                                    backgroundColor: ['rgba(114, 28, 36, 1)', 'rgba(21, 87, 36, 1)'],
-                                    borderWidth: 2
-                                }]
-                            },
-                            options: {
-                                animation: {
-                                    animateRotate: true
-                                },
-                                responsive: false
-                            }
-                        });
-                    }
-                })
-            });
-        });
-    </script>
+    <script type="text/javascript" src="~/Scripts/app/userInfo/index.js"></script>
 
 }

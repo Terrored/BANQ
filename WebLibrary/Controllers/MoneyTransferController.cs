@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
 using System.Web.Mvc;
+using WebLibrary.IdentityExtensions;
 
 namespace WebLibrary.Controllers
 {
@@ -15,6 +16,7 @@ namespace WebLibrary.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.Id = User.Identity.GetUserId().Value;
             return View();
         }
 
@@ -25,6 +27,7 @@ namespace WebLibrary.Controllers
 
         public ActionResult Transfers()
         {
+            ViewBag.Id = User.Identity.GetUserId().Value;
             return View();
         }
 
