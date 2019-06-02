@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using DataAccess.Identity;
 using Model.RepositoryInterfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BusinessLogic.Services
 {
     public class MoneyTransferService : IMoneyTransferService
     {
-        private readonly IApplicationUserManager _applicationUserManager;
+
         private readonly IEntityRepository<MoneyTransfer> _moneyTransferRepository;
-        private readonly IEntityRepository<BankAccount> _bankAccountTransferRepository;
         private readonly IBankAccountService _bankAccountService;
 
-        public MoneyTransferService(IEntityRepository<MoneyTransfer> moneyTransferRepository, IApplicationUserManager applicationUserManager, IEntityRepository<BankAccount> bankAccountTransferRepository, IBankAccountService bankAccountService)
+        public MoneyTransferService(IEntityRepository<MoneyTransfer> moneyTransferRepository, IBankAccountService bankAccountService)
         {
-            _applicationUserManager = applicationUserManager;
             _moneyTransferRepository = moneyTransferRepository;
-            _bankAccountTransferRepository = bankAccountTransferRepository;
             _bankAccountService = bankAccountService;
         }
 
